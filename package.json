@@ -6,7 +6,9 @@
 	"scripts": {
 		"dev": "vite",
 		"build": "tsc && vite build",
-		"preview": "vite preview"
+		"preview": "vite preview",
+		"lint": "pnpm biome lint --fix --unsafe",
+		"format": "pnpm biome format --fix"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.3.10",
