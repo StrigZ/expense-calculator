@@ -60,3 +60,15 @@ h3 {
 .text-mono {
 	@apply text-xl font-normal leading-relaxed font-jetbrains;
 }
+
+button.primary {
+	@apply bg-primary text-foreground hover:opacity-85 transition-opacity;
+}
+
+button.outline {
+	@apply bg-foreground border-primary text-primary hover:bg-primary/10 transition-colors;
+}
+
+.input {
+	@apply border-border placeholder:font-inter placeholder:text-text-secondary text-text-primary bg-foreground hover:border-primary focus-visible:border-primary rounded border px-2 py-4 outline-0 outline-none text-base placeholder:text-base placeholder:leading-normal placeholder:font-normal focus-visible:border-2 focus-visible:ring-0 transition-colors;
+}
