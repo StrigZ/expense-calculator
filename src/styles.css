@@ -61,14 +61,47 @@ h3 {
 	@apply text-xl font-normal leading-relaxed font-jetbrains;
 }
 
-button.primary {
+.btn {
+	@apply cursor-pointer rounded-xs px-4 py-3;
+}
+
+.btn-primary {
 	@apply bg-primary text-foreground hover:opacity-85 transition-opacity;
 }
 
-button.outline {
-	@apply bg-foreground border-primary text-primary hover:bg-primary/10 transition-colors;
+.btn-outline {
+	@apply bg-foreground border border-primary text-primary hover:bg-primary/10 transition-colors;
 }
 
 .input {
 	@apply border-border placeholder:font-inter placeholder:text-text-secondary text-text-primary bg-foreground hover:border-primary focus-visible:border-primary rounded border px-2 py-4 outline-0 outline-none text-base placeholder:text-base placeholder:leading-normal placeholder:font-normal focus-visible:border-2 focus-visible:ring-0 transition-colors;
+}
+
+.card {
+	@apply md:shadow-e1 space-y-3 h-full md:h-auto md:max-w-xl w-full md:rounded-2xl md:p-6;
+}
+
+ul.dropdown {
+	@apply bg-foreground border-border shadow-e2 divide-border absolute bottom-0 w-full translate-y-full rounded-sm border py-2;
+
+	li {
+		@apply relative;
+
+		button {
+			@apply hover:bg-primary/10 text-text-secondary hover:text-primary flex w-full cursor-pointer justify-between gap-3 px-3 transition-colors text-base py-1.5 font-normal leading-normal font-inter;
+		}
+
+		&:not(:first-child)::before {
+			content: "";
+			@apply absolute h-px bg-border w-[calc(100%-1.5rem)] top-0 left-1/2 -translate-x-1/2;
+		}
+	}
+}
+
+ul.history-list {
+	@apply divide-text-secondary divide-y;
+
+	li {
+		@apply flex items-center justify-between py-2 gap-1.5;
+	}
 }
