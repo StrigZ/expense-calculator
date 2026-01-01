@@ -20,13 +20,9 @@ export class BalanceView extends BaseView {
 		const balanceBlock = cloneTemplate(BalanceView.balanceBlockTemplate);
 		super(balanceBlock);
 
-		const balancePerDayEl = getElementByQuery("#per-day", balanceBlock);
-		const totalBalanceEl = getElementByQuery("#total", balanceBlock);
-		const periodEl = getElementByQuery("#period", balanceBlock);
-
-		this.balancePerDayEl = balancePerDayEl;
-		this.periodEl = periodEl;
-		this.totalBalanceEl = totalBalanceEl;
+		this.balancePerDayEl = getElementByQuery("#balance-per-day", balanceBlock);
+		this.periodEl = getElementByQuery("#period", balanceBlock);
+		this.totalBalanceEl = getElementByQuery("#total-balance", balanceBlock);
 	}
 
 	public render({
