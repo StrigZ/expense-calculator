@@ -11,9 +11,9 @@ export function initApp(): void {
 			{ date: new Date(), amount: 21321 },
 			{ date: new Date(), amount: 21321 },
 		],
-		perDay: 12000 / 5,
+		balancePerDay: 12000 / 5,
 		period: 5,
-		total: 12000,
+		totalBalance: 12000,
 	});
 
 	const root = getElementByQuery("#app");

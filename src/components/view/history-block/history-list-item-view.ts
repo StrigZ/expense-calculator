@@ -3,8 +3,8 @@ import {
 	cloneTemplate,
 	getElementByQuery,
 	getTemplateById,
-} from "../../utils/utils";
-import { BaseView } from "./base-view";
+} from "../../../utils/utils";
+import { BaseView } from "../base-view";
 
 export class HistoryListItemView extends BaseView {
 	public static template: HTMLTemplateElement | null;

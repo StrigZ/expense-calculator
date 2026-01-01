@@ -104,25 +104,6 @@
 
     <template id="home-page">
       <div class="flex w-full flex-col gap-6 md:max-w-xl md:gap-2">
-        <div id="balance-card" class="card">
-          <div class="space-y-0.5">
-            <header class="text-body flex items-center justify-between gap-2">
-              <p class="text-text-secondary">Общий баланс</p>
-              <p id="per-day" class="text-primary">2000 ₽ в день</p>
-            </header>
-            <div class="flex items-end gap-2">
-              <h1>
-                <span id="total">9000</span>
-                <span class="font-normal">₽</span>
-              </h1>
-              <p id="period" class="text-text-secondary text-body">на 5 дней</p>
-            </div>
-          </div>
-          <div class="flex items-center justify-between gap-4">
-            <button class="btn text-accent btn-outline flex-1">Изменить</button>
-            <button class="btn text-accent btn-outline min-w-max flex-1 md:hidden">История расходов</button>
-          </div>
-        </div>
         <div id="today-card" class="card">
           <header class="space-y-0.5">
             <p class="text-accent text-text-secondary">На сегодня доступно</p>
@@ -176,6 +157,28 @@
         <button class="text-accent primary mt-auto cursor-pointer rounded-xs px-4 py-3">Рассчитать</button>
       </div></template
     >
+
+    <template id="balance-block">
+      <div class="card">
+        <div class="space-y-0.5">
+          <header class="text-body flex items-center justify-between gap-2">
+            <p class="text-text-secondary">Общий баланс</p>
+            <p id="per-day" class="text-primary">2000 ₽ в день</p>
+          </header>
+          <div class="flex items-end gap-2">
+            <h1>
+              <span id="total">9000</span>
+              <span class="font-normal">₽</span>
+            </h1>
+            <p class="text-text-secondary text-body">на <span id="period">5</span> дней</p>
+          </div>
+        </div>
+        <div class="flex items-center justify-between gap-4">
+          <button class="btn text-accent btn-outline flex-1">Изменить</button>
+          <button class="btn text-accent btn-outline min-w-max flex-1 md:hidden">История расходов</button>
+        </div>
+      </div>
+    </template>
 
     <template id="history-block">
       <div class="card hidden flex-col md:flex">

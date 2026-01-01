@@ -2,8 +2,8 @@ import {
 	cloneTemplate,
 	getElementByQuery,
 	getTemplateById,
-} from "../../utils/utils";
-import { BaseView } from "./base-view";
+} from "../../../utils/utils";
+import { BaseView } from "../base-view";
 import { HistoryListItemView } from "./history-list-item-view";
 
 export class HistoryView extends BaseView {
