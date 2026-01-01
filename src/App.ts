@@ -1,4 +1,5 @@
 import { HomePage } from "./pages/home-page";
+import { StartPage } from "./pages/start-page";
 import { getElementByQuery } from "./utils/utils";
 
 // TODO: replace with real type
@@ -19,6 +20,10 @@ const mockData = {
 };
 
 export function initApp(): void {
+	const root = getElementByQuery("#app");
+	root.innerHTML = "";
+
+	const startPage = new StartPage();
 	const homePage = new HomePage({
 		handleNewExpense: (expense) => {
 			// TODO: replace with state manager
@@ -26,11 +31,9 @@ export function initApp(): void {
 			homePage.render(mockData);
 		},
 	});
-
 	homePage.render(mockData);
+	startPage.render();
 
-	const root = getElementByQuery("#app");
-
-	root.innerHTML = "";
-	root.append(homePage.getElement());
+	// root.append(homePage.getElement());
+	root.append(startPage.getElement());
 }

@@ -102,11 +102,9 @@
       </div>
     </template>
 
-    <template id="home-page">
-      <div class="flex w-full flex-col gap-6 md:max-w-xl md:gap-2"></div>
-    </template>
+    <template id="start-page"> main </template>
 
-    <template id="start-page">
+    <template id="start-block">
       <div class="card">
         <h1 class="text-text-primary">Начнём!</h1>
         <label class="text-text-secondary text-caption flex flex-col gap-1">
@@ -121,7 +119,7 @@
               <path d="M0.75 0.75L8.75 8.75L16.75 0.75" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" />
             </svg>
           </button>
-          <ul id="dropdown-list" class="bg-foreground border-border shadow-e2 [&>li]:after:bg-border absolute bottom-0 hidden w-full translate-y-full flex-col rounded-sm border py-2 [&>li]:relative [&>li]:py-2 [&>li]:after:absolute [&>li]:after:bottom-0 [&>li]:after:left-1/2 [&>li]:after:h-px [&>li]:after:w-[calc(100%-1.5rem)] [&>li]:after:-translate-x-1/2 [&>li]:last:after:hidden [&>li>*]:w-full">
+          <ul id="dropdown-list" class="dropdown">
             <li>
               <button class="hover:bg-primary/10 hover:text-primary text-body flex cursor-pointer justify-between gap-3 px-3 py-0.5 transition-colors" type="button">
                 <p>День</p>
@@ -136,9 +134,9 @@
             </li>
           </ul>
         </div>
-        <button class="text-accent primary mt-auto cursor-pointer rounded-xs px-4 py-3">Рассчитать</button>
-      </div></template
-    >
+        <button class="text-accent btn btn-primary mt-auto w-full">Рассчитать</button>
+      </div>
+    </template>
 
     <template id="balance-today-block">
       <div class="card">
@@ -182,6 +180,7 @@
           </div>
         </div>
         <div class="flex items-center justify-between gap-4">
+          <!-- TODO: Replace this with links and handle them via router -->
           <button class="btn text-accent btn-outline flex-1">Изменить</button>
           <button class="btn text-accent btn-outline min-w-max flex-1 md:hidden">История расходов</button>
         </div>
@@ -206,6 +205,7 @@
             </li>
           </ul>
         </div>
+        <!-- TODO: Replace this with links and handle them via router -->
         <button class="text-accent btn btn-outline flex-1">Смотреть всю историю</button>
       </div>
     </template>

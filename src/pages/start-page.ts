@@ -1,14 +1,16 @@
 import { BaseView } from "../components/view/base-view";
-import { getTemplateById } from "../utils/utils";
+import { StartView } from "../components/view/start-block/start-view";
 
 export class StartPage extends BaseView {
+	private startView: StartView;
 	constructor() {
-		const page = getTemplateById("start-page");
+		super();
 
-		super(page);
+		this.startView = new StartView();
 	}
 
 	render() {
-		// update page view
+		this.startView.render();
+		this.element.append(this.startView.getElement());
 	}
 }
