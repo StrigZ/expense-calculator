@@ -6,7 +6,7 @@ import {
 import { BaseView } from "../base-view";
 
 export class BalanceTodayView extends BaseView {
-	public static balanceTodayBlockTemplate: HTMLTemplateElement | null;
+	public static template: HTMLTemplateElement | null;
 
 	private availableBalanceEl: HTMLElement;
 	private balancePerDayEl: HTMLElement;
@@ -14,14 +14,12 @@ export class BalanceTodayView extends BaseView {
 	constructor({
 		handleNewExpense,
 	}: { handleNewExpense: (expense: number) => void }) {
-		if (!BalanceTodayView.balanceTodayBlockTemplate) {
-			const balanceTodayBlock = getTemplateById("balance-today-block");
-			BalanceTodayView.balanceTodayBlockTemplate = balanceTodayBlock;
+		if (!BalanceTodayView.template) {
+			const template = getTemplateById("balance-today-block");
+			BalanceTodayView.template = template;
 		}
 
-		const balanceTodayBlock = cloneTemplate(
-			BalanceTodayView.balanceTodayBlockTemplate,
-		);
+		const balanceTodayBlock = cloneTemplate(BalanceTodayView.template);
 		super(balanceTodayBlock);
 
 		this.availableBalanceEl = getElementByQuery(

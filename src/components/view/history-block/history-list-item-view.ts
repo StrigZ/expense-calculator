@@ -13,8 +13,8 @@ export class HistoryListItemView extends BaseView {
 	private dateEl: HTMLElement;
 	constructor() {
 		if (!HistoryListItemView.template) {
-			const historyListItem = getTemplateById("history-list-item");
-			HistoryListItemView.template = historyListItem;
+			const template = getTemplateById("history-list-item");
+			HistoryListItemView.template = template;
 		}
 
 		const historyListItem = cloneTemplate(HistoryListItemView.template);

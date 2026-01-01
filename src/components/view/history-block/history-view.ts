@@ -7,18 +7,18 @@ import { BaseView } from "../base-view";
 import { HistoryListItemView } from "./history-list-item-view";
 
 export class HistoryView extends BaseView {
-	public static historyBlockTemplate: HTMLTemplateElement | null;
+	public static template: HTMLTemplateElement | null;
 
 	private historyList: HTMLElement;
 	private averageSpentPerDay: HTMLElement;
 
 	constructor() {
-		if (!HistoryView.historyBlockTemplate) {
-			const historyBlock = getTemplateById("history-block");
-			HistoryView.historyBlockTemplate = historyBlock;
+		if (!HistoryView.template) {
+			const template = getTemplateById("history-block");
+			HistoryView.template = template;
 		}
 
-		const historyBlock = cloneTemplate(HistoryView.historyBlockTemplate);
+		const historyBlock = cloneTemplate(HistoryView.template);
 		super(historyBlock);
 
 		const historyList = getElementByQuery("#history-list", historyBlock);

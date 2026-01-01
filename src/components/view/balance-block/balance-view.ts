@@ -6,18 +6,18 @@ import {
 import { BaseView } from "../base-view";
 
 export class BalanceView extends BaseView {
-	public static balanceBlockTemplate: HTMLTemplateElement | null;
+	public static template: HTMLTemplateElement | null;
 
 	private balancePerDayEl: HTMLElement;
 	private periodEl: HTMLElement;
 	private totalBalanceEl: HTMLElement;
 	constructor() {
-		if (!BalanceView.balanceBlockTemplate) {
-			const balanceBlock = getTemplateById("balance-block");
-			BalanceView.balanceBlockTemplate = balanceBlock;
+		if (!BalanceView.template) {
+			const template = getTemplateById("balance-block");
+			BalanceView.template = template;
 		}
 
-		const balanceBlock = cloneTemplate(BalanceView.balanceBlockTemplate);
+		const balanceBlock = cloneTemplate(BalanceView.template);
 		super(balanceBlock);
 
 		this.balancePerDayEl = getElementByQuery("#balance-per-day", balanceBlock);
