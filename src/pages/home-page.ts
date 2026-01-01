@@ -1,6 +1,7 @@
 import { BalanceView } from "../components/view/balance-block/balance-view";
 import { BalanceTodayView } from "../components/view/balance-today-block/balance-today-view";
 import { BaseView } from "../components/view/base-view";
+import { Container } from "../components/view/container";
 import { HistoryView } from "../components/view/history-block/history-view";
 import { cloneTemplate, getTemplateById } from "../utils/utils";
 
@@ -18,8 +19,12 @@ export class HomePage extends BaseView {
 			HomePage.template = template;
 		}
 
+		const container = new Container({
+			tag: "div",
+			className: "flex w-full flex-col gap-6 md:max-w-xl md:gap-2",
+		});
 		const page = cloneTemplate(HomePage.template);
-		super(page);
+		super(container.getElement());
 
 		this.balanceView = new BalanceView();
 		this.balanceTodayView = new BalanceTodayView({ handleNewExpense });
