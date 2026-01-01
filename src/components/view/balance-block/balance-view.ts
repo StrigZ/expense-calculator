@@ -6,7 +6,7 @@ import {
 import { BaseView } from "../base-view";
 
 export class BalanceView extends BaseView {
-	public static template: HTMLTemplateElement | null;
+	private static template: HTMLTemplateElement | null;
 
 	private balancePerDayEl: HTMLElement;
 	private periodEl: HTMLElement;

@@ -5,7 +5,7 @@ import { HistoryView } from "../components/view/history-block/history-view";
 import { cloneTemplate, getTemplateById } from "../utils/utils";
 
 export class HomePage extends BaseView {
-	public static template: HTMLTemplateElement | null;
+	private static template: HTMLTemplateElement | null;
 
 	private balanceView: BalanceView;
 	private balanceTodayView: BalanceTodayView;

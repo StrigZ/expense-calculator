@@ -7,7 +7,7 @@ import {
 import { BaseView } from "../base-view";
 
 export class HistoryListItemView extends BaseView {
-	public static template: HTMLTemplateElement | null;
+	private static template: HTMLTemplateElement | null;
 
 	private amountEl: HTMLElement;
 	private dateEl: HTMLElement;
