@@ -42,6 +42,8 @@ export class HomePage extends BaseView {
 		history: { amount: number; date: Date }[];
 		averageSpentPerDay: number;
 	}) {
+		this.element.innerHTML = "";
+
 		this.balanceView.render({ balancePerDay, period, totalBalance });
 		this.element.append(this.balanceView.getElement());
 
