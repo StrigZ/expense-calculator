@@ -104,15 +104,18 @@
 
     <template id="home-page">
       <div class="flex w-full flex-col gap-6 md:max-w-xl md:gap-2">
-        <div class="card">
+        <div id="balance-card" class="card">
           <div class="space-y-0.5">
             <header class="text-body flex items-center justify-between gap-2">
               <p class="text-text-secondary">Общий баланс</p>
               <p id="per-day" class="text-primary">2000 ₽ в день</p>
             </header>
             <div class="flex items-end gap-2">
-              <h1 id="total">9000 <span class="font-normal">₽</span></h1>
-              <p id="for-days" class="text-text-secondary text-body">на 5 дней</p>
+              <h1>
+                <span id="total">9000</span>
+                <span class="font-normal">₽</span>
+              </h1>
+              <p id="period" class="text-text-secondary text-body">на 5 дней</p>
             </div>
           </div>
           <div class="flex items-center justify-between gap-4">
@@ -120,15 +123,15 @@
             <button class="btn text-accent btn-outline min-w-max flex-1 md:hidden">История расходов</button>
           </div>
         </div>
-        <div class="card">
+        <div id="today-card" class="card">
           <header class="space-y-0.5">
             <p class="text-accent text-text-secondary">На сегодня доступно</p>
             <h1>
-              <span class="text-success"
+              <span id="available-today" class="text-success"
                 >1000
                 <span class="font-inter font-normal">₽</span>
               </span>
-              <span class="text-text-secondary">/ 2000</span>
+              <span id="per-day" class="text-text-secondary">/ 2000</span>
             </h1>
           </header>
           <p class="text-text-primary text-caption">🎉 Отлично справились — сегодня вы в пределах лимита!</p>
@@ -136,32 +139,6 @@
             <span class="pl-3">Введите трату</span>
             <input class="input text-body h-12 pl-3!" type="text" placeholder="0 ₽" required />
           </label>
-        </div>
-        <div class="card hidden flex-col md:flex">
-          <div class="space-y-4">
-            <header class="space-y-1">
-              <p class="text-body text-text-secondary">История расходов</p>
-              <p class="text-caption text-primary">Средние траты в день: 1050₽</p>
-            </header>
-            <ul class="history-list">
-              <template id="history-list-item">
-                <li class="flex items-center justify-between py-1!">
-                  <h3 class="text-text-primary">200 <span class="font-inter">₽</span></h3>
-                  <p class="text-body text-text-secondary">25 октября</p>
-                </li>
-              </template>
-
-              <li class="flex items-center justify-between py-1!">
-                <h3 class="text-text-primary">200 <span class="font-inter">₽</span></h3>
-                <p class="text-body text-text-secondary">25 октября</p>
-              </li>
-              <li class="flex items-center justify-between py-1!">
-                <h3 class="text-text-primary">200 <span class="font-inter">₽</span></h3>
-                <p class="text-body text-text-secondary">25 октября</p>
-              </li>
-            </ul>
-          </div>
-          <button class="text-accent btn btn-outline flex-1">Смотреть всю историю</button>
         </div>
       </div>
     </template>
@@ -199,6 +176,38 @@
         <button class="text-accent primary mt-auto cursor-pointer rounded-xs px-4 py-3">Рассчитать</button>
       </div></template
     >
+
+    <template id="history-block">
+      <div class="card hidden flex-col md:flex">
+        <div class="space-y-4">
+          <header class="space-y-1">
+            <p class="text-body text-text-secondary">История расходов</p>
+            <p class="text-caption text-primary">Средние траты в день: <span id="average-spent-per-day">1050</span> ₽</p>
+          </header>
+          <ul id="history-list" class="history-list">
+            <li class="flex items-center justify-between py-1!">
+              <h3 class="text-text-primary">200 <span class="font-inter">₽</span></h3>
+              <p class="text-body text-text-secondary">25 октября</p>
+            </li>
+            <li class="flex items-center justify-between py-1!">
+              <h3 class="text-text-primary">200 <span class="font-inter">₽</span></h3>
+              <p class="text-body text-text-secondary">25 октября</p>
+            </li>
+          </ul>
+        </div>
+        <button class="text-accent btn btn-outline flex-1">Смотреть всю историю</button>
+      </div>
+    </template>
+
+    <template id="history-list-item">
+      <li class="flex items-center justify-between">
+        <h3 class="text-text-primary">
+          <span id="spent-amount">200</span>
+          <span class="font-inter">₽</span>
+        </h3>
+        <p id="spent-date" class="text-body text-text-secondary">25 октября</p>
+      </li>
+    </template>
 
     <!-- Dropdown list item template -->
     <template id="dropdown-list-item">
@@ -306,7 +315,7 @@
           </div>
           <div class="flex items-end gap-2">
             <h1 id="total">9000 <span class="font-normal">₽</span></h1>
-            <p id="for-days" class="text-text-secondary text-body">на 5 дней</p>
+            <p id="period" class="text-text-secondary text-body">на 5 дней</p>
           </div>
         </div>
         <button class="text-accent btn-outline cursor-pointer rounded-xs px-4 py-3">Изменить</button>

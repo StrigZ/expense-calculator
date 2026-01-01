@@ -102,6 +102,6 @@ ul.history-list {
 	@apply divide-text-secondary divide-y;
 
 	li {
-		@apply flex items-center justify-between py-2 gap-1.5;
+		@apply flex items-center justify-between py-3 md:py-1 gap-1.5;
 	}
 }
