@@ -103,25 +103,7 @@
     </template>
 
     <template id="home-page">
-      <div class="flex w-full flex-col gap-6 md:max-w-xl md:gap-2">
-        <div id="today-card" class="card">
-          <header class="space-y-0.5">
-            <p class="text-accent text-text-secondary">На сегодня доступно</p>
-            <h1>
-              <span id="available-today" class="text-success"
-                >1000
-                <span class="font-inter font-normal">₽</span>
-              </span>
-              <span id="per-day" class="text-text-secondary">/ 2000</span>
-            </h1>
-          </header>
-          <p class="text-text-primary text-caption">🎉 Отлично справились — сегодня вы в пределах лимита!</p>
-          <label class="text-text-secondary text-caption flex flex-col gap-1">
-            <span class="pl-3">Введите трату</span>
-            <input class="input text-body h-12 pl-3!" type="text" placeholder="0 ₽" required />
-          </label>
-        </div>
-      </div>
+      <div class="flex w-full flex-col gap-6 md:max-w-xl md:gap-2"></div>
     </template>
 
     <template id="start-page">
@@ -157,6 +139,29 @@
         <button class="text-accent primary mt-auto cursor-pointer rounded-xs px-4 py-3">Рассчитать</button>
       </div></template
     >
+
+    <template id="balance-today-block">
+      <div class="card">
+        <header class="space-y-0.5">
+          <p class="text-accent text-text-secondary">На сегодня доступно</p>
+          <h1 class="text-success">
+            <span id="available-balance">1000 </span>
+            <span class="font-inter font-normal">₽</span>
+            <span class="text-text-secondary">
+              /
+              <span id="balance-per-day">2000</span>
+            </span>
+          </h1>
+        </header>
+        <p id="message" class="text-text-primary text-caption">🎉 Отлично справились — сегодня вы в пределах лимита!</p>
+        <form id="new-expense-form">
+          <label class="text-text-secondary text-caption flex flex-col gap-1">
+            <span class="pl-3">Введите трату</span>
+            <input id="new-expense-input" class="input text-body h-12 pl-3!" type="number" min="0" placeholder="0 ₽" required />
+          </label>
+        </form>
+      </div>
+    </template>
 
     <template id="balance-block">
       <div class="card">
