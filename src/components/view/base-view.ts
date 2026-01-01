@@ -1,12 +1,12 @@
 export abstract class BaseView {
-	protected element: HTMLElement;
-	constructor(element: HTMLElement) {
-		this.element = element;
-	}
+	protected element: HTMLElement | DocumentFragment;
 
+	constructor(element?: HTMLElement | DocumentFragment) {
+		this.element = element || document.createDocumentFragment();
+	}
 	protected abstract render(...args: unknown[]): void;
 
-	public getElement(): HTMLElement {
+	public getElement(): HTMLElement | DocumentFragment {
 		return this.element;
 	}
 }

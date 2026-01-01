@@ -3,27 +3,18 @@ import { BalanceTodayView } from "../components/view/balance-today-block/balance
 import { BaseView } from "../components/view/base-view";
 import { Container } from "../components/view/container";
 import { HistoryView } from "../components/view/history-block/history-view";
-import { cloneTemplate, getTemplateById } from "../utils/utils";
 
 export class HomePage extends BaseView {
-	private static template: HTMLTemplateElement | null;
-
 	private balanceView: BalanceView;
 	private balanceTodayView: BalanceTodayView;
 	private historyView: HistoryView;
 	constructor({
 		handleNewExpense,
 	}: { handleNewExpense: (expense: number) => void }) {
-		if (!HomePage.template) {
-			const template = getTemplateById("home-page");
-			HomePage.template = template;
-		}
-
 		const container = new Container({
 			tag: "div",
 			className: "flex w-full flex-col gap-6 md:max-w-xl md:gap-2",
 		});
-		const page = cloneTemplate(HomePage.template);
 		super(container.getElement());
 
 		this.balanceView = new BalanceView();
@@ -47,8 +38,6 @@ export class HomePage extends BaseView {
 		history: { amount: number; date: Date }[];
 		averageSpentPerDay: number;
 	}) {
-		this.element.innerHTML = "";
-
 		this.balanceView.render({ balancePerDay, period, totalBalance });
 		this.element.append(this.balanceView.getElement());
 
