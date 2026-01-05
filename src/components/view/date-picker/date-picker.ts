@@ -5,24 +5,24 @@ import {
 } from "../../../utils/utils";
 import { Component } from "../component";
 
-export class DateDropdown extends Component {
+export class DatePicker extends Component {
 	private static template: HTMLTemplateElement | null;
 
 	private boundDocumentClickListener: (e: MouseEvent) => void;
 	private boundDocumentKeydownListener: (e: KeyboardEvent) => void;
 	private boundTriggerClickListener: (e: MouseEvent) => void;
-	private list: HTMLUListElement;
+	private popup: HTMLElement;
 	private triggerButtonText: HTMLElement;
 	private triggerButton: HTMLButtonElement;
 	private isPeriodSelected: boolean = false;
 
 	constructor() {
-		if (!DateDropdown.template) {
-			const template = getTemplateById("date-dropdown");
-			DateDropdown.template = template;
+		if (!DatePicker.template) {
+			const template = getTemplateById("date-picker");
+			DatePicker.template = template;
 		}
 
-		super(cloneTemplate(DateDropdown.template));
+		super(cloneTemplate(DatePicker.template));
 
 		this.triggerButton = getElementByQuery<HTMLButtonElement>(
 			"#dropdown-trigger-button",
@@ -32,20 +32,22 @@ export class DateDropdown extends Component {
 			"#dropdown-trigger-text",
 			this.element,
 		);
-		this.list = getElementByQuery("ul", this.element);
+
+		this.popup = getElementByQuery("#date-picker-popup", this.element);
 
 		this.boundDocumentClickListener = (e: MouseEvent) => {
-			if (!this.element.contains(e.target as Node)) {
-				this.hideList();
-			}
+			if (this.element.contains(e.target as Node)) return;
+
+			console.log("clicked out of date picker!");
+			this.hidePopup();
 		};
 		this.boundDocumentKeydownListener = (e: KeyboardEvent) => {
-			if (e.key === "Escape") {
-				this.hideList();
-			}
+			if (e.key !== "Escape") return;
+
+			this.hidePopup();
 		};
 		this.boundTriggerClickListener = () => {
-			this.list.classList.toggle("hidden");
+			this.popup.classList.toggle("hidden");
 		};
 
 		this.triggerButton.addEventListener(
@@ -69,15 +71,13 @@ export class DateDropdown extends Component {
 		);
 	}
 
-	hideList() {
-		this.list.classList.add("hidden");
+	updatePopupContent(content: HTMLElement) {
+		this.popup.replaceChildren(content);
 	}
-	resetList() {
-		this.list.innerHTML = "";
+	hidePopup() {
+		this.popup.classList.add("hidden");
 	}
-	appendFragmentToList(fragment: DocumentFragment) {
-		this.list.append(fragment);
-	}
+
 	updateTriggerButtonText(text: string) {
 		// If the text updated for the first time
 		// update text color too

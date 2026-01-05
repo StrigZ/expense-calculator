@@ -7,13 +7,17 @@ import {
 	getTemplateById,
 } from "../../../utils/utils";
 import { Component } from "../component";
-import { DateDropdown } from "../date-dropdown/date-dropdown";
-import { DateDropdownItem } from "../date-dropdown/date-dropdown-item";
+import { DatePicker } from "../date-picker/date-picker";
+import { DatePickerCalendar } from "../date-picker/date-picker-calendar";
+import { DatePickerList } from "../date-picker/date-picker-list";
+import { DatePickerListItem } from "../date-picker/date-picker-list-item";
 
 export class StartBlock extends Component {
 	private static template: HTMLTemplateElement | null;
 
-	private dateDropdown: DateDropdown;
+	private datePicker: DatePicker;
+	private datePickerList: DatePickerList;
+	private datePickerCalendar: DatePickerCalendar;
 	constructor() {
 		if (!StartBlock.template) {
 			const template = getTemplateById("start-block");
@@ -23,28 +27,33 @@ export class StartBlock extends Component {
 		const startBlock = cloneTemplate(StartBlock.template);
 		super(startBlock);
 
-		const dateDropdownPlaceholder = getElementByQuery(
+		const datePickerPlaceholder = getElementByQuery(
 			"#date-dropdown-placeholder",
 			startBlock,
 		);
 
-		this.dateDropdown = new DateDropdown();
-		dateDropdownPlaceholder.replaceWith(this.dateDropdown.render());
+		this.datePicker = new DatePicker();
+		this.datePickerList = new DatePickerList();
+		this.datePickerCalendar = new DatePickerCalendar();
+
+		datePickerPlaceholder.replaceWith(this.datePicker.render());
 	}
 
 	public render() {
-		this.dateDropdown.resetList();
+		this.datePickerList.resetList();
 		const fragment = new DocumentFragment();
 		TIMEFRAMES.forEach((timeframe) => {
 			if (timeframe === "Своя дата") {
-				const dateDropdownItem = new DateDropdownItem({
+				const datePickerListItem = new DatePickerListItem({
 					period: timeframe,
 					untilDate: null,
 					onClick: () => {
-						// show calendar
+						this.datePicker.updatePopupContent(
+							this.datePickerCalendar.render(),
+						);
 					},
 				});
-				fragment.append(dateDropdownItem.render());
+				fragment.append(datePickerListItem.render());
 			} else {
 				const untilDate =
 					timeframe === "До конца месяца"
@@ -56,25 +65,25 @@ export class StartBlock extends Component {
 						? differenceInCalendarDays(untilDate, new Date())
 						: timeframeToNumberMap[timeframe];
 
-				const dateDropdownItem = new DateDropdownItem({
+				const datePickerListItem = new DatePickerListItem({
 					period: timeframe,
 					untilDate,
 					onClick: () => {
-						this.dateDropdown.updateTriggerButtonText(
+						this.datePicker.updateTriggerButtonText(
 							`${diffInCalendarDays} дней (до ${format(untilDate, "d MMMM")})`,
 						);
 
 						// set period
 						// state.setPeriod(diffInCalendarDays)
-						this.dateDropdown.hideList();
+						this.datePicker.hidePopup();
 					},
 				});
-				fragment.append(dateDropdownItem.render());
+				fragment.append(datePickerListItem.render());
 			}
 		});
 
-		this.dateDropdown.appendFragmentToList(fragment);
-
+		this.datePickerList.appendFragmentToList(fragment);
+		this.datePicker.updatePopupContent(this.datePickerList.render());
 		return this.element;
 	}
 }

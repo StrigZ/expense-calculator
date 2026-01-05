@@ -198,8 +198,24 @@
       </li>
     </template>
 
+    <template id="date-picker-list">
+      <ul class="date-picker-list">
+        <li>
+          <button type="button">
+            <p>День</p>
+            <p>до 26 октября</p>
+          </button>
+        </li>
+        <li>
+          <button type="button">
+            <p>День</p>
+            <p>до 26 октября</p>
+          </button>
+        </li>
+      </ul>
+    </template>
     <!-- Dropdown list item template -->
-    <template id="date-dropdown-item">
+    <template id="date-picker-list-item">
       <li>
         <button class="hover:bg-primary/10 hover:text-primary text-body flex cursor-pointer justify-between gap-3 px-3 py-0.5 transition-colors" type="button">
           <span id="period">День</span>
@@ -209,7 +225,7 @@
     </template>
 
     <!-- Dropdown template -->
-    <template id="date-dropdown">
+    <template id="date-picker">
       <div class="relative flex flex-col gap-0.5 pb-px">
         <label for="trigger-button" class="text-caption text-text-secondary px-3">На срок</label>
         <button id="dropdown-trigger-button" class="input btn flex h-12 cursor-pointer items-center justify-between gap-3 rounded-sm! px-3!" type="button">
@@ -218,31 +234,20 @@
             <path d="M0.75 0.75L8.75 8.75L16.75 0.75" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" />
           </svg>
         </button>
-        <ul id="dropdown-list" class="dropdown hidden">
-          <li>
-            <button type="button">
-              <p>День</p>
-              <p>до 26 октября</p>
-            </button>
-          </li>
-          <li>
-            <button type="button">
-              <p>День</p>
-              <p>до 26 октября</p>
-            </button>
-          </li>
-        </ul>
+        <div id="date-picker-popup" class="bg-foreground border-border shadow-e2 absolute bottom-0 hidden translate-y-full rounded-sm border"></div>
       </div>
     </template>
 
     <!-- Calendar button template -->
-    <template id="calendar-button">
-      <button class="disabled:bg-foreground disabled:text-background bg-background text-body text-text-primary focus-visible:bg-primary focus-visible:text-foreground hover:bg-primary/10 hover:text-primary flex h-8 w-7.5 items-center justify-center rounded-xs p-2 focus-visible:outline-none" type="button">1</button>
+    <template id="date-picker-calendar-grid-item">
+      <li>
+        <button class="disabled:bg-foreground disabled:text-background bg-background text-body text-text-primary focus-visible:bg-primary focus-visible:text-foreground hover:bg-primary/10 hover:text-primary flex h-8 w-7.5 cursor-pointer items-center justify-center rounded-xs p-2 focus-visible:outline-none" type="button">1</button>
+      </li>
     </template>
 
     <!-- Calendar template -->
-    <template id="calendar">
-      <div class="shadow-e2 bg-foreground flex items-center gap-3 rounded-md p-4 pb-2">
+    <template id="date-picker-calendar">
+      <div class="flex items-center gap-3 p-4 pb-2">
         <button id="prev-button" class="cursor-pointer" type="button">
           <svg width="10" height="18" viewBox="0 0 10 18" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M9.06055 0.75L1.06055 8.75L9.06055 16.75" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" />
@@ -263,7 +268,7 @@
               <li class="px-2">сб</li>
               <li class="px-2">вс</li>
             </ul>
-            <ul id="date-grid" class="text-body text-text-primary grid grid-cols-7 grid-rows-5 gap-0.5 text-center [&>li>button]:cursor-pointer"></ul>
+            <ul id="calendar-grid" class="text-body text-text-primary grid grid-cols-7 grid-rows-5 gap-0.5 text-center"></ul>
           </div>
         </div>
         <button id="next-button" class="cursor-pointer" type="button">

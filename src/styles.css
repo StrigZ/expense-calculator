@@ -81,8 +81,8 @@ h3 {
 	@apply md:shadow-e1 space-y-3 h-full md:h-auto md:max-w-xl w-full md:rounded-2xl md:p-6;
 }
 
-ul.dropdown {
-	@apply bg-foreground border-border shadow-e2 divide-border absolute bottom-0 w-full translate-y-full rounded-sm border py-2;
+ul.date-picker-list {
+	@apply divide-border w-full py-2;
 
 	li {
 		@apply relative;
