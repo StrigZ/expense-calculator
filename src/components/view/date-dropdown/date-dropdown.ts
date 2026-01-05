@@ -1,44 +1,20 @@
-import { add, differenceInCalendarDays, endOfMonth, format } from "date-fns";
 import {
 	cloneTemplate,
 	getElementByQuery,
 	getTemplateById,
 } from "../../../utils/utils";
 import { Component } from "../component";
-import { DateDropdownItem } from "./date-dropdown-item";
-
-const PERIODS = [
-	"День",
-	"Неделя",
-	"2 недели",
-	"Месяц",
-	"До конца месяца",
-	"Своя дата",
-] as const;
-
-type Period = (typeof PERIODS)[number];
-
-const periodToNumberMap: Record<
-	Exclude<Period, "До конца месяца" | "Своя дата">,
-	number
-> = {
-	День: 1,
-	Неделя: 7,
-	"2 недели": 14,
-	Месяц: 30,
-};
 
 export class DateDropdown extends Component {
 	private static template: HTMLTemplateElement | null;
 
+	private boundDocumentClickListener: (e: MouseEvent) => void;
+	private boundDocumentKeydownListener: (e: KeyboardEvent) => void;
+	private boundTriggerClickListener: (e: MouseEvent) => void;
 	private list: HTMLUListElement;
 	private triggerButtonText: HTMLElement;
 	private triggerButton: HTMLButtonElement;
-	private hasPickedPeriod: boolean = false;
-
-	private boundDocumentClickListener: (e: MouseEvent) => void;
-	private boundDocumentKeydownListener: (e: KeyboardEvent) => void;
-	private triggerClickListener: (e: MouseEvent) => void;
+	private isPeriodSelected: boolean = false;
 
 	constructor() {
 		if (!DateDropdown.template) {
@@ -56,86 +32,60 @@ export class DateDropdown extends Component {
 			"#dropdown-trigger-text",
 			this.element,
 		);
-
 		this.list = getElementByQuery("ul", this.element);
 
 		this.boundDocumentClickListener = (e: MouseEvent) => {
 			if (!this.element.contains(e.target as Node)) {
-				this._hideDropdown();
+				this.hideList();
 			}
 		};
-
 		this.boundDocumentKeydownListener = (e: KeyboardEvent) => {
 			if (e.key === "Escape") {
-				this._hideDropdown();
+				this.hideList();
 			}
 		};
-
-		this.triggerClickListener = () => {
+		this.boundTriggerClickListener = () => {
 			this.list.classList.toggle("hidden");
 		};
 
-		this.triggerButton.addEventListener("click", () =>
-			this.list.classList.toggle("hidden"),
+		this.triggerButton.addEventListener(
+			"click",
+			this.boundTriggerClickListener,
 		);
-
-		this.triggerButton.addEventListener("click", this.triggerClickListener);
 		document.addEventListener("click", this.boundDocumentClickListener);
 		document.addEventListener("keydown", this.boundDocumentKeydownListener);
 	}
 
 	render() {
-		this.list.innerHTML = "";
-
-		const fragment = new DocumentFragment();
-		PERIODS.forEach((period) => {
-			if (period === "Своя дата") {
-				const item = new DateDropdownItem({
-					onClick: () => {
-						// show calendar
-					},
-				});
-				fragment.append(item.render({ period, untilDate: null }));
-			} else {
-				const untilDate =
-					period === "До конца месяца"
-						? endOfMonth(new Date())
-						: add(new Date(), { days: periodToNumberMap[period] });
-
-				const diffInCalendarDays =
-					period === "До конца месяца"
-						? differenceInCalendarDays(untilDate, new Date())
-						: periodToNumberMap[period];
-
-				const item = new DateDropdownItem({
-					onClick: () => {
-						if (!this.hasPickedPeriod) {
-							this.hasPickedPeriod = true;
-							this.triggerButtonText.classList.add("text-text-primary!");
-						}
-						this.triggerButtonText.textContent = `${diffInCalendarDays} дней (до ${format(untilDate, "d MMMM")})`;
-
-						// set period
-						// state.setPeriod(diffInCalendarDays)
-						this.list.classList.add("hidden");
-					},
-				});
-				fragment.append(item.render({ period, untilDate }));
-			}
-		});
-
-		this.list.append(fragment);
-
 		return this.element;
 	}
 
 	dispose() {
 		document.removeEventListener("click", this.boundDocumentClickListener);
 		document.removeEventListener("keydown", this.boundDocumentKeydownListener);
-		this.triggerButton.removeEventListener("click", this.triggerClickListener);
+		this.triggerButton.removeEventListener(
+			"click",
+			this.boundTriggerClickListener,
+		);
 	}
 
-	private _hideDropdown() {
+	hideList() {
 		this.list.classList.add("hidden");
+	}
+	resetList() {
+		this.list.innerHTML = "";
+	}
+	appendFragmentToList(fragment: DocumentFragment) {
+		this.list.append(fragment);
+	}
+	updateTriggerButtonText(text: string) {
+		// If the text updated for the first time
+		// update text color too
+		if (!this.isPeriodSelected) {
+			this.isPeriodSelected = true;
+			this.triggerButtonText.classList.add("text-text-primary!");
+		}
+
+		this.triggerButtonText.textContent = text;
 	}
 }

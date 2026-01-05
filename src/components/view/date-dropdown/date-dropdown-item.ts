@@ -9,9 +9,11 @@ import { Component } from "../component";
 export class DateDropdownItem extends Component {
 	private static template: HTMLTemplateElement | null;
 
-	private periodEl: HTMLElement;
-	private untilDateEl: HTMLElement;
-	constructor({ onClick }: { onClick: () => void }) {
+	constructor({
+		untilDate,
+		period,
+		onClick,
+	}: { period: string; untilDate: Date | null; onClick: () => void }) {
 		if (!DateDropdownItem.template) {
 			const template = getTemplateById("date-dropdown-item");
 			DateDropdownItem.template = template;
@@ -19,20 +21,20 @@ export class DateDropdownItem extends Component {
 
 		super(cloneTemplate(DateDropdownItem.template));
 
-		this.periodEl = getElementByQuery("#period", this.element);
-		this.untilDateEl = getElementByQuery("#until-date", this.element);
+		const periodEl = getElementByQuery("#period", this.element);
+		const untilDateEl = getElementByQuery("#until-date", this.element);
 
 		this.element.addEventListener("click", onClick);
+
+		if (untilDate) {
+			untilDateEl.textContent = `до ${format(untilDate, "d MMMM")}`;
+		} else {
+			untilDateEl.classList.add("hidden");
+		}
+		periodEl.textContent = period;
 	}
 
-	render({ untilDate, period }: { period: string; untilDate: Date | null }) {
-		this.periodEl.textContent = period;
-		if (untilDate) {
-			this.untilDateEl.textContent = `до ${format(untilDate, "d MMMM")}`;
-		} else {
-			this.untilDateEl.classList.add("hidden");
-		}
-
+	render() {
 		return this.element;
 	}
 }

@@ -1,19 +1,19 @@
 import { Page } from "../components/view/page";
-import { StartView } from "../components/view/start-block/start-view";
+import { StartBlock } from "../components/view/start-block/start-block";
 
 export class StartPage extends Page<DocumentFragment> {
-	private startView: StartView;
+	private StartBlock: StartBlock;
 	constructor() {
 		super(new DocumentFragment());
-		this.startView = new StartView();
+		this.StartBlock = new StartBlock();
 	}
 
 	render() {
-		this.element.append(this.startView.render());
+		this.element.append(this.StartBlock.render());
 
 		return this.element;
 	}
-	dispose(): void {
+	dispose() {
 		// remove all listeners
 	}
 }
