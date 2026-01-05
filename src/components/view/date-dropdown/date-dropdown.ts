@@ -95,8 +95,7 @@ export class DateDropdown extends Component {
 						// show calendar
 					},
 				});
-				item.render({ period, untilDate: null });
-				fragment.append(item.getElement());
+				fragment.append(item.render({ period, untilDate: null }));
 			} else {
 				const untilDate =
 					period === "До конца месяца"
@@ -121,12 +120,13 @@ export class DateDropdown extends Component {
 						this.list.classList.add("hidden");
 					},
 				});
-				item.render({ period, untilDate });
-				fragment.append(item.getElement());
+				fragment.append(item.render({ period, untilDate }));
 			}
 		});
 
 		this.list.append(fragment);
+
+		return this.element;
 	}
 
 	dispose() {

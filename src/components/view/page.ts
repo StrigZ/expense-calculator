@@ -1,9 +1,8 @@
 import { Component } from "./component";
 
-export abstract class Page extends Component<HTMLElement | DocumentFragment> {
-	constructor(element?: Component["element"]) {
-		super(element ?? new DocumentFragment());
-	}
-
+export abstract class Page<
+	T extends HTMLElement | DocumentFragment = HTMLElement,
+> extends Component<T> {
+	// Method to remove all listeners before unloading page
 	abstract dispose(): void;
 }

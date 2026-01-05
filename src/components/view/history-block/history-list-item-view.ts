@@ -27,5 +27,7 @@ export class HistoryListItemView extends Component {
 	render({ amount, date }: { amount: number; date: Date }) {
 		this.amountEl.textContent = amount.toString();
 		this.dateEl.textContent = format(date, "d MMMM");
+
+		return this.element;
 	}
 }

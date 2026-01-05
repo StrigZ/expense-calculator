@@ -32,8 +32,7 @@ export function initApp(): void {
 		},
 	});
 	homePage.render(mockData);
-	startPage.render();
 
 	// root.append(homePage.getElement());
-	root.append(startPage.getElement());
+	root.append(startPage.render());
 }

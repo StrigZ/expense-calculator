@@ -12,10 +12,9 @@ export class HomePage extends Page {
 		handleNewExpense,
 	}: { handleNewExpense: (expense: number) => void }) {
 		const container = new Container({
-			tag: "div",
 			className: "flex w-full flex-col gap-6 md:max-w-xl md:gap-2",
 		});
-		super(container.getElement());
+		super(container.render());
 
 		this.balanceView = new BalanceView();
 		this.balanceTodayView = new BalanceTodayView({ handleNewExpense });
@@ -38,14 +37,19 @@ export class HomePage extends Page {
 		history: { amount: number; date: Date }[];
 		averageSpentPerDay: number;
 	}) {
-		this.balanceView.render({ balancePerDay, period, totalBalance });
-		this.element.append(this.balanceView.getElement());
+		this.element.append(
+			this.balanceView.render({ balancePerDay, period, totalBalance }),
+		);
 
-		this.balanceTodayView.render({ availableBalance, balancePerDay });
-		this.element.append(this.balanceTodayView.getElement());
+		this.element.append(
+			this.balanceTodayView.render({ availableBalance, balancePerDay }),
+		);
 
-		this.historyView.render({ history, averageSpentPerDay });
-		this.element.append(this.historyView.getElement());
+		this.element.append(
+			this.historyView.render({ history, averageSpentPerDay }),
+		);
+
+		return this.element;
 	}
 
 	dispose() {

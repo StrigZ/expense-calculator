@@ -33,9 +33,11 @@ export class BalanceView extends Component {
 		totalBalance: number;
 		period: number;
 		balancePerDay: number;
-	}): void {
+	}) {
 		this.balancePerDayEl.textContent = balancePerDay.toString();
 		this.periodEl.textContent = period.toString();
 		this.totalBalanceEl.textContent = totalBalance.toString();
+
+		return this.element;
 	}
 }

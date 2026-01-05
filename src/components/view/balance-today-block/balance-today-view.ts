@@ -55,9 +55,11 @@ export class BalanceTodayView extends Component {
 	}: {
 		balancePerDay: number;
 		availableBalance: number;
-	}): void {
+	}) {
 		this.availableBalanceEl.textContent = availableBalance.toString();
 		this.balancePerDayEl.textContent = balancePerDay.toString();
 		this.messageEl.classList.toggle("hidden", availableBalance < 0);
+
+		return this.element;
 	}
 }

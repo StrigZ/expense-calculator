@@ -9,7 +9,7 @@ export class HistoryPage extends Page {
 	}
 
 	render() {
-		// update page view
+		return this.element;
 	}
 
 	dispose(): void {

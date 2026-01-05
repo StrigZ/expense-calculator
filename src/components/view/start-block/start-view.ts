@@ -25,9 +25,10 @@ export class StartView extends Component {
 		);
 	}
 
-	public render(): void {
+	public render() {
 		const dateDropdown = new DateDropdown();
-		dateDropdown.render();
-		this.dateDropdownPlaceholder.replaceWith(dateDropdown.getElement());
+		this.dateDropdownPlaceholder.replaceWith(dateDropdown.render());
+
+		return this.element;
 	}
 }

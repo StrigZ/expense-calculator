@@ -38,14 +38,15 @@ export class HistoryView extends Component {
 	}: {
 		history: { amount: number; date: Date }[];
 		averageSpentPerDay: number;
-	}): void {
+	}) {
 		this.historyList.innerHTML = "";
 		history.forEach((data) => {
 			const newHistoryItem = new HistoryListItemView();
-			newHistoryItem.render(data);
-			this.historyList.append(newHistoryItem.getElement());
+			this.historyList.append(newHistoryItem.render(data));
 		});
 
 		this.averageSpentPerDay.textContent = averageSpentPerDay.toString();
+
+		return this.element;
 	}
 }

@@ -32,5 +32,7 @@ export class DateDropdownItem extends Component {
 		} else {
 			this.untilDateEl.classList.add("hidden");
 		}
+
+		return this.element;
 	}
 }

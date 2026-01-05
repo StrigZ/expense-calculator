@@ -6,9 +6,6 @@ export abstract class Component<
 	constructor(element: T) {
 		this.element = element;
 	}
-	protected abstract render(...args: unknown[]): void;
 
-	public getElement(): T {
-		return this.element;
-	}
+	protected abstract render(...args: unknown[]): T;
 }

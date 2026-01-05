@@ -1,19 +1,21 @@
-export class Container<T extends keyof HTMLElementTagNameMap = "div"> {
-	private element: HTMLElementTagNameMap[T];
+import { Component } from "./component";
+
+export class Container<
+	T extends keyof HTMLElementTagNameMap = "div",
+> extends Component {
 	constructor({
 		className,
 		tag,
 	}: {
-		tag: T;
+		tag?: T;
 		className: string;
 	}) {
-		const element = document.createElement(tag);
+		const element = document.createElement(tag ?? "div");
 		element.className = className;
-
-		this.element = element;
+		super(element);
 	}
 
-	public getElement(): HTMLElementTagNameMap[T] {
+	render() {
 		return this.element;
 	}
 }
