@@ -109,31 +109,9 @@
         <h1 class="text-text-primary">Начнём!</h1>
         <label class="text-text-secondary text-caption flex flex-col gap-1">
           <span class="px-3">Укажите баланс</span>
-          <input class="input text-body h-12 pl-3!" type="text" placeholder="10 000 ₽" required />
+          <input class="input text-body h-12 pl-3!" type="number" placeholder="10 000 ₽" required />
         </label>
-        <div class="relative flex flex-col gap-0.5 pb-px">
-          <p id="trigger-label" class="text-caption text-text-secondary px-3">На срок</p>
-          <button id="trigger-button" class="input flex h-12 cursor-pointer items-center justify-between gap-3 rounded-sm! px-3!" type="button">
-            <p id="trigger-text" class="text-text-secondary text-body">Выберите срок</p>
-            <svg width="18" height="10" viewBox="0 0 18 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M0.75 0.75L8.75 8.75L16.75 0.75" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" />
-            </svg>
-          </button>
-          <ul id="dropdown-list" class="dropdown">
-            <li>
-              <button class="hover:bg-primary/10 hover:text-primary text-body flex cursor-pointer justify-between gap-3 px-3 py-0.5 transition-colors" type="button">
-                <p>День</p>
-                <p>до 26 октября</p>
-              </button>
-            </li>
-            <li>
-              <button class="hover:bg-primary/10 hover:text-primary text-body flex cursor-pointer justify-between gap-3 px-3 py-0.5 transition-colors" type="button">
-                <p>День</p>
-                <p>до 26 октября</p>
-              </button>
-            </li>
-          </ul>
-        </div>
+        <div id="date-dropdown-placeholder"></div>
         <button class="text-accent btn btn-primary mt-auto w-full">Рассчитать</button>
       </div>
     </template>
@@ -221,32 +199,34 @@
     </template>
 
     <!-- Dropdown list item template -->
-    <template id="dropdown-list-item">
-      <button class="hover:bg-primary/10 hover:text-primary text-body flex cursor-pointer justify-between gap-3 px-3 py-0.5 transition-colors" type="button">
-        <p id="date-span">День</p>
-        <p id="date-till">до 26 октября</p>
-      </button>
+    <template id="date-dropdown-item">
+      <li>
+        <button class="hover:bg-primary/10 hover:text-primary text-body flex cursor-pointer justify-between gap-3 px-3 py-0.5 transition-colors" type="button">
+          <span id="period">День</span>
+          <span id="until-date">до 26 октября</span>
+        </button>
+      </li>
     </template>
 
     <!-- Dropdown template -->
-    <template id="dropdown">
+    <template id="date-dropdown">
       <div class="relative flex flex-col gap-0.5 pb-px">
-        <p id="trigger-label" class="text-caption text-text-secondary px-3">Количество дней</p>
-        <button id="trigger-button" class="input flex h-12 cursor-pointer items-center justify-between gap-3 rounded-sm! px-3!" type="button">
-          <p id="trigger-text" class="text-text-primary text-body">Выбор даты</p>
+        <label for="trigger-button" class="text-caption text-text-secondary px-3">На срок</label>
+        <button id="dropdown-trigger-button" class="input btn flex h-12 cursor-pointer items-center justify-between gap-3 rounded-sm! px-3!" type="button">
+          <p id="dropdown-trigger-text" class="text-text-secondary text-body">Выберите срок</p>
           <svg width="18" height="10" viewBox="0 0 18 10" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0.75 0.75L8.75 8.75L16.75 0.75" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" />
           </svg>
         </button>
-        <ul id="dropdown-list" class="bg-foreground border-border shadow-e2 [&>li]:after:bg-border absolute bottom-0 flex w-full translate-y-full flex-col rounded-sm border py-2 [&>li]:relative [&>li]:py-2 [&>li]:after:absolute [&>li]:after:bottom-0 [&>li]:after:left-1/2 [&>li]:after:h-px [&>li]:after:w-[calc(100%-1.5rem)] [&>li]:after:-translate-x-1/2 [&>li]:last:after:hidden [&>li>*]:w-full">
+        <ul id="dropdown-list" class="dropdown hidden">
           <li>
-            <button class="hover:bg-primary/10 hover:text-primary text-body flex cursor-pointer justify-between gap-3 px-3 py-0.5 transition-colors" type="button">
+            <button type="button">
               <p>День</p>
               <p>до 26 октября</p>
             </button>
           </li>
           <li>
-            <button class="hover:bg-primary/10 hover:text-primary text-body flex cursor-pointer justify-between gap-3 px-3 py-0.5 transition-colors" type="button">
+            <button type="button">
               <p>День</p>
               <p>до 26 октября</p>
             </button>

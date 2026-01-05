@@ -3,9 +3,9 @@ import {
 	getElementByQuery,
 	getTemplateById,
 } from "../../../utils/utils";
-import { BaseView } from "../base-view";
+import { Component } from "../component";
 
-export class BalanceTodayView extends BaseView {
+export class BalanceTodayView extends Component {
 	private static template: HTMLTemplateElement | null;
 
 	private availableBalanceEl: HTMLElement;

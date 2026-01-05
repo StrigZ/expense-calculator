@@ -3,10 +3,10 @@ import {
 	getElementByQuery,
 	getTemplateById,
 } from "../../../utils/utils";
-import { BaseView } from "../base-view";
+import { Component } from "../component";
 import { HistoryListItemView } from "./history-list-item-view";
 
-export class HistoryView extends BaseView {
+export class HistoryView extends Component {
 	private static template: HTMLTemplateElement | null;
 
 	private historyList: HTMLElement;

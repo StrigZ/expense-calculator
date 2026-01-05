@@ -1,7 +1,7 @@
-import { BaseView } from "../components/view/base-view";
+import { Page } from "../components/view/page";
 import { getTemplateById } from "../utils/utils";
 
-export class BalancePage extends BaseView {
+export class BalancePage extends Page {
 	constructor() {
 		const page = getTemplateById("balance-page");
 
@@ -10,5 +10,9 @@ export class BalancePage extends BaseView {
 
 	render() {
 		// update page view
+	}
+
+	dispose(): void {
+		// remove all listeners
 	}
 }

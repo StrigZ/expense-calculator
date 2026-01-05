@@ -24,13 +24,13 @@ export function getTemplateById(templateId: string) {
 
 export function getElementByQuery<T = HTMLElement>(
 	query: string,
-	parentElement?: Element,
+	parentElement?: HTMLElement | DocumentFragment,
 ) {
 	const parent = parentElement ?? document;
 	const element = parent.querySelector(query) as T | null;
 	if (!element) {
 		throw new Error(
-			`Couldn't find an element by query ${query} inside ${parentElement?.id ?? "document"}`,
+			`Couldn't find an element by query ${query} inside ${parentElement?.nodeName ?? "document"}`,
 		);
 	}
 

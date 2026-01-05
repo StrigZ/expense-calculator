@@ -89,6 +89,10 @@ ul.dropdown {
 
 		button {
 			@apply hover:bg-primary/10 text-text-secondary hover:text-primary flex w-full cursor-pointer justify-between gap-3 px-3 transition-colors text-base py-1.5 font-normal leading-normal font-inter;
+
+			#period {
+				@apply flex-1 text-start;
+			}
 		}
 
 		&:not(:first-child)::before {

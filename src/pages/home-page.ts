@@ -1,10 +1,10 @@
 import { BalanceView } from "../components/view/balance-block/balance-view";
 import { BalanceTodayView } from "../components/view/balance-today-block/balance-today-view";
-import { BaseView } from "../components/view/base-view";
 import { Container } from "../components/view/container";
 import { HistoryView } from "../components/view/history-block/history-view";
+import { Page } from "../components/view/page";
 
-export class HomePage extends BaseView {
+export class HomePage extends Page {
 	private balanceView: BalanceView;
 	private balanceTodayView: BalanceTodayView;
 	private historyView: HistoryView;
@@ -46,5 +46,9 @@ export class HomePage extends BaseView {
 
 		this.historyView.render({ history, averageSpentPerDay });
 		this.element.append(this.historyView.getElement());
+	}
+
+	dispose() {
+		// remove all listeners
 	}
 }

@@ -4,9 +4,9 @@ import {
 	getElementByQuery,
 	getTemplateById,
 } from "../../../utils/utils";
-import { BaseView } from "../base-view";
+import { Component } from "../component";
 
-export class HistoryListItemView extends BaseView {
+export class HistoryListItemView extends Component {
 	private static template: HTMLTemplateElement | null;
 
 	private amountEl: HTMLElement;
@@ -26,6 +26,6 @@ export class HistoryListItemView extends BaseView {
 
 	render({ amount, date }: { amount: number; date: Date }) {
 		this.amountEl.textContent = amount.toString();
-		this.dateEl.textContent = format(date, "do MMMM");
+		this.dateEl.textContent = format(date, "d MMMM");
 	}
 }
