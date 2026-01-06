@@ -6,6 +6,7 @@ import {
 	getElementByQuery,
 	getTemplateById,
 } from "../../../utils/utils";
+import { Input } from "../../input";
 import { Component } from "../component";
 import { DatePicker } from "../date-picker/date-picker";
 import { DatePickerCalendar } from "../date-picker/date-picker-calendar";
@@ -20,7 +21,7 @@ export class StartBlock extends Component {
 	private datePickerCalendar: DatePickerCalendar;
 
 	private selectedDate: Date | null = null;
-	private inputBudget: number | null = 123123;
+	private inputBudget: number | null = null;
 	constructor({
 		onCalculateBudget,
 	}: {
@@ -38,10 +39,26 @@ export class StartBlock extends Component {
 			"#date-dropdown-placeholder",
 			startBlock,
 		);
+		const budgetInputPlaceholder = getElementByQuery(
+			"#budget-input-placeholder",
+			this.element,
+		);
+
 		const calculateBudgetButton = getElementByQuery(
 			"#calculate-budget-button",
 			this.element,
 		);
+
+		const budgetInput = new Input({
+			isRequired: true,
+			labelText: "Укажите баланс",
+			placeholderText: "0 ₽",
+			type: "number",
+			onChange: (value) => {
+				this.inputBudget = +value;
+			},
+		});
+
 		calculateBudgetButton.addEventListener("click", () => {
 			if (!this.selectedDate || !this.inputBudget) return;
 
@@ -70,6 +87,7 @@ export class StartBlock extends Component {
 		});
 
 		datePickerPlaceholder.replaceWith(this.datePicker.render());
+		budgetInputPlaceholder.replaceWith(budgetInput.render());
 	}
 
 	public render() {
