@@ -73,7 +73,7 @@
         </div>
         <label class="text-text-secondary text-caption flex flex-col gap-1">
           <span class="pl-3">Пополнить</span>
-          <input id="topup-amount" class="input text-body h-12 pl-3!" type="text" placeholder="10 000 ₽" required />
+          <input id="topup-amount" class="input" type="text" placeholder="10 000 ₽" required />
         </label>
         <div class="relative flex flex-col gap-0.5 pb-px">
           <label for="trigger-button" class="text-caption text-text-secondary px-3">На срок</label>
@@ -109,7 +109,7 @@
         <h1 class="text-text-primary">Начнём!</h1>
         <label class="text-text-secondary text-caption flex flex-col gap-1">
           <span class="px-3">Укажите баланс</span>
-          <input class="input text-body h-12 pl-3!" type="number" placeholder="10 000 ₽" required />
+          <input class="input" type="number" placeholder="10 000 ₽" required />
         </label>
         <div id="date-dropdown-placeholder"></div>
         <button id="calculate-budget-button" class="text-accent btn btn-primary mt-auto w-full">Рассчитать</button>
@@ -133,7 +133,7 @@
         <form id="new-transaction-form">
           <label class="text-text-secondary text-caption flex flex-col gap-1">
             <span class="pl-3">Введите трату</span>
-            <input id="new-transaction-input" class="input text-body h-12 pl-3!" type="number" min="0" placeholder="0 ₽" required />
+            <input id="new-transaction-input" class="input" type="number" min="0" placeholder="0 ₽" required />
           </label>
         </form>
       </div>
@@ -289,11 +289,11 @@
           </div>
           <label class="text-text-secondary text-caption flex flex-col gap-1">
             <span class="pl-3">Ваш баланс</span>
-            <input id="balance" class="input h-12 rounded-sm! px-3!" type="text" placeholder="0 ₽" required />
+            <input id="balance" class="input" type="text" placeholder="0 ₽" required />
           </label>
           <label class="text-text-secondary text-caption flex flex-col gap-1">
             <span class="pl-3">Пополнить</span>
-            <input id="top-up" class="input h-12 rounded-sm! px-3!" type="text" placeholder="0 ₽" required />
+            <input id="top-up" class="input" type="text" placeholder="0 ₽" required />
           </label>
           <!-- TODO: dropdown with date picker -->
         </div>
@@ -344,8 +344,8 @@
     <!-- Input template -->
     <template id="input">
       <label class="text-text-secondary text-body flex flex-col gap-0.5">
-        Label
-        <input class="input" type="text" placeholder="placeholder" required />
+        <span class="text-caption pl-3">Label</span>
+        <input class="input text-body" type="text" placeholder="placeholder" required />
       </label>
     </template>
 

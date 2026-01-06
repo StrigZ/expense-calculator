@@ -74,7 +74,7 @@ h3 {
 }
 
 .input {
-	@apply border-border placeholder:font-inter placeholder:text-text-secondary text-text-primary bg-foreground hover:border-primary focus-visible:border-primary rounded border px-2 py-4 outline-0 outline-none text-base placeholder:text-base placeholder:leading-normal placeholder:font-normal focus-visible:border-2 focus-visible:ring-0 transition-colors;
+	@apply border-border placeholder:font-inter placeholder:text-text-secondary text-text-primary bg-foreground hover:border-primary focus-visible:border-primary rounded-sm border py-4 outline-0 outline-none text-base placeholder:text-base placeholder:leading-normal placeholder:font-normal focus-visible:border-2 focus-visible:ring-0 transition-colors h-12 px-3;
 }
 
 .card {
