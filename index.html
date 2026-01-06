@@ -234,14 +234,14 @@
             <path d="M0.75 0.75L8.75 8.75L16.75 0.75" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" />
           </svg>
         </button>
-        <div id="date-picker-popup" class="bg-foreground border-border shadow-e2 absolute bottom-0 hidden translate-y-full rounded-sm border"></div>
+        <div id="date-picker-popup" class="bg-foreground border-border shadow-e2 absolute bottom-0 hidden w-full translate-y-full rounded-sm border"></div>
       </div>
     </template>
 
     <!-- Calendar button template -->
     <template id="date-picker-calendar-grid-item">
       <li>
-        <button class="disabled:bg-foreground disabled:text-background bg-background text-body text-text-primary focus-visible:bg-primary focus-visible:text-foreground hover:bg-primary/10 hover:text-primary flex h-8 w-7.5 cursor-pointer items-center justify-center rounded-xs p-2 focus-visible:outline-none" type="button">1</button>
+        <button class="disabled:bg-foreground disabled:text-background bg-background text-body text-text-primary focus-visible:bg-primary focus-visible:text-foreground hover:bg-primary/10 hover:text-primary flex h-8 w-7.5 cursor-pointer items-center justify-center rounded-xs p-2 focus-visible:outline-none disabled:cursor-auto" type="button">1</button>
       </li>
     </template>
 
@@ -253,13 +253,13 @@
             <path d="M9.06055 0.75L1.06055 8.75L9.06055 16.75" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" />
           </svg>
         </button>
-        <div>
+        <div class="flex-1">
           <header class="text-text-primary flex items-center justify-between gap-0.5 px-2">
             <h3 id="month">Октябрь</h3>
             <p id="year" class="text-body">2025</p>
           </header>
-          <div class="flex flex-col p-2">
-            <ul class="text-caption text-text-secondary flex items-center gap-0.5">
+          <div class="flex flex-col gap-1 p-2">
+            <ul class="text-caption text-text-secondary grid grid-cols-7 gap-0.5">
               <li class="px-2">пн</li>
               <li class="px-2">вт</li>
               <li class="px-2">ср</li>
@@ -268,7 +268,7 @@
               <li class="px-2">сб</li>
               <li class="px-2">вс</li>
             </ul>
-            <ul id="calendar-grid" class="text-body text-text-primary grid grid-cols-7 grid-rows-5 gap-0.5 text-center"></ul>
+            <ul id="calendar-grid" class="text-body text-text-primary grid grid-cols-7 grid-rows-6 gap-0.5 text-center"></ul>
           </div>
         </div>
         <button id="next-button" class="cursor-pointer" type="button">

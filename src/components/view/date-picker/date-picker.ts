@@ -16,7 +16,7 @@ export class DatePicker extends Component {
 	private triggerButton: HTMLButtonElement;
 	private isPeriodSelected: boolean = false;
 
-	constructor() {
+	constructor({ onPopupOpen }: { onPopupOpen: () => void }) {
 		if (!DatePicker.template) {
 			const template = getTemplateById("date-picker");
 			DatePicker.template = template;
@@ -38,7 +38,6 @@ export class DatePicker extends Component {
 		this.boundDocumentClickListener = (e: MouseEvent) => {
 			if (this.element.contains(e.target as Node)) return;
 
-			console.log("clicked out of date picker!");
 			this.hidePopup();
 		};
 		this.boundDocumentKeydownListener = (e: KeyboardEvent) => {
@@ -48,6 +47,8 @@ export class DatePicker extends Component {
 		};
 		this.boundTriggerClickListener = () => {
 			this.popup.classList.toggle("hidden");
+			// TODO: onPopupOpen triggers even when this callback closes popup
+			onPopupOpen();
 		};
 
 		this.triggerButton.addEventListener(

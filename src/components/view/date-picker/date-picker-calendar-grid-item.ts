@@ -7,7 +7,12 @@ import { Component } from "../component";
 
 export class DatePickerCalendarGridItem extends Component {
 	private static template: HTMLTemplateElement | null;
-	constructor() {
+	constructor({
+		content,
+		isDisabled,
+		// TODO: add isActive state to show selected date
+		// isActive
+	}: { content: string; isDisabled: boolean }) {
 		if (!DatePickerCalendarGridItem.template) {
 			DatePickerCalendarGridItem.template = getTemplateById(
 				"date-picker-calendar-grid-item",
@@ -15,7 +20,11 @@ export class DatePickerCalendarGridItem extends Component {
 		}
 
 		super(cloneTemplate(DatePickerCalendarGridItem.template));
-		const button = getElementByQuery("button", this.element);
+
+		const button = getElementByQuery<HTMLButtonElement>("button", this.element);
+
+		button.textContent = content;
+		button.disabled = isDisabled;
 	}
 
 	render() {

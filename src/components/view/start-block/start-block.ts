@@ -32,9 +32,23 @@ export class StartBlock extends Component {
 			startBlock,
 		);
 
-		this.datePicker = new DatePicker();
+		this.datePicker = new DatePicker({
+			onPopupOpen: () =>
+				this.datePicker.updatePopupContent(this.datePickerList.render()),
+		});
 		this.datePickerList = new DatePickerList();
-		this.datePickerCalendar = new DatePickerCalendar();
+		this.datePickerCalendar = new DatePickerCalendar({
+			onMonthChange: () =>
+				this.datePicker.updatePopupContent(this.datePickerCalendar.render()),
+			onDateSelect: (date) => {
+				const diffInCalendarDays = differenceInCalendarDays(date, new Date());
+				this.datePicker.updateTriggerButtonText(
+					`${diffInCalendarDays} дней (до ${format(date, "d MMMM")})`,
+				);
+				this.datePicker.hidePopup();
+				// TODO: update state
+			},
+		});
 
 		datePickerPlaceholder.replaceWith(this.datePicker.render());
 	}
@@ -73,7 +87,7 @@ export class StartBlock extends Component {
 							`${diffInCalendarDays} дней (до ${format(untilDate, "d MMMM")})`,
 						);
 
-						// set period
+						// TODO: set period in state
 						// state.setPeriod(diffInCalendarDays)
 						this.datePicker.hidePopup();
 					},
@@ -84,6 +98,7 @@ export class StartBlock extends Component {
 
 		this.datePickerList.appendFragmentToList(fragment);
 		this.datePicker.updatePopupContent(this.datePickerList.render());
+
 		return this.element;
 	}
 }
