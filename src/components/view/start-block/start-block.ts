@@ -1,5 +1,5 @@
 import { add, differenceInCalendarDays, endOfMonth, format } from "date-fns";
-import { TIMEFRAMES } from "../../../types";
+import { type OnCalculateBudget, TIMEFRAMES } from "../../../types";
 import { timeframeToNumberMap } from "../../../utils/constants";
 import {
 	cloneTemplate,
@@ -24,13 +24,7 @@ export class StartBlock extends Component {
 	constructor({
 		onCalculateBudget,
 	}: {
-		onCalculateBudget: ({
-			budget,
-			periodDate,
-		}: {
-			budget: number;
-			periodDate: Date;
-		}) => void;
+		onCalculateBudget: OnCalculateBudget;
 	}) {
 		if (!StartBlock.template) {
 			const template = getTemplateById("start-block");

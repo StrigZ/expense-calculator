@@ -1,4 +1,4 @@
-import type { BalanceData, HistoryBlockRender } from "../../../types";
+import type { HistoryBlockRender } from "../../../types";
 import {
 	cloneTemplate,
 	getElementByQuery,

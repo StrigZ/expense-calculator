@@ -1,18 +1,13 @@
 import { Page } from "../components/view/page";
 import { StartBlock } from "../components/view/start-block/start-block";
+import type { OnCalculateBudget } from "../types";
 
 export class StartPage extends Page<DocumentFragment> {
 	private StartBlock: StartBlock;
 	constructor({
 		onCalculateBudget,
 	}: {
-		onCalculateBudget: ({
-			budget,
-			periodDate,
-		}: {
-			budget: number;
-			periodDate: Date;
-		}) => void;
+		onCalculateBudget: OnCalculateBudget;
 	}) {
 		super(new DocumentFragment());
 		this.StartBlock = new StartBlock({ onCalculateBudget });
