@@ -1,3 +1,4 @@
+import type { BalanceTodayBlockRender, Transaction } from "../../../types";
 import {
 	cloneTemplate,
 	getElementByQuery,
@@ -5,15 +6,17 @@ import {
 } from "../../../utils/utils";
 import { Component } from "../component";
 
+// TOOD: add type to imlement
 export class BalanceTodayView extends Component {
 	private static template: HTMLTemplateElement | null;
 
 	private availableBalanceEl: HTMLElement;
+	private availableBalanceValueEl: HTMLElement;
 	private balancePerDayEl: HTMLElement;
 	private messageEl: HTMLElement;
 	constructor({
-		handleNewExpense,
-	}: { handleNewExpense: (expense: number) => void }) {
+		handleNewTransaction,
+	}: { handleNewTransaction: (transaction: Transaction) => void }) {
 		if (!BalanceTodayView.template) {
 			const template = getTemplateById("balance-today-block");
 			BalanceTodayView.template = template;
@@ -26,39 +29,56 @@ export class BalanceTodayView extends Component {
 			"#available-balance",
 			balanceTodayBlock,
 		);
+		this.availableBalanceValueEl = getElementByQuery(
+			"#available-balance-value",
+			balanceTodayBlock,
+		);
 		this.balancePerDayEl = getElementByQuery(
 			"#balance-per-day",
 			balanceTodayBlock,
 		);
 		this.messageEl = getElementByQuery("#message", balanceTodayBlock);
 
-		const newExpenseForm = getElementByQuery<HTMLFormElement>(
-			"#new-expense-form",
+		const newTransactionForm = getElementByQuery<HTMLFormElement>(
+			"#new-transaction-form",
 			balanceTodayBlock,
 		);
-		const newExpenseInput = getElementByQuery<HTMLInputElement>(
-			"#new-expense-input",
+		const newTransactionInput = getElementByQuery<HTMLInputElement>(
+			"#new-transaction-input",
 			balanceTodayBlock,
 		);
 
-		newExpenseForm.addEventListener("submit", (e) => {
+		newTransactionForm.addEventListener("submit", (e) => {
 			e.preventDefault();
 
-			handleNewExpense(+newExpenseInput.value);
-			newExpenseForm.reset();
+			handleNewTransaction({
+				id: crypto.randomUUID(),
+				amount: +newTransactionInput.value,
+				date: new Date(),
+			});
+			newTransactionForm.reset();
 		});
 	}
 
 	public render({
-		availableBalance,
-		balancePerDay,
-	}: {
-		balancePerDay: number;
-		availableBalance: number;
-	}) {
-		this.availableBalanceEl.textContent = availableBalance.toString();
-		this.balancePerDayEl.textContent = balancePerDay.toString();
-		this.messageEl.classList.toggle("hidden", availableBalance < 0);
+		availableBudgetToday,
+		budgetPerDay,
+	}: BalanceTodayBlockRender) {
+		if (availableBudgetToday && availableBudgetToday > 0) {
+			this.availableBalanceEl.classList.remove("text-error");
+			this.availableBalanceEl.classList.add("text-success");
+		} else {
+			this.availableBalanceEl.classList.remove("text-success");
+			this.availableBalanceEl.classList.add("text-error");
+		}
+
+		this.availableBalanceValueEl.textContent =
+			availableBudgetToday?.toString() ?? "";
+		this.balancePerDayEl.textContent = budgetPerDay?.toString() ?? "";
+		this.messageEl.classList.toggle(
+			"hidden",
+			availableBudgetToday ? availableBudgetToday < 0 : false,
+		);
 
 		return this.element;
 	}

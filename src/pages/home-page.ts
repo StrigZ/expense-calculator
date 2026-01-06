@@ -3,50 +3,43 @@ import { BalanceTodayView } from "../components/view/balance-today-block/balance
 import { Container } from "../components/view/container";
 import { HistoryView } from "../components/view/history-block/history-view";
 import { Page } from "../components/view/page";
+import type { BalanceData, Transaction } from "../types";
 
 export class HomePage extends Page {
 	private balanceView: BalanceView;
 	private balanceTodayView: BalanceTodayView;
 	private historyView: HistoryView;
 	constructor({
-		handleNewExpense,
-	}: { handleNewExpense: (expense: number) => void }) {
+		handleNewTransaction,
+	}: { handleNewTransaction: (transaction: Transaction) => void }) {
 		const container = new Container({
 			className: "flex w-full flex-col gap-6 md:max-w-xl md:gap-2",
 		});
 		super(container.render());
 
 		this.balanceView = new BalanceView();
-		this.balanceTodayView = new BalanceTodayView({ handleNewExpense });
+		this.balanceTodayView = new BalanceTodayView({ handleNewTransaction });
 		this.historyView = new HistoryView();
 	}
 
 	render({
-		balancePerDay,
-		period,
-		totalBalance,
+		budget,
+		periodDate,
+		budgetPerDay,
+		transactions,
+		availableBudgetToday,
 		averageSpentPerDay,
-		history,
-		availableBalance,
-	}: {
-		balancePerDay: number;
-		period: number;
-		totalBalance: number;
-		availableBalance: number;
-		// TODO: replace with real type when model is implemented
-		history: { amount: number; date: Date }[];
-		averageSpentPerDay: number;
-	}) {
+	}: BalanceData) {
 		this.element.append(
-			this.balanceView.render({ balancePerDay, period, totalBalance }),
+			this.balanceView.render({ budgetPerDay, periodDate, budget }),
 		);
 
 		this.element.append(
-			this.balanceTodayView.render({ availableBalance, balancePerDay }),
+			this.balanceTodayView.render({ availableBudgetToday, budgetPerDay }),
 		);
 
 		this.element.append(
-			this.historyView.render({ history, averageSpentPerDay }),
+			this.historyView.render({ transactions, averageSpentPerDay }),
 		);
 
 		return this.element;

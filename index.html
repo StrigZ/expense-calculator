@@ -112,7 +112,7 @@
           <input class="input text-body h-12 pl-3!" type="number" placeholder="10 000 ₽" required />
         </label>
         <div id="date-dropdown-placeholder"></div>
-        <button class="text-accent btn btn-primary mt-auto w-full">Рассчитать</button>
+        <button id="calculate-budget-button" class="text-accent btn btn-primary mt-auto w-full">Рассчитать</button>
       </div>
     </template>
 
@@ -120,8 +120,8 @@
       <div class="card">
         <header class="space-y-0.5">
           <p class="text-accent text-text-secondary">На сегодня доступно</p>
-          <h1 class="text-success">
-            <span id="available-balance">1000 </span>
+          <h1 id="available-balance">
+            <span id="available-balance-value">1000 </span>
             <span class="font-inter font-normal">₽</span>
             <span class="text-text-secondary">
               /
@@ -130,10 +130,10 @@
           </h1>
         </header>
         <p id="message" class="text-text-primary text-caption">🎉 Отлично справились — сегодня вы в пределах лимита!</p>
-        <form id="new-expense-form">
+        <form id="new-transaction-form">
           <label class="text-text-secondary text-caption flex flex-col gap-1">
             <span class="pl-3">Введите трату</span>
-            <input id="new-expense-input" class="input text-body h-12 pl-3!" type="number" min="0" placeholder="0 ₽" required />
+            <input id="new-transaction-input" class="input text-body h-12 pl-3!" type="number" min="0" placeholder="0 ₽" required />
           </label>
         </form>
       </div>

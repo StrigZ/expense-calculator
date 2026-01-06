@@ -1,3 +1,5 @@
+import { differenceInCalendarDays } from "date-fns";
+import type { BalanceBlockRender } from "../../../types";
 import {
 	cloneTemplate,
 	getElementByQuery,
@@ -5,6 +7,7 @@ import {
 } from "../../../utils/utils";
 import { Component } from "../component";
 
+// TOOD: add type to imlement
 export class BalanceView extends Component {
 	private static template: HTMLTemplateElement | null;
 
@@ -25,18 +28,12 @@ export class BalanceView extends Component {
 		this.totalBalanceEl = getElementByQuery("#total-balance", balanceBlock);
 	}
 
-	public render({
-		balancePerDay,
-		period,
-		totalBalance,
-	}: {
-		totalBalance: number;
-		period: number;
-		balancePerDay: number;
-	}) {
-		this.balancePerDayEl.textContent = balancePerDay.toString();
-		this.periodEl.textContent = period.toString();
-		this.totalBalanceEl.textContent = totalBalance.toString();
+	public render({ budgetPerDay, periodDate, budget }: BalanceBlockRender) {
+		this.balancePerDayEl.textContent = budgetPerDay?.toString() ?? "";
+		this.periodEl.textContent = periodDate
+			? differenceInCalendarDays(periodDate, new Date()).toString()
+			: "";
+		this.totalBalanceEl.textContent = budget?.toString() ?? "";
 
 		return this.element;
 	}

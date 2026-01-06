@@ -18,7 +18,20 @@ export class StartBlock extends Component {
 	private datePicker: DatePicker;
 	private datePickerList: DatePickerList;
 	private datePickerCalendar: DatePickerCalendar;
-	constructor() {
+
+	private selectedDate: Date | null = null;
+	private inputBudget: number | null = 123123;
+	constructor({
+		onCalculateBudget,
+	}: {
+		onCalculateBudget: ({
+			budget,
+			periodDate,
+		}: {
+			budget: number;
+			periodDate: Date;
+		}) => void;
+	}) {
 		if (!StartBlock.template) {
 			const template = getTemplateById("start-block");
 			StartBlock.template = template;
@@ -31,6 +44,18 @@ export class StartBlock extends Component {
 			"#date-dropdown-placeholder",
 			startBlock,
 		);
+		const calculateBudgetButton = getElementByQuery(
+			"#calculate-budget-button",
+			this.element,
+		);
+		calculateBudgetButton.addEventListener("click", () => {
+			if (!this.selectedDate || !this.inputBudget) return;
+
+			onCalculateBudget({
+				budget: this.inputBudget,
+				periodDate: this.selectedDate,
+			});
+		});
 
 		this.datePicker = new DatePicker({
 			onPopupOpen: () =>
@@ -45,6 +70,7 @@ export class StartBlock extends Component {
 				this.datePicker.updateTriggerButtonText(
 					`${diffInCalendarDays} дней (до ${format(date, "d MMMM")})`,
 				);
+				this.selectedDate = date;
 				this.datePicker.hidePopup();
 				// TODO: update state
 			},

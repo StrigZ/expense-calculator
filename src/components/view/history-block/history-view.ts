@@ -1,3 +1,4 @@
+import type { BalanceData, HistoryBlockRender } from "../../../types";
 import {
 	cloneTemplate,
 	getElementByQuery,
@@ -6,6 +7,7 @@ import {
 import { Component } from "../component";
 import { HistoryListItemView } from "./history-list-item-view";
 
+// TOOD: add type to imlement
 export class HistoryView extends Component {
 	private static template: HTMLTemplateElement | null;
 
@@ -31,21 +33,15 @@ export class HistoryView extends Component {
 		this.averageSpentPerDay = averageSpentPerDay;
 	}
 
-	// TODO: replace with real type when history model is implemented
-	public render({
-		history,
-		averageSpentPerDay,
-	}: {
-		history: { amount: number; date: Date }[];
-		averageSpentPerDay: number;
-	}) {
+	public render({ transactions, averageSpentPerDay }: HistoryBlockRender) {
+		// TODO: use fragment and replacechildren
 		this.historyList.innerHTML = "";
-		history.forEach((data) => {
+		transactions.forEach((transaction) => {
 			const newHistoryItem = new HistoryListItemView();
-			this.historyList.append(newHistoryItem.render(data));
+			this.historyList.append(newHistoryItem.render(transaction));
 		});
 
-		this.averageSpentPerDay.textContent = averageSpentPerDay.toString();
+		this.averageSpentPerDay.textContent = averageSpentPerDay?.toString() ?? "";
 
 		return this.element;
 	}
