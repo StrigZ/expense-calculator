@@ -66,7 +66,6 @@ export class StartBlock extends Component {
 				);
 				this.selectedDate = date;
 				this.datePicker.hidePopup();
-				// TODO: update state
 			},
 		});
 
@@ -107,8 +106,7 @@ export class StartBlock extends Component {
 							`${diffInCalendarDays} дней (до ${format(untilDate, "d MMMM")})`,
 						);
 
-						// TODO: set period in state
-						// state.setPeriod(diffInCalendarDays)
+						this.selectedDate = untilDate;
 						this.datePicker.hidePopup();
 					},
 				});
