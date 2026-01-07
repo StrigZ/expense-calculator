@@ -7,7 +7,7 @@ import {
 import { Component } from "../component";
 
 // TOOD: add type to imlement
-export class BalanceTodayView extends Component {
+export class BalanceTodayBlock extends Component {
 	private static template: HTMLTemplateElement | null;
 
 	private availableBalanceEl: HTMLElement;
@@ -17,35 +17,30 @@ export class BalanceTodayView extends Component {
 	constructor({
 		handleNewTransaction,
 	}: { handleNewTransaction: (transaction: Transaction) => void }) {
-		if (!BalanceTodayView.template) {
-			const template = getTemplateById("balance-today-block");
-			BalanceTodayView.template = template;
+		if (!BalanceTodayBlock.template) {
+			BalanceTodayBlock.template = getTemplateById("balance-today-block");
 		}
 
-		const balanceTodayBlock = cloneTemplate(BalanceTodayView.template);
-		super(balanceTodayBlock);
+		super(cloneTemplate(BalanceTodayBlock.template));
 
 		this.availableBalanceEl = getElementByQuery(
 			"#available-balance",
-			balanceTodayBlock,
+			this.element,
 		);
 		this.availableBalanceValueEl = getElementByQuery(
 			"#available-balance-value",
-			balanceTodayBlock,
+			this.element,
 		);
-		this.balancePerDayEl = getElementByQuery(
-			"#balance-per-day",
-			balanceTodayBlock,
-		);
-		this.messageEl = getElementByQuery("#message", balanceTodayBlock);
+		this.balancePerDayEl = getElementByQuery("#balance-per-day", this.element);
+		this.messageEl = getElementByQuery("#message", this.element);
 
 		const newTransactionForm = getElementByQuery<HTMLFormElement>(
 			"#new-transaction-form",
-			balanceTodayBlock,
+			this.element,
 		);
 		const newTransactionInput = getElementByQuery<HTMLInputElement>(
 			"#new-transaction-input",
-			balanceTodayBlock,
+			this.element,
 		);
 
 		newTransactionForm.addEventListener("submit", (e) => {
@@ -64,7 +59,11 @@ export class BalanceTodayView extends Component {
 		availableBudgetToday,
 		budgetPerDay,
 	}: BalanceTodayBlockRender) {
-		if (availableBudgetToday && availableBudgetToday > 0) {
+		if (availableBudgetToday === null) {
+			throw new Error(`${this}: availableBudgetToday is null`);
+		}
+
+		if (availableBudgetToday >= 0) {
 			this.availableBalanceEl.classList.remove("text-error");
 			this.availableBalanceEl.classList.add("text-success");
 		} else {
@@ -75,10 +74,7 @@ export class BalanceTodayView extends Component {
 		this.availableBalanceValueEl.textContent =
 			availableBudgetToday?.toString() ?? "";
 		this.balancePerDayEl.textContent = budgetPerDay?.toString() ?? "";
-		this.messageEl.classList.toggle(
-			"hidden",
-			availableBudgetToday ? availableBudgetToday < 0 : false,
-		);
+		this.messageEl.classList.toggle("hidden", availableBudgetToday < 0);
 
 		return this.element;
 	}
