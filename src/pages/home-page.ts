@@ -12,13 +12,23 @@ export class HomePage extends Page {
 	private historyBlock: HistoryBlock;
 	constructor({
 		handleNewTransaction,
-	}: { handleNewTransaction: (transaction: Transaction) => void }) {
+		goToHistoryPage,
+		goToTopupPage,
+	}: {
+		handleNewTransaction: (transaction: Transaction) => void;
+
+		goToHistoryPage: () => void;
+		goToTopupPage: () => void;
+	}) {
 		const container = new Container({
 			className: "flex w-full flex-col gap-6 md:gap-2",
 		});
 		super(container.render());
 
-		this.balanceBlock = new BalanceBlock();
+		this.balanceBlock = new BalanceBlock({
+			goToHistoryPage,
+			goToTopupPage,
+		});
 		this.balanceTodayBlock = new BalanceTodayBlock({ handleNewTransaction });
 		this.historyBlock = new HistoryBlock();
 	}

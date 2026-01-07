@@ -59,46 +59,29 @@
       </div>
     </template>
 
-    <template id="balance-page">
+    <template id="topup-page"> </template>
+
+    <template id="topup-block">
       <div class="card flex flex-col">
-        <div class="space-y-3">
+        <div class="space-y-0.5">
           <header class="text-body flex items-center justify-between gap-2">
-            <h3 class="text-text-secondary">Общий баланс</h3>
-            <p id="per-day" class="text-primary">2000 ₽ в день</p>
+            <p class="text-text-secondary">Общий баланс</p>
+            <p class="text-primary">
+              <span id="balance-per-day">2000</span>
+              ₽ в день
+            </p>
           </header>
           <div class="flex items-end gap-2">
-            <h1 id="total">9000 <span class="font-normal">₽</span></h1>
-            <p id="period" class="text-text-secondary text-body">на 5 дней</p>
+            <h1>
+              <span id="total-balance">9000</span>
+              <span class="font-normal">₽</span>
+            </h1>
+            <p class="text-text-secondary text-body">на <span id="period">5</span> дней</p>
           </div>
         </div>
-        <label class="text-text-secondary text-caption flex flex-col gap-1">
-          <span class="pl-3">Пополнить</span>
-          <input id="topup-amount" class="input" type="text" placeholder="10 000 ₽" required inputmode="numeric" />
-        </label>
-        <div class="relative flex flex-col gap-0.5 pb-px">
-          <label for="trigger-button" class="text-caption text-text-secondary px-3">На срок</label>
-          <button id="dropdown-trigger-button" class="input btn flex h-12 cursor-pointer items-center justify-between gap-3 rounded-sm! px-3!" type="button">
-            <p id="dropdown-trigger-text" class="text-text-secondary text-body">Выберите срок</p>
-            <svg width="18" height="10" viewBox="0 0 18 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M0.75 0.75L8.75 8.75L16.75 0.75" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" />
-            </svg>
-          </button>
-          <ul id="dropdown-list" class="dropdown hidden">
-            <li>
-              <button type="button">
-                <p>День</p>
-                <p>до 26 октября</p>
-              </button>
-            </li>
-            <li>
-              <button type="button">
-                <p>День</p>
-                <p>до 26 октября</p>
-              </button>
-            </li>
-          </ul>
-        </div>
-        <button class="text-accent btn-primary btn mt-auto">Сохранить</button>
+        <div id="budget-input-placeholder"></div>
+        <div id="date-dropdown-placeholder"></div>
+        <button id="calculate-budget-button" class="text-accent btn btn-primary mt-auto w-full">Сохранить</button>
       </div>
     </template>
 
@@ -155,8 +138,8 @@
         </div>
         <div class="flex items-center justify-between gap-4">
           <!-- TODO: Replace this with links and handle them via router -->
-          <button class="btn text-accent btn-outline flex-1">Изменить</button>
-          <button class="btn text-accent btn-outline min-w-max flex-1 md:hidden">История расходов</button>
+          <button id="go-to-topup-page" class="btn text-accent btn-outline flex-1">Изменить</button>
+          <button id="go-to-history-page" class="btn text-accent btn-outline min-w-max flex-1 md:hidden">История расходов</button>
         </div>
       </div>
     </template>

@@ -14,7 +14,13 @@ export class BalanceBlock extends Component {
 	private balancePerDayEl: HTMLElement;
 	private periodEl: HTMLElement;
 	private totalBalanceEl: HTMLElement;
-	constructor() {
+	constructor({
+		goToHistoryPage,
+		goToTopupPage,
+	}: {
+		goToTopupPage: () => void;
+		goToHistoryPage: () => void;
+	}) {
 		if (!BalanceBlock.template) {
 			BalanceBlock.template = getTemplateById("balance-block");
 		}
@@ -24,6 +30,17 @@ export class BalanceBlock extends Component {
 		this.balancePerDayEl = getElementByQuery("#balance-per-day", this.element);
 		this.periodEl = getElementByQuery("#period", this.element);
 		this.totalBalanceEl = getElementByQuery("#total-balance", this.element);
+		const goToTopupPageButton = getElementByQuery(
+			"#go-to-topup-page",
+			this.element,
+		);
+		const goToHistoryPageButton = getElementByQuery(
+			"#go-to-history-page",
+			this.element,
+		);
+
+		goToTopupPageButton.addEventListener("click", goToTopupPage);
+		goToHistoryPageButton.addEventListener("click", goToHistoryPage);
 	}
 
 	public render({ budgetPerDay, periodDate, budget }: BalanceBlockRender) {
