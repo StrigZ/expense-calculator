@@ -59,8 +59,8 @@ export class BalanceTodayBlock extends Component {
 		availableBudgetToday,
 		budgetPerDay,
 	}: BalanceTodayBlockRender) {
-		if (availableBudgetToday === null) {
-			throw new Error(`${this}: availableBudgetToday is null`);
+		if (availableBudgetToday === null || budgetPerDay === null) {
+			throw new Error(`${this}: availableBudgetToday or budgetPerDay is null`);
 		}
 
 		if (availableBudgetToday >= 0) {
@@ -71,9 +71,8 @@ export class BalanceTodayBlock extends Component {
 			this.availableBalanceEl.classList.add("text-error");
 		}
 
-		this.availableBalanceValueEl.textContent =
-			availableBudgetToday?.toString() ?? "";
-		this.balancePerDayEl.textContent = budgetPerDay?.toString() ?? "";
+		this.availableBalanceValueEl.textContent = availableBudgetToday.toString();
+		this.balancePerDayEl.textContent = budgetPerDay.toString();
 		this.messageEl.classList.toggle("hidden", availableBudgetToday < 0);
 
 		return this.element;

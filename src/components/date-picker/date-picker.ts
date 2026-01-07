@@ -18,8 +18,7 @@ export class DatePicker extends Component {
 
 	constructor({ onPopupOpen }: { onPopupOpen: () => void }) {
 		if (!DatePicker.template) {
-			const template = getTemplateById("date-picker");
-			DatePicker.template = template;
+			DatePicker.template = getTemplateById("date-picker");
 		}
 
 		super(cloneTemplate(DatePicker.template));

@@ -15,8 +15,7 @@ export class DatePickerListItem extends Component {
 		onClick,
 	}: { period: string; untilDate: Date | null; onClick: () => void }) {
 		if (!DatePickerListItem.template) {
-			const template = getTemplateById("date-picker-list-item");
-			DatePickerListItem.template = template;
+			DatePickerListItem.template = getTemplateById("date-picker-list-item");
 		}
 
 		super(cloneTemplate(DatePickerListItem.template));

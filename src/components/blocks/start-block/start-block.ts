@@ -28,16 +28,14 @@ export class StartBlock extends Component {
 		onCalculateBudget: OnCalculateBudget;
 	}) {
 		if (!StartBlock.template) {
-			const template = getTemplateById("start-block");
-			StartBlock.template = template;
+			StartBlock.template = getTemplateById("start-block");
 		}
 
-		const startBlock = cloneTemplate(StartBlock.template);
-		super(startBlock);
+		super(cloneTemplate(StartBlock.template));
 
 		const datePickerPlaceholder = getElementByQuery(
 			"#date-dropdown-placeholder",
-			startBlock,
+			this.element,
 		);
 		const budgetInputPlaceholder = getElementByQuery(
 			"#budget-input-placeholder",

@@ -4,7 +4,7 @@ import {
 	getElementByQuery,
 	getTemplateById,
 } from "../../../utils/utils";
-import { Component } from "../component";
+import { Component } from "../../component";
 import { HistoryListItemView } from "./history-list-item-view";
 
 export class HistoryBlock extends Component {

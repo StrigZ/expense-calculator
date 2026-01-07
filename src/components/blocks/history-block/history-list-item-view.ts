@@ -5,7 +5,7 @@ import {
 	getElementByQuery,
 	getTemplateById,
 } from "../../../utils/utils";
-import { Component } from "../component";
+import { Component } from "../../component";
 
 export class HistoryListItemView extends Component {
 	private static template: HTMLTemplateElement | null;
