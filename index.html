@@ -145,7 +145,7 @@
     </template>
 
     <template id="history-block">
-      <div class="card hidden flex-col md:flex">
+      <div class="card group hidden flex-col only:flex md:flex">
         <div class="space-y-4">
           <header class="space-y-1">
             <p class="text-body text-text-secondary">История расходов</p>
@@ -163,7 +163,7 @@
           </ul>
         </div>
         <!-- TODO: Replace this with links and handle them via router -->
-        <button class="text-accent btn btn-outline flex-1">Смотреть всю историю</button>
+        <button class="text-accent btn btn-outline flex-1 group-only:hidden">Смотреть всю историю</button>
       </div>
     </template>
 
