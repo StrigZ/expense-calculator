@@ -24,13 +24,13 @@ export class StateManager implements TStateManager {
 	}
 
 	increaseBudget(amount: number) {
-		if (!this.budget) return;
+		if (this.budget === null) return;
 
 		this.budget += amount;
 		this._calculateBudgetPerDay();
 	}
 	addTransaction(transaction: Transaction) {
-		if (!this.budget || !this.availableBudgetToday) return;
+		if (this.budget === null || this.availableBudgetToday === null) return;
 
 		this.transactions.push(transaction);
 		const { amount } = transaction;
@@ -40,7 +40,7 @@ export class StateManager implements TStateManager {
 		this._calculateAverageSpentPerDay();
 	}
 	removeTransaction(transactionId: Transaction["id"]) {
-		if (!this.budget || !this.availableBudgetToday) return;
+		if (this.budget === null || this.availableBudgetToday === null) return;
 
 		const transactionIdx = this.transactions.findIndex(
 			({ id }) => id === transactionId,
@@ -86,13 +86,13 @@ export class StateManager implements TStateManager {
 	}
 
 	private _calculateBudgetPerDay() {
-		if (!this.periodDate || !this.budget) return;
+		if (!this.periodDate || this.budget === null) return;
 
 		this.budgetPerDay = Math.floor(
 			this.budget / differenceInCalendarDays(this.periodDate, new Date()),
 		);
 
-		if (!this.availableBudgetToday) {
+		if (this.availableBudgetToday === null) {
 			this.availableBudgetToday = this.budgetPerDay;
 		}
 	}
