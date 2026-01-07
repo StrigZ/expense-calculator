@@ -54,6 +54,7 @@ export class StartBlock extends Component {
 			labelText: "Укажите баланс",
 			placeholderText: "0 ₽",
 			type: "number",
+			inputMode: "numeric",
 			onChange: (value) => {
 				this.inputBudget = +value;
 			},

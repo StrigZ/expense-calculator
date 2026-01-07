@@ -12,13 +12,15 @@ export class Input extends Component {
 		labelText,
 		placeholderText,
 		isRequired,
-		type,
+		type = "text",
+		inputMode = "text",
 		onChange,
 	}: {
 		labelText: string;
 		placeholderText: string;
 		isRequired: boolean;
-		type: "text" | "number";
+		type?: "text" | "number";
+		inputMode?: "text" | "numeric";
 		onChange: (value: string) => void;
 	}) {
 		if (!Input.template) {
@@ -32,6 +34,7 @@ export class Input extends Component {
 		span.textContent = labelText;
 		input.placeholder = placeholderText;
 		input.type = type;
+		input.inputMode = inputMode;
 		input.required = isRequired;
 		input.addEventListener("change", (e) => {
 			onChange(e.target instanceof HTMLInputElement ? e.target.value : "");
