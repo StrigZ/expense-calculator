@@ -27,6 +27,7 @@ export class StateManager implements TStateManager {
 		if (this.budget === null) return;
 
 		this.budget += amount;
+		this.availableBudgetToday = null;
 		this._calculateBudgetPerDay();
 	}
 	addTransaction(transaction: Transaction) {
