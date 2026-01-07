@@ -1,5 +1,5 @@
-import { Page } from "../components/view/page";
-import { StartBlock } from "../components/view/start-block/start-block";
+import { StartBlock } from "../components/blocks/start-block/start-block";
+import { Page } from "../components/page";
 import type { OnCalculateBudget } from "../types";
 
 export class StartPage extends Page<DocumentFragment> {

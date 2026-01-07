@@ -1,8 +1,8 @@
-import { BalanceView } from "../components/view/balance-block/balance-view";
-import { BalanceTodayBlock } from "../components/view/balance-today-block/balance-today-block.ts";
-import { Container } from "../components/view/container";
+import { BalanceView } from "../components/blocks/balance-block/balance-view.ts";
+import { BalanceTodayBlock } from "../components/blocks/balance-today-block/balance-today-block.ts";
+import { Container } from "../components/container.ts";
+import { Page } from "../components/page.ts";
 import { HistoryBlock } from "../components/view/history-block/history-block.ts";
-import { Page } from "../components/view/page";
 import type { BalanceData, Transaction } from "../types";
 
 export class HomePage extends Page {

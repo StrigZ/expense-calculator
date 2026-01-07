@@ -3,7 +3,7 @@ import {
 	getElementByQuery,
 	getTemplateById,
 } from "../utils/utils";
-import { Component } from "./view/component";
+import { Component } from "./component";
 
 export class Input extends Component {
 	private static template: HTMLTemplateElement | null;

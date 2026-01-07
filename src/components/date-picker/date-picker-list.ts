@@ -1,4 +1,4 @@
-import { cloneTemplate, getTemplateById } from "../../../utils/utils";
+import { cloneTemplate, getTemplateById } from "../../utils/utils";
 import { Component } from "../component";
 
 export class DatePickerList extends Component {

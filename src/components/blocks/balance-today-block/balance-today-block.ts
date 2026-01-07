@@ -4,7 +4,7 @@ import {
 	getElementByQuery,
 	getTemplateById,
 } from "../../../utils/utils";
-import { Component } from "../component";
+import { Component } from "../../component";
 
 // TOOD: add type to imlement
 export class BalanceTodayBlock extends Component {

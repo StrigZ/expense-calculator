@@ -3,7 +3,7 @@ import {
 	cloneTemplate,
 	getElementByQuery,
 	getTemplateById,
-} from "../../../utils/utils";
+} from "../../utils/utils";
 import { Component } from "../component";
 
 export class DatePickerListItem extends Component {

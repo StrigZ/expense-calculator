@@ -6,12 +6,12 @@ import {
 	getElementByQuery,
 	getTemplateById,
 } from "../../../utils/utils";
+import { Component } from "../../component";
+import { DatePicker } from "../../date-picker/date-picker";
+import { DatePickerCalendar } from "../../date-picker/date-picker-calendar";
+import { DatePickerList } from "../../date-picker/date-picker-list";
+import { DatePickerListItem } from "../../date-picker/date-picker-list-item";
 import { Input } from "../../input";
-import { Component } from "../component";
-import { DatePicker } from "../date-picker/date-picker";
-import { DatePickerCalendar } from "../date-picker/date-picker-calendar";
-import { DatePickerList } from "../date-picker/date-picker-list";
-import { DatePickerListItem } from "../date-picker/date-picker-list-item";
 
 export class StartBlock extends Component {
 	private static template: HTMLTemplateElement | null;

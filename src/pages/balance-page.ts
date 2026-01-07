@@ -1,4 +1,4 @@
-import { Page } from "../components/view/page";
+import { Page } from "../components/page";
 import { getTemplateById } from "../utils/utils";
 
 export class BalancePage extends Page {
