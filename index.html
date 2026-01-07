@@ -125,11 +125,12 @@
           </h1>
         </header>
         <p id="message" class="text-text-primary text-caption">🎉 Отлично справились — сегодня вы в пределах лимита!</p>
-        <form id="new-transaction-form">
+        <form id="new-transaction-form" class="lg:space-y-3">
           <label class="text-text-secondary text-caption flex flex-col gap-1">
             <span class="pl-3">Введите трату</span>
             <input id="new-transaction-input" class="input" type="number" min="0" placeholder="0 ₽" required />
           </label>
+          <button class="btn btn-primary hidden w-full lg:block" type="submit">Сохранить</button>
         </form>
       </div>
     </template>
