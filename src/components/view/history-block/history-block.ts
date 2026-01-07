@@ -7,7 +7,6 @@ import {
 import { Component } from "../component";
 import { HistoryListItemView } from "./history-list-item-view";
 
-// TOOD: add type to imlement
 export class HistoryBlock extends Component {
 	private static template: HTMLTemplateElement | null;
 
@@ -16,32 +15,30 @@ export class HistoryBlock extends Component {
 
 	constructor() {
 		if (!HistoryBlock.template) {
-			const template = getTemplateById("history-block");
-			HistoryBlock.template = template;
+			HistoryBlock.template = getTemplateById("history-block");
 		}
 
-		const historyBlock = cloneTemplate(HistoryBlock.template);
-		super(historyBlock);
+		super(cloneTemplate(HistoryBlock.template));
 
-		const historyList = getElementByQuery("#history-list", historyBlock);
-		const averageSpentPerDay = getElementByQuery(
+		this.historyList = getElementByQuery("#history-list", this.element);
+		this.averageSpentPerDay = getElementByQuery(
 			"#average-spent-per-day",
-			historyBlock,
+			this.element,
 		);
-
-		this.historyList = historyList;
-		this.averageSpentPerDay = averageSpentPerDay;
 	}
 
-	public render({ transactions, averageSpentPerDay }: HistoryBlockRender) {
-		// TODO: use fragment and replacechildren
-		this.historyList.innerHTML = "";
+	public render({
+		transactions,
+		averageSpentPerDay,
+	}: HistoryBlockRender): HTMLElement {
+		const fragment = new DocumentFragment();
 		transactions.forEach((transaction) => {
 			const newHistoryItem = new HistoryListItemView();
-			this.historyList.append(newHistoryItem.render(transaction));
+			fragment.append(newHistoryItem.render(transaction));
 		});
+		this.historyList.replaceChildren(fragment);
 
-		this.averageSpentPerDay.textContent = averageSpentPerDay?.toString() ?? "";
+		this.averageSpentPerDay.textContent = averageSpentPerDay?.toString() ?? "0";
 
 		return this.element;
 	}

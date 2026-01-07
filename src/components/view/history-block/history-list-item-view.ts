@@ -1,4 +1,5 @@
 import { format } from "date-fns";
+import type { Transaction } from "../../../types";
 import {
 	cloneTemplate,
 	getElementByQuery,
@@ -9,24 +10,28 @@ import { Component } from "../component";
 export class HistoryListItemView extends Component {
 	private static template: HTMLTemplateElement | null;
 
-	private amountEl: HTMLElement;
-	private dateEl: HTMLElement;
+	private spentAmountEl: HTMLElement;
+	private transactionDateEl: HTMLElement;
 	constructor() {
 		if (!HistoryListItemView.template) {
-			const template = getTemplateById("history-list-item");
-			HistoryListItemView.template = template;
+			HistoryListItemView.template = getTemplateById("history-list-item");
 		}
 
-		const historyListItem = cloneTemplate(HistoryListItemView.template);
-		super(historyListItem);
+		super(cloneTemplate(HistoryListItemView.template));
 
-		this.amountEl = getElementByQuery("#spent-amount", historyListItem);
-		this.dateEl = getElementByQuery("#spent-date", historyListItem);
+		this.spentAmountEl = getElementByQuery("#spent-amount", this.element);
+		this.transactionDateEl = getElementByQuery("#spent-date", this.element);
 	}
 
-	render({ amount, date }: { amount: number; date: Date }) {
-		this.amountEl.textContent = amount.toString();
-		this.dateEl.textContent = format(date, "d MMMM");
+	render({
+		amount,
+		date,
+	}: {
+		amount: Transaction["amount"];
+		date: Transaction["date"];
+	}) {
+		this.spentAmountEl.textContent = amount.toString();
+		this.transactionDateEl.textContent = format(date, "d MMMM");
 
 		return this.element;
 	}
