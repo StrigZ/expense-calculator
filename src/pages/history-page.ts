@@ -1,14 +1,20 @@
+import { HistoryBlock } from "../components/blocks/history-block/history-block";
 import { Page } from "../components/page";
-import { getTemplateById } from "../utils/utils";
+import type { HistoryBlockRender } from "../types";
 
-export class HistoryPage extends Page {
+export class HistoryPage extends Page<DocumentFragment> {
+	private historyBlock: HistoryBlock;
 	constructor() {
-		const page = getTemplateById("history-page");
+		super(new DocumentFragment());
 
-		super(page);
+		this.historyBlock = new HistoryBlock();
 	}
 
-	render() {
+	render({ transactions, averageSpentPerDay }: HistoryBlockRender) {
+		this.element.append(
+			this.historyBlock.render({ transactions, averageSpentPerDay }),
+		);
+
 		return this.element;
 	}
 

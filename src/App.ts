@@ -33,7 +33,8 @@ export function initApp(): void {
 			state.addTransaction(transaction);
 			homePage.render(state.getBalanceData());
 		},
-		goToHistoryPage: () => root.replaceChildren(historyPage.render()),
+		goToHistoryPage: () =>
+			root.replaceChildren(historyPage.render(state.getBalanceData())),
 		goToTopupPage: () =>
 			root.replaceChildren(topupPage.render(state.getBalanceData())),
 	});
