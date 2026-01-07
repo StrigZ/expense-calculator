@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Expense Calculator</title>
   </head>
-  <body class="container mx-auto h-screen items-center justify-center px-4 py-8 md:flex lg:items-start">
-    <main id="app"></main>
+  <body class="mx-auto grid h-screen grid-cols-4 place-content-center content-stretch gap-4 px-4 py-8 md:grid-cols-8 md:content-center md:gap-5 md:px-8 lg:grid-cols-12 lg:content-start lg:gap-6 lg:px-16">
+    <main id="app" class="col-span-full"></main>
 
     <template id="history-page">
       <div class="card flex flex-col">
@@ -103,7 +103,7 @@
     </template>
 
     <template id="start-block">
-      <div class="card">
+      <div class="card flex flex-col">
         <h1 class="text-text-primary">Начнём!</h1>
         <div id="budget-input-placeholder"></div>
         <div id="date-dropdown-placeholder"></div>

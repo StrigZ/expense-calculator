@@ -13,7 +13,7 @@ export class HomePage extends Page {
 		handleNewTransaction,
 	}: { handleNewTransaction: (transaction: Transaction) => void }) {
 		const container = new Container({
-			className: "flex w-full flex-col gap-6 md:max-w-xl md:gap-2",
+			className: "flex w-full flex-col gap-6 md:gap-2",
 		});
 		super(container.render());
 
