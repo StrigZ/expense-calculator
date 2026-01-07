@@ -8,19 +8,19 @@ import { Component } from "../component";
 import { HistoryListItemView } from "./history-list-item-view";
 
 // TOOD: add type to imlement
-export class HistoryView extends Component {
+export class HistoryBlock extends Component {
 	private static template: HTMLTemplateElement | null;
 
 	private historyList: HTMLElement;
 	private averageSpentPerDay: HTMLElement;
 
 	constructor() {
-		if (!HistoryView.template) {
+		if (!HistoryBlock.template) {
 			const template = getTemplateById("history-block");
-			HistoryView.template = template;
+			HistoryBlock.template = template;
 		}
 
-		const historyBlock = cloneTemplate(HistoryView.template);
+		const historyBlock = cloneTemplate(HistoryBlock.template);
 		super(historyBlock);
 
 		const historyList = getElementByQuery("#history-list", historyBlock);

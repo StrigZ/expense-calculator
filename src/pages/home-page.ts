@@ -1,14 +1,14 @@
 import { BalanceView } from "../components/view/balance-block/balance-view";
 import { BalanceTodayView } from "../components/view/balance-today-block/balance-today-view";
 import { Container } from "../components/view/container";
-import { HistoryView } from "../components/view/history-block/history-view";
+import { HistoryBlock } from "../components/view/history-block/history-block.ts";
 import { Page } from "../components/view/page";
 import type { BalanceData, Transaction } from "../types";
 
 export class HomePage extends Page {
 	private balanceView: BalanceView;
 	private balanceTodayView: BalanceTodayView;
-	private historyView: HistoryView;
+	private HistoryBlock: HistoryBlock;
 	constructor({
 		handleNewTransaction,
 	}: { handleNewTransaction: (transaction: Transaction) => void }) {
@@ -19,7 +19,7 @@ export class HomePage extends Page {
 
 		this.balanceView = new BalanceView();
 		this.balanceTodayView = new BalanceTodayView({ handleNewTransaction });
-		this.historyView = new HistoryView();
+		this.HistoryBlock = new HistoryBlock();
 	}
 
 	render({
@@ -39,7 +39,7 @@ export class HomePage extends Page {
 		);
 
 		this.element.append(
-			this.historyView.render({ transactions, averageSpentPerDay }),
+			this.HistoryBlock.render({ transactions, averageSpentPerDay }),
 		);
 
 		return this.element;
