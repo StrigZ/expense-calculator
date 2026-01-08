@@ -5,9 +5,10 @@ import {
 } from "../utils/utils";
 import { Component } from "./component";
 
-export class Input extends Component {
+export class Input extends Component<HTMLLabelElement> {
 	private static template: HTMLTemplateElement | null;
 
+	private input: HTMLInputElement;
 	constructor({
 		labelText,
 		placeholderText,
@@ -39,6 +40,12 @@ export class Input extends Component {
 		input.addEventListener("change", (e) => {
 			onChange(e.target instanceof HTMLInputElement ? e.target.value : "");
 		});
+
+		this.input = input;
+	}
+
+	setValue(value: string) {
+		this.input.value = value;
 	}
 
 	render() {

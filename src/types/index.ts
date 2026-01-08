@@ -47,10 +47,7 @@ export type NonNullablePeriod = NonNullable<BalanceData["periodDate"]>;
 export type OnCalculateBudget = ({
 	budget,
 	periodDate,
-}: {
-	budget: NonNullableBudget;
-	periodDate: NonNullablePeriod;
-}) => void;
+}: BudgetFormData) => void;
 
 export type BalanceBlockRender = Pick<
 	BalanceData,
@@ -66,3 +63,8 @@ export type HistoryBlockRender = Pick<
 	BalanceData,
 	"transactions" | "averageSpentPerDay"
 >;
+
+export type BudgetFormData = {
+	budget: NonNullableBudget;
+	periodDate: NonNullablePeriod;
+};

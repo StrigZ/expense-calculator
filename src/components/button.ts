@@ -35,12 +35,8 @@ export class Button extends Component<HTMLButtonElement> {
 		this.element.disabled = disabled ?? false;
 	}
 
-	disable() {
-		this.element.disabled = true;
-	}
-
-	enable() {
-		this.element.disabled = false;
+	setIsButtonEnabled(isEnabled: boolean) {
+		this.element.disabled = !isEnabled;
 	}
 
 	render() {

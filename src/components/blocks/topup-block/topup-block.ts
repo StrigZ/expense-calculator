@@ -53,7 +53,9 @@ export class TopupBlock extends Component {
 		).toString();
 		this.totalBalanceEl.textContent = budget.toString();
 
-		this.budgetForm.setSelectedDate(periodDate);
+		this.budgetForm.setPeriodDate(periodDate);
+		this.budgetForm.setBudget(0);
+		this.budgetForm.validateForm();
 
 		return this.element;
 	}

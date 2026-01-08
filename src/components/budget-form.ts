@@ -3,6 +3,7 @@ import {
 	getDatePickerListData,
 	getDatePickerTriggerButtonText,
 } from "../utils/utils";
+import { validateBudgetForm } from "../utils/validation";
 import { Button } from "./button";
 import { Component } from "./component";
 import { Container } from "./container";
@@ -17,42 +18,35 @@ export class BudgetForm extends Component<HTMLFormElement> {
 	private datePickerList: DatePickerList;
 	private datePickerCalendar: DatePickerCalendar;
 	private submitButton: Button;
+	private budgetInput: Input;
 
-	private selectedDate: Date | null = null;
-	private inputBudget: number | null = null;
+	private periodDate: Date | null = null;
+	private budget: number | null = null;
 	constructor({
 		inputLabelText = "Укажите баланс",
 		submitButtonText = "Рассчитать",
 		onCalculateBudget,
-		defaultPeriodDate,
 	}: {
 		onCalculateBudget: OnCalculateBudget;
-		defaultPeriodDate?: Date;
 		inputLabelText?: string;
 		submitButtonText?: string;
 	}) {
 		const container = new Container<HTMLFormElement>({
 			tag: "form",
-			className: "flex flex-col gap-3",
+			className: "flex flex-col gap-3 h-full",
 		});
 
 		super(container.render());
 
-		const budgetInput = new Input({
+		this.budgetInput = new Input({
 			isRequired: true,
 			labelText: inputLabelText,
 			placeholderText: "0 ₽",
 			type: "number",
 			inputMode: "numeric",
 			onChange: (value) => {
-				if (!value) {
-					return this.submitButton.disable();
-				}
-				//TODO: use validation to handle disabled state
-				if (value && this.selectedDate) {
-					this.submitButton.enable();
-				}
-				this.inputBudget = +value;
+				this.budget = +value;
+				this.validateForm();
 			},
 		});
 
@@ -60,12 +54,6 @@ export class BudgetForm extends Component<HTMLFormElement> {
 			onPopupOpen: () =>
 				this.datePicker.updatePopupContent(this.datePickerList.render()),
 		});
-
-		if (defaultPeriodDate) {
-			this.datePicker.updateTriggerButtonText(
-				getDatePickerTriggerButtonText(defaultPeriodDate),
-			);
-		}
 
 		this.datePickerList = new DatePickerList();
 		this.datePickerCalendar = new DatePickerCalendar({
@@ -75,12 +63,8 @@ export class BudgetForm extends Component<HTMLFormElement> {
 				this.datePicker.updateTriggerButtonText(
 					getDatePickerTriggerButtonText(date),
 				);
-				//TODO: use validation to handle disabled state
-
-				if (this.inputBudget) {
-					this.submitButton.enable();
-				}
-				this.selectedDate = date;
+				this.periodDate = date;
+				this.validateForm();
 				this.datePicker.hidePopup();
 			},
 		});
@@ -94,25 +78,40 @@ export class BudgetForm extends Component<HTMLFormElement> {
 
 		this.element.addEventListener("submit", (e) => {
 			e.preventDefault();
-			if (!this.inputBudget || !this.selectedDate) return;
+			if (this.budget === null || !this.periodDate) return;
 
 			onCalculateBudget({
-				budget: this.inputBudget,
-				periodDate: this.selectedDate,
+				budget: this.budget,
+				periodDate: this.periodDate,
 			});
 		});
 
 		this.element.append(
-			budgetInput.render(),
+			this.budgetInput.render(),
 			this.datePicker.render(),
 			this.submitButton.render(),
 		);
 	}
 
-	setSelectedDate(selectedDate: Date) {
-		this.selectedDate = selectedDate;
+	setPeriodDate(selectedDate: Date) {
+		this.periodDate = selectedDate;
 		this.datePicker.updateTriggerButtonText(
 			getDatePickerTriggerButtonText(selectedDate),
+		);
+	}
+
+	setBudget(budget: number) {
+		this.budget = budget;
+		this.budgetInput.setValue(budget.toString());
+	}
+
+	// TODO: replace with zod
+	validateForm() {
+		this.submitButton.setIsButtonEnabled(
+			validateBudgetForm({
+				budget: this.budget,
+				periodDate: this.periodDate,
+			}),
 		);
 	}
 
@@ -142,10 +141,8 @@ export class BudgetForm extends Component<HTMLFormElement> {
 						);
 						//TODO: use validation to handle disabled state
 
-						if (this.inputBudget) {
-							this.submitButton.enable();
-						}
-						this.selectedDate = untilDate;
+						this.periodDate = untilDate;
+						this.validateForm();
 						this.datePicker.hidePopup();
 					},
 				});
@@ -155,6 +152,8 @@ export class BudgetForm extends Component<HTMLFormElement> {
 
 		this.datePickerList.appendFragmentToList(fragment);
 		this.datePicker.updatePopupContent(this.datePickerList.render());
+
+		this.validateForm();
 
 		return this.element;
 	}
