@@ -1,21 +1,21 @@
 import { Component } from "./component";
 
 export class Container<
-	T extends keyof HTMLElementTagNameMap = "div",
-> extends Component {
+	T extends HTMLElement = HTMLDivElement,
+> extends Component<T> {
 	constructor({
 		className,
-		tag,
+		tag = "div",
 	}: {
-		tag?: T;
+		tag?: keyof HTMLElementTagNameMap;
 		className: string;
 	}) {
-		const element = document.createElement(tag ?? "div");
+		const element = document.createElement(tag);
 		element.className = className;
-		super(element);
+		super(element as T);
 	}
 
-	render() {
+	override render(): T {
 		return this.element;
 	}
 }
