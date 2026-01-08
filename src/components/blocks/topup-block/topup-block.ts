@@ -1,35 +1,20 @@
-import { add, differenceInCalendarDays, endOfMonth, format } from "date-fns";
-import {
-	type BalanceBlockRender,
-	type OnCalculateBudget,
-	TIMEFRAMES,
-} from "../../../types";
-import { timeframeToNumberMap } from "../../../utils/constants";
+import { differenceInCalendarDays } from "date-fns";
+import type { BalanceBlockRender, OnCalculateBudget } from "../../../types";
 import {
 	cloneTemplate,
 	getElementByQuery,
 	getTemplateById,
 } from "../../../utils/utils";
+import { BudgetForm } from "../../budget-form";
 import { Component } from "../../component";
-import { DatePicker } from "../../date-picker/date-picker";
-import { DatePickerCalendar } from "../../date-picker/date-picker-calendar";
-import { DatePickerList } from "../../date-picker/date-picker-list";
-import { DatePickerListItem } from "../../date-picker/date-picker-list-item";
-import { Input } from "../../input";
 
 export class TopupBlock extends Component {
 	private static template: HTMLTemplateElement | null;
 
-	private datePicker: DatePicker;
-	private datePickerList: DatePickerList;
-	private datePickerCalendar: DatePickerCalendar;
-
 	private balancePerDayEl: HTMLElement;
 	private periodEl: HTMLElement;
 	private totalBalanceEl: HTMLElement;
-
-	private selectedDate: Date | null = null;
-	private inputBudget: number | null = null;
+	private budgetForm: BudgetForm;
 	constructor({
 		onCalculateBudget,
 	}: {
@@ -46,60 +31,12 @@ export class TopupBlock extends Component {
 		this.periodEl = getElementByQuery("#period", this.element);
 		this.totalBalanceEl = getElementByQuery("#total-balance", this.element);
 
-		const datePickerPlaceholder = getElementByQuery(
-			"#date-dropdown-placeholder",
-			this.element,
-		);
-		const budgetInputPlaceholder = getElementByQuery(
-			"#budget-input-placeholder",
-			this.element,
-		);
-
-		const calculateBudgetButton = getElementByQuery(
-			"#calculate-budget-button",
-			this.element,
-		);
-
-		const budgetInput = new Input({
-			isRequired: true,
-			labelText: "Пополнить",
-			placeholderText: "0 ₽",
-			type: "number",
-			inputMode: "numeric",
-			onChange: (value) => {
-				this.inputBudget = +value;
-			},
+		this.budgetForm = new BudgetForm({
+			inputLabelText: "Пополнить",
+			submitButtonText: "Сохранить",
+			onCalculateBudget,
 		});
-
-		calculateBudgetButton.addEventListener("click", () => {
-			if (!this.selectedDate || !this.inputBudget) return;
-
-			onCalculateBudget({
-				budget: this.inputBudget,
-				periodDate: this.selectedDate,
-			});
-		});
-
-		this.datePicker = new DatePicker({
-			onPopupOpen: () =>
-				this.datePicker.updatePopupContent(this.datePickerList.render()),
-		});
-		this.datePickerList = new DatePickerList();
-		this.datePickerCalendar = new DatePickerCalendar({
-			onMonthChange: () =>
-				this.datePicker.updatePopupContent(this.datePickerCalendar.render()),
-			onDateSelect: (date) => {
-				const diffInCalendarDays = differenceInCalendarDays(date, new Date());
-				this.datePicker.updateTriggerButtonText(
-					`${diffInCalendarDays} дней (до ${format(date, "d MMMM")})`,
-				);
-				this.selectedDate = date;
-				this.datePicker.hidePopup();
-			},
-		});
-
-		datePickerPlaceholder.replaceWith(this.datePicker.render());
-		budgetInputPlaceholder.replaceWith(budgetInput.render());
+		this.element.append(this.budgetForm.render());
 	}
 
 	render({ budgetPerDay, periodDate, budget }: BalanceBlockRender) {
@@ -109,56 +46,14 @@ export class TopupBlock extends Component {
 			);
 		}
 
-		this.datePickerList.resetList();
-		const fragment = new DocumentFragment();
-		TIMEFRAMES.forEach((timeframe) => {
-			if (timeframe === "Своя дата") {
-				const datePickerListItem = new DatePickerListItem({
-					period: timeframe,
-					untilDate: null,
-					onClick: () => {
-						this.datePicker.updatePopupContent(
-							this.datePickerCalendar.render(),
-						);
-					},
-				});
-				fragment.append(datePickerListItem.render());
-			} else {
-				const untilDate =
-					timeframe === "До конца месяца"
-						? endOfMonth(new Date())
-						: add(new Date(), { days: timeframeToNumberMap[timeframe] });
-
-				const diffInCalendarDays =
-					timeframe === "До конца месяца"
-						? differenceInCalendarDays(untilDate, new Date())
-						: timeframeToNumberMap[timeframe];
-
-				const datePickerListItem = new DatePickerListItem({
-					period: timeframe,
-					untilDate,
-					onClick: () => {
-						this.datePicker.updateTriggerButtonText(
-							`${diffInCalendarDays} дней (до ${format(untilDate, "d MMMM")})`,
-						);
-
-						this.selectedDate = untilDate;
-						this.datePicker.hidePopup();
-					},
-				});
-				fragment.append(datePickerListItem.render());
-			}
-		});
-
-		this.datePickerList.appendFragmentToList(fragment);
-		this.datePicker.updatePopupContent(this.datePickerList.render());
-
 		this.balancePerDayEl.textContent = budgetPerDay.toString();
 		this.periodEl.textContent = differenceInCalendarDays(
 			periodDate,
 			new Date(),
 		).toString();
 		this.totalBalanceEl.textContent = budget.toString();
+
+		this.budgetForm.setSelectedDate(periodDate);
 
 		return this.element;
 	}

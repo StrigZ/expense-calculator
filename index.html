@@ -79,18 +79,6 @@
             <p class="text-text-secondary text-body">на <span id="period">5</span> дней</p>
           </div>
         </div>
-        <div id="budget-input-placeholder"></div>
-        <div id="date-dropdown-placeholder"></div>
-        <button id="calculate-budget-button" class="text-accent btn btn-primary mt-auto w-full">Сохранить</button>
-      </div>
-    </template>
-
-    <template id="start-block">
-      <div class="card flex flex-col">
-        <h1 class="text-text-primary">Начнём!</h1>
-        <div id="budget-input-placeholder"></div>
-        <div id="date-dropdown-placeholder"></div>
-        <button id="calculate-budget-button" class="text-accent btn btn-primary mt-auto w-full">Рассчитать</button>
       </div>
     </template>
 
@@ -213,7 +201,7 @@
             <path d="M0.75 0.75L8.75 8.75L16.75 0.75" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" />
           </svg>
         </button>
-        <div id="date-picker-popup" class="bg-foreground border-border shadow-e2 absolute bottom-0 hidden w-full translate-y-full rounded-sm border"></div>
+        <div id="date-picker-popup" class="bg-foreground border-border shadow-e2 absolute bottom-0 z-50 hidden w-full translate-y-full rounded-sm border"></div>
       </div>
     </template>
 
@@ -260,7 +248,7 @@
 
     <!-- Top up form block template -->
     <template id="top-up-form">
-      <form class="bg-foreground border-border shadow-e1 flex flex-col gap-6 rounded-2xl border p-6">
+      <div class="bg-foreground border-border shadow-e1 flex flex-col gap-6 rounded-2xl border p-6">
         <div class="flex flex-col gap-3">
           <div class="text-body flex items-center justify-between gap-2">
             <p class="text-text-secondary">Общий баланс</p>
@@ -274,10 +262,8 @@
             <span class="pl-3">Пополнить</span>
             <input id="top-up" class="input" type="text" placeholder="0 ₽" required inputmode="numeric" />
           </label>
-          <!-- TODO: dropdown with date picker -->
         </div>
-        <button class="text-accent primary cursor-pointer rounded-xs px-4 py-3" type="submit">Сохранить</button>
-      </form>
+      </div>
     </template>
 
     <!-- Total balance block template -->
@@ -317,7 +303,7 @@
 
     <!-- Button template -->
     <template id="button">
-      <button class="text-accent primary cursor-pointer rounded-xs px-4 py-3">Button</button>
+      <button class="text-accent btn">Button</button>
     </template>
 
     <!-- Input template -->
