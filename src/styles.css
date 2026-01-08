@@ -62,15 +62,15 @@ h3 {
 }
 
 .btn {
-	@apply cursor-pointer rounded-xs px-4 py-3;
+	@apply cursor-pointer rounded-xs px-4 py-3 disabled:cursor-not-allowed disabled:opacity-50;
 }
 
 .btn-primary {
-	@apply bg-primary text-foreground hover:opacity-85 transition-opacity;
+	@apply bg-primary text-foreground not-disabled:hover:opacity-85 transition-opacity;
 }
 
 .btn-outline {
-	@apply bg-foreground border border-primary text-primary hover:bg-primary/10 transition-colors;
+	@apply bg-foreground border border-primary text-primary not-disabled:hover:bg-primary/10 transition-colors;
 }
 
 .input {
