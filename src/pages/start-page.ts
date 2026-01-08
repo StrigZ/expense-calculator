@@ -3,18 +3,18 @@ import { Page } from "../components/page";
 import type { OnCalculateBudget } from "../types";
 
 export class StartPage extends Page<DocumentFragment> {
-	private StartBlock: StartBlock;
+	private startBlock: StartBlock;
 	constructor({
 		onCalculateBudget,
 	}: {
 		onCalculateBudget: OnCalculateBudget;
 	}) {
 		super(new DocumentFragment());
-		this.StartBlock = new StartBlock({ onCalculateBudget });
+		this.startBlock = new StartBlock({ onCalculateBudget });
 	}
 
 	render() {
-		this.element.append(this.StartBlock.render());
+		this.element.append(this.startBlock.render());
 
 		return this.element;
 	}
