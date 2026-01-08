@@ -15,6 +15,7 @@ export class StateManager implements TStateManager {
 
 	setPeriodDate(periodDate: Date) {
 		this.periodDate = periodDate;
+		this.availableBudgetToday = null;
 		this._calculateBudgetPerDay();
 	}
 
