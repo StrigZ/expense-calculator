@@ -1,5 +1,5 @@
 import { add, differenceInCalendarDays, endOfMonth, format } from "date-fns";
-import { TIMEFRAMES, type Timeframe } from "../types";
+import { ROUTER_PATHS, type Route, TIMEFRAMES, type Timeframe } from "../types";
 import { timeframeToNumberMap } from "./constants";
 
 export function cloneTemplate<T = HTMLElement>(template: HTMLTemplateElement) {
@@ -67,3 +67,8 @@ export function getDatePickerListData(): {
 
 	return timeframeList;
 }
+
+const paths = Object.values(ROUTER_PATHS);
+export const isRoute = (str: string): str is Route => {
+	return paths.includes(str as Route);
+};

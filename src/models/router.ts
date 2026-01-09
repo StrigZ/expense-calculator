@@ -1,5 +1,5 @@
 import type { Page } from "../components/page";
-import { isRoute, ROUTER_PATHS, type Route } from "./routes";
+import { isRoute, ROUTER_PATHS, type Route } from "../utils/routes";
 
 export class Router {
 	routes = {} as Record<Route, Page["element"]>;

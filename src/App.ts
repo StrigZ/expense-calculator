@@ -1,10 +1,10 @@
+import { Router } from "./models/router";
 import { StateManager } from "./models/state-manager";
 import { HistoryPage } from "./pages/history-page";
 import { HomePage } from "./pages/home-page";
 import { StartPage } from "./pages/start-page";
 import { TopupPage } from "./pages/topup-page";
-import { Router } from "./services/router";
-import { ROUTER_PATHS } from "./services/routes";
+import { ROUTER_PATHS } from "./types";
 import { getElementByQuery } from "./utils/utils";
 
 export function initApp(): void {

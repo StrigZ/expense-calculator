@@ -9,6 +9,17 @@ export const TIMEFRAMES = [
 
 export type Timeframe = (typeof TIMEFRAMES)[number];
 
+export const ROUTER_PATHS = {
+	HOME: "/",
+	START: "/start",
+	BALANCE: "/balance",
+	HISTORY: "/history",
+	NOT_FOUND: "/404",
+} as const;
+
+type Routes = typeof ROUTER_PATHS;
+export type Route = Routes[keyof Routes];
+
 export type BalanceData = {
 	budget: number | null;
 	periodDate: Date | null;
