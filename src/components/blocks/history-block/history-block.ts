@@ -12,8 +12,12 @@ export class HistoryBlock extends Component {
 
 	private historyList: HTMLElement;
 	private averageSpentPerDay: HTMLElement;
+	private navButton: HTMLButtonElement;
 
-	constructor() {
+	constructor({
+		onNavButtonClick,
+		navButtonText,
+	}: { onNavButtonClick: () => void; navButtonText: string }) {
 		if (!HistoryBlock.template) {
 			HistoryBlock.template = getTemplateById("history-block");
 		}
@@ -25,21 +29,25 @@ export class HistoryBlock extends Component {
 			"#average-spent-per-day",
 			this.element,
 		);
+
+		this.navButton = getElementByQuery("#nav-button", this.element);
+
+		this.navButton.addEventListener("click", onNavButtonClick);
+		this.navButton.textContent = navButtonText;
 	}
 
-	public render({
-		transactions,
-		averageSpentPerDay,
-	}: HistoryBlockRender): HTMLElement {
+	render(): HTMLElement {
+		return this.element;
+	}
+
+	update({ transactions, averageSpentPerDay }: HistoryBlockRender) {
 		const fragment = new DocumentFragment();
 		transactions.forEach((transaction) => {
-			const newHistoryItem = new HistoryListItemView();
-			fragment.append(newHistoryItem.render(transaction));
+			const newHistoryItem = new HistoryListItemView(transaction);
+			fragment.append(newHistoryItem.render());
 		});
 		this.historyList.replaceChildren(fragment);
 
 		this.averageSpentPerDay.textContent = averageSpentPerDay?.toString() ?? "0";
-
-		return this.element;
 	}
 }

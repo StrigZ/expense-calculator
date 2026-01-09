@@ -6,7 +6,6 @@ import {
 } from "../../../utils/utils";
 import { Component } from "../../component";
 
-// TOOD: add type to imlement
 export class BalanceTodayBlock extends Component {
 	private static template: HTMLTemplateElement | null;
 
@@ -55,10 +54,11 @@ export class BalanceTodayBlock extends Component {
 		});
 	}
 
-	public render({
-		availableBudgetToday,
-		budgetPerDay,
-	}: BalanceTodayBlockRender) {
+	render() {
+		return this.element;
+	}
+
+	update({ availableBudgetToday, budgetPerDay }: BalanceTodayBlockRender) {
 		if (availableBudgetToday === null || budgetPerDay === null) {
 			throw new Error(`${this}: availableBudgetToday or budgetPerDay is null`);
 		}
@@ -74,7 +74,5 @@ export class BalanceTodayBlock extends Component {
 		this.availableBalanceValueEl.textContent = availableBudgetToday.toString();
 		this.balancePerDayEl.textContent = budgetPerDay.toString();
 		this.messageEl.classList.toggle("hidden", availableBudgetToday < 0);
-
-		return this.element;
 	}
 }

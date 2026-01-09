@@ -1,19 +1,16 @@
-import { differenceInCalendarDays } from "date-fns";
-import type { BalanceBlockRender } from "../../../types";
+import type { BalanceViewRender } from "../../../types";
 import {
 	cloneTemplate,
 	getElementByQuery,
 	getTemplateById,
 } from "../../../utils/utils";
+import { BalanceView } from "../../balance-view";
 import { Component } from "../../component";
 
-// TOOD: add type to imlement
 export class BalanceBlock extends Component {
 	private static template: HTMLTemplateElement | null;
 
-	private balancePerDayEl: HTMLElement;
-	private periodEl: HTMLElement;
-	private totalBalanceEl: HTMLElement;
+	private balanceView: BalanceView;
 	constructor({
 		goToHistoryPage,
 		goToTopupPage,
@@ -27,9 +24,8 @@ export class BalanceBlock extends Component {
 
 		super(cloneTemplate(BalanceBlock.template));
 
-		this.balancePerDayEl = getElementByQuery("#balance-per-day", this.element);
-		this.periodEl = getElementByQuery("#period", this.element);
-		this.totalBalanceEl = getElementByQuery("#total-balance", this.element);
+		this.balanceView = new BalanceView();
+
 		const goToTopupPageButton = getElementByQuery(
 			"#go-to-topup-page",
 			this.element,
@@ -41,22 +37,15 @@ export class BalanceBlock extends Component {
 
 		goToTopupPageButton.addEventListener("click", goToTopupPage);
 		goToHistoryPageButton.addEventListener("click", goToHistoryPage);
+
+		this.element.prepend(this.balanceView.render());
 	}
 
-	public render({ budgetPerDay, periodDate, budget }: BalanceBlockRender) {
-		if (budgetPerDay === null || budget === null || !periodDate) {
-			throw new Error(
-				"BalanceBlock: budgetPerDay or budget or periodDate is null",
-			);
-		}
-
-		this.balancePerDayEl.textContent = budgetPerDay.toString();
-		this.periodEl.textContent = differenceInCalendarDays(
-			periodDate,
-			new Date(),
-		).toString();
-		this.totalBalanceEl.textContent = budget.toString();
-
+	render() {
 		return this.element;
+	}
+
+	update(balanceViewData: BalanceViewRender) {
+		this.balanceView.update(balanceViewData);
 	}
 }

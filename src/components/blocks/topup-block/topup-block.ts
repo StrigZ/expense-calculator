@@ -1,5 +1,5 @@
 import { differenceInCalendarDays } from "date-fns";
-import type { BalanceBlockRender, OnCalculateBudget } from "../../../types";
+import type { BalanceData, OnCalculateBudget } from "../../../types";
 import {
 	cloneTemplate,
 	getElementByQuery,
@@ -36,10 +36,16 @@ export class TopupBlock extends Component {
 			submitButtonText: "Сохранить",
 			onCalculateBudget,
 		});
+		this.budgetForm.setBudget(0);
+
 		this.element.append(this.budgetForm.render());
 	}
 
-	render({ budgetPerDay, periodDate, budget }: BalanceBlockRender) {
+	render() {
+		return this.element;
+	}
+
+	update({ budgetPerDay, periodDate, budget }: BalanceData) {
 		if (budgetPerDay === null || budget === null || !periodDate) {
 			throw new Error(
 				"BalanceBlock: budgetPerDay or budget or periodDate is null",
@@ -54,7 +60,6 @@ export class TopupBlock extends Component {
 		this.totalBalanceEl.textContent = budget.toString();
 
 		this.budgetForm.setPeriodDate(periodDate);
-		this.budgetForm.setBudget(0);
 		this.budgetForm.validateForm();
 
 		return this.element;

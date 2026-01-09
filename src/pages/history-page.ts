@@ -1,24 +1,25 @@
 import { HistoryBlock } from "../components/blocks/history-block/history-block";
+import { Container } from "../components/container";
 import { Page } from "../components/page";
 import type { HistoryBlockRender } from "../types";
 
-export class HistoryPage extends Page<DocumentFragment> {
+export class HistoryPage extends Page {
 	private historyBlock: HistoryBlock;
-	constructor() {
-		super(new DocumentFragment());
+	constructor({ goToHomePage }: { goToHomePage: () => void }) {
+		super(new Container({}).render());
 
-		this.historyBlock = new HistoryBlock();
+		this.historyBlock = new HistoryBlock({
+			onNavButtonClick: goToHomePage,
+			navButtonText: "Вернуться",
+		});
+		this.element.append(this.historyBlock.render());
 	}
 
-	render({ transactions, averageSpentPerDay }: HistoryBlockRender) {
-		this.element.append(
-			this.historyBlock.render({ transactions, averageSpentPerDay }),
-		);
-
+	render() {
 		return this.element;
 	}
 
-	dispose(): void {
-		// remove all listeners
+	update({ transactions, averageSpentPerDay }: HistoryBlockRender) {
+		this.historyBlock.update({ transactions, averageSpentPerDay });
 	}
 }

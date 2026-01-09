@@ -10,29 +10,21 @@ import { Component } from "../../component";
 export class HistoryListItemView extends Component {
 	private static template: HTMLTemplateElement | null;
 
-	private spentAmountEl: HTMLElement;
-	private transactionDateEl: HTMLElement;
-	constructor() {
+	constructor({ amount, date }: Transaction) {
 		if (!HistoryListItemView.template) {
 			HistoryListItemView.template = getTemplateById("history-list-item");
 		}
 
 		super(cloneTemplate(HistoryListItemView.template));
 
-		this.spentAmountEl = getElementByQuery("#spent-amount", this.element);
-		this.transactionDateEl = getElementByQuery("#spent-date", this.element);
+		const spentAmountEl = getElementByQuery("#spent-amount", this.element);
+		const transactionDateEl = getElementByQuery("#spent-date", this.element);
+
+		spentAmountEl.textContent = amount.toString();
+		transactionDateEl.textContent = format(date, "d MMMM");
 	}
 
-	render({
-		amount,
-		date,
-	}: {
-		amount: Transaction["amount"];
-		date: Transaction["date"];
-	}) {
-		this.spentAmountEl.textContent = amount.toString();
-		this.transactionDateEl.textContent = format(date, "d MMMM");
-
+	render() {
 		return this.element;
 	}
 }

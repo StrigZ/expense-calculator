@@ -8,10 +8,12 @@ export class Container<
 		tag = "div",
 	}: {
 		tag?: keyof HTMLElementTagNameMap;
-		className: string;
+		className?: string;
 	}) {
 		const element = document.createElement(tag);
-		element.className = className;
+		if (className) {
+			element.className = className;
+		}
 		super(element as T);
 	}
 

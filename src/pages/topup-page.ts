@@ -1,29 +1,26 @@
 import { TopupBlock } from "../components/blocks/topup-block/topup-block";
+import { Container } from "../components/container";
 import { Page } from "../components/page";
-import type { BalanceBlockRender, OnCalculateBudget } from "../types";
+import type { BalanceData, OnCalculateBudget } from "../types";
 
-export class TopupPage extends Page<DocumentFragment> {
+export class TopupPage extends Page {
 	private topupBlock: TopupBlock;
 	constructor({
 		onCalculateBudget,
 	}: {
 		onCalculateBudget: OnCalculateBudget;
 	}) {
-		super(new DocumentFragment());
+		super(new Container({}).render());
 
 		this.topupBlock = new TopupBlock({ onCalculateBudget });
+		this.element.append(this.topupBlock.render());
 	}
 
-	render({ budget, budgetPerDay, periodDate }: BalanceBlockRender) {
-		// update page view
-		this.element.append(
-			this.topupBlock.render({ budget, budgetPerDay, periodDate }),
-		);
-
+	render() {
 		return this.element;
 	}
 
-	dispose(): void {
-		// remove all listeners
+	update(balanceData: BalanceData) {
+		this.topupBlock.update(balanceData);
 	}
 }

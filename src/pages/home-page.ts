@@ -16,8 +16,8 @@ export class HomePage extends Page {
 		goToTopupPage,
 	}: {
 		handleNewTransaction: (transaction: Transaction) => void;
-
 		goToHistoryPage: () => void;
+		goToHomePage: () => void;
 		goToTopupPage: () => void;
 	}) {
 		const container = new Container({
@@ -25,15 +25,25 @@ export class HomePage extends Page {
 		});
 		super(container.render());
 
-		this.balanceBlock = new BalanceBlock({
-			goToHistoryPage,
-			goToTopupPage,
-		});
+		this.balanceBlock = new BalanceBlock({ goToHistoryPage, goToTopupPage });
 		this.balanceTodayBlock = new BalanceTodayBlock({ handleNewTransaction });
-		this.historyBlock = new HistoryBlock();
+		this.historyBlock = new HistoryBlock({
+			onNavButtonClick: goToHistoryPage,
+			navButtonText: "Смотреть всю историю",
+		});
+
+		this.element.append(
+			this.balanceBlock.render(),
+			this.balanceTodayBlock.render(),
+			this.historyBlock.render(),
+		);
 	}
 
-	render({
+	render() {
+		return this.element;
+	}
+
+	update({
 		budget,
 		periodDate,
 		budgetPerDay,
@@ -41,22 +51,14 @@ export class HomePage extends Page {
 		availableBudgetToday,
 		averageSpentPerDay,
 	}: BalanceData) {
-		this.element.append(
-			this.balanceBlock.render({ budgetPerDay, periodDate, budget }),
-		);
+		if (budgetPerDay === null || budget === null || !periodDate) {
+			throw new Error(
+				"BalanceBlock: budgetPerDay or budget or periodDate is null",
+			);
+		}
 
-		this.element.append(
-			this.balanceTodayBlock.render({ availableBudgetToday, budgetPerDay }),
-		);
-
-		this.element.append(
-			this.historyBlock.render({ transactions, averageSpentPerDay }),
-		);
-
-		return this.element;
-	}
-
-	dispose() {
-		// remove all listeners
+		this.balanceBlock.update({ budgetPerDay, periodDate, budget });
+		this.balanceTodayBlock.update({ availableBudgetToday, budgetPerDay });
+		this.historyBlock.update({ transactions, averageSpentPerDay });
 	}
 }
