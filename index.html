@@ -82,6 +82,25 @@
       </div>
     </template>
 
+    <template id="balance-view">
+      <div class="space-y-0.5">
+        <header class="text-body flex items-center justify-between gap-2">
+          <p class="text-text-secondary">Общий баланс</p>
+          <p class="text-primary">
+            <span id="balance-per-day">2000</span>
+            ₽ в день
+          </p>
+        </header>
+        <div class="flex items-end gap-2">
+          <h1>
+            <span id="total-balance">9000</span>
+            <span class="font-normal">₽</span>
+          </h1>
+          <p class="text-text-secondary text-body">на <span id="period">5</span> дней</p>
+        </div>
+      </div>
+    </template>
+
     <template id="balance-today-block">
       <div class="card">
         <header class="space-y-0.5">
@@ -108,22 +127,6 @@
 
     <template id="balance-block">
       <div class="card">
-        <div class="space-y-0.5">
-          <header class="text-body flex items-center justify-between gap-2">
-            <p class="text-text-secondary">Общий баланс</p>
-            <p class="text-primary">
-              <span id="balance-per-day">2000</span>
-              ₽ в день
-            </p>
-          </header>
-          <div class="flex items-end gap-2">
-            <h1>
-              <span id="total-balance">9000</span>
-              <span class="font-normal">₽</span>
-            </h1>
-            <p class="text-text-secondary text-body">на <span id="period">5</span> дней</p>
-          </div>
-        </div>
         <div class="flex items-center justify-between gap-4">
           <!-- TODO: Replace this with links and handle them via router -->
           <button id="go-to-topup-page" class="btn text-accent btn-outline flex-1">Изменить</button>
