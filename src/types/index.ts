@@ -26,7 +26,7 @@ export type BalanceData = {
 	transactions: Transaction[];
 	budgetPerDay: number | null;
 	availableBudgetToday: number | null;
-	averageSpentPerDay: number | null;
+	averageSpentPerDay: number;
 };
 
 export type Transaction = {
@@ -43,12 +43,12 @@ export type StateManager = {
 
 	setPeriodDate: (periodDate: Date) => void;
 	setBudget: (budget: number) => void;
-	getPeriodDate: () => BalanceData["periodDate"] | null;
-	getBudget: () => BalanceData["budget"] | null;
-	getBudgetPerDay: () => BalanceData["budgetPerDay"] | null;
-	getAvailableBudgetToday: () => BalanceData["availableBudgetToday"] | null;
+	getPeriodDate: () => BalanceData["periodDate"];
+	getBudget: () => BalanceData["budget"];
+	getBudgetPerDay: () => BalanceData["budgetPerDay"];
+	getAvailableBudgetToday: () => BalanceData["availableBudgetToday"];
 	getTransactionHistory: () => BalanceData["transactions"];
-	getAverageSpentPerDay: () => BalanceData["averageSpentPerDay"] | null;
+	getAverageSpentPerDay: () => BalanceData["averageSpentPerDay"];
 	getBalanceData: () => BalanceData;
 };
 

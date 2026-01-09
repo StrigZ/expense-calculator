@@ -49,10 +49,6 @@ export class HistoryBlock extends Component {
 	}
 
 	update({ transactions, averageSpentPerDay }: HistoryBlockUpdate) {
-		if (averageSpentPerDay === null) {
-			throw new Error("HistoryBlock: update data is empty!");
-		}
-
 		const visibleTransactions = this.shouldShowFullHistory
 			? transactions
 			: transactions.slice(0, 3);
