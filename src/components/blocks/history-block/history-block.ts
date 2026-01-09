@@ -13,11 +13,16 @@ export class HistoryBlock extends Component {
 	private historyList: HTMLElement;
 	private averageSpentPerDay: HTMLElement;
 	private navButton: HTMLButtonElement;
-
+	private shouldShowFullHistory: boolean;
 	constructor({
 		onNavButtonClick,
 		navButtonText,
-	}: { onNavButtonClick: () => void; navButtonText: string }) {
+		shouldShowFullHistory,
+	}: {
+		onNavButtonClick: () => void;
+		navButtonText: string;
+		shouldShowFullHistory: boolean;
+	}) {
 		if (!HistoryBlock.template) {
 			HistoryBlock.template = getTemplateById("history-block");
 		}
@@ -34,6 +39,9 @@ export class HistoryBlock extends Component {
 
 		this.navButton.addEventListener("click", onNavButtonClick);
 		this.navButton.textContent = navButtonText;
+		this.navButton.classList.add("hidden");
+
+		this.shouldShowFullHistory = shouldShowFullHistory;
 	}
 
 	render(): HTMLElement {
@@ -41,13 +49,19 @@ export class HistoryBlock extends Component {
 	}
 
 	update({ transactions, averageSpentPerDay }: HistoryBlockRender) {
+		const visibleTransactions = this.shouldShowFullHistory
+			? transactions
+			: transactions.slice(0, 3);
+
 		const fragment = new DocumentFragment();
-		transactions.forEach((transaction) => {
+		visibleTransactions.forEach((transaction) => {
 			const newHistoryItem = new HistoryListItemView(transaction);
 			fragment.append(newHistoryItem.render());
 		});
 		this.historyList.replaceChildren(fragment);
 
 		this.averageSpentPerDay.textContent = averageSpentPerDay?.toString() ?? "0";
+
+		this.navButton.classList.toggle("hidden", transactions.length <= 3);
 	}
 }

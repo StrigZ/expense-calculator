@@ -11,6 +11,7 @@ export class HistoryPage extends Page {
 		this.historyBlock = new HistoryBlock({
 			onNavButtonClick: goToHomePage,
 			navButtonText: "Вернуться",
+			shouldShowFullHistory: true,
 		});
 		this.element.append(this.historyBlock.render());
 	}

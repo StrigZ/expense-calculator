@@ -30,6 +30,7 @@ export class HomePage extends Page {
 		this.historyBlock = new HistoryBlock({
 			onNavButtonClick: goToHistoryPage,
 			navButtonText: "Смотреть всю историю",
+			shouldShowFullHistory: false,
 		});
 
 		this.element.append(
