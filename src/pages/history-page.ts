@@ -1,7 +1,7 @@
 import { HistoryBlock } from "../components/blocks/history-block/history-block";
 import { Container } from "../components/container";
 import { Page } from "../components/page";
-import type { HistoryBlockRender } from "../types";
+import type { HistoryPageUpdate } from "../types";
 
 export class HistoryPage extends Page {
 	private historyBlock: HistoryBlock;
@@ -20,7 +20,7 @@ export class HistoryPage extends Page {
 		return this.element;
 	}
 
-	update({ transactions, averageSpentPerDay }: HistoryBlockRender) {
+	update({ transactions, averageSpentPerDay }: HistoryPageUpdate) {
 		this.historyBlock.update({ transactions, averageSpentPerDay });
 	}
 }

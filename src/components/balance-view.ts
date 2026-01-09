@@ -1,5 +1,5 @@
 import { differenceInCalendarDays } from "date-fns";
-import type { BalanceViewRender } from "../types";
+import type { BalanceViewUpdate } from "../types";
 import {
 	cloneTemplate,
 	getElementByQuery,
@@ -28,7 +28,11 @@ export class BalanceView extends Component {
 		return this.element;
 	}
 
-	update({ budget, budgetPerDay, periodDate }: BalanceViewRender) {
+	update({ budget, budgetPerDay, periodDate }: BalanceViewUpdate) {
+		if (budget === null || budgetPerDay === null || !periodDate) {
+			throw new Error("BalanceView: data is empty!");
+		}
+
 		this.budgetEl.textContent = budget.toString();
 		this.budgetPerDayEl.textContent = budgetPerDay.toString();
 		this.periodDateEl.textContent = differenceInCalendarDays(

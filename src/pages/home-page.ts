@@ -4,7 +4,7 @@ import { HistoryBlock } from "../components/blocks/history-block/history-block.t
 import { Container } from "../components/container.ts";
 import { Page } from "../components/page.ts";
 
-import type { BalanceData, Transaction } from "../types";
+import type { HomePageUpdate, Transaction } from "../types";
 
 export class HomePage extends Page {
 	private balanceBlock: BalanceBlock;
@@ -51,11 +51,15 @@ export class HomePage extends Page {
 		transactions,
 		availableBudgetToday,
 		averageSpentPerDay,
-	}: BalanceData) {
-		if (budgetPerDay === null || budget === null || !periodDate) {
-			throw new Error(
-				"BalanceBlock: budgetPerDay or budget or periodDate is null",
-			);
+	}: HomePageUpdate) {
+		if (
+			budgetPerDay === null ||
+			budget === null ||
+			availableBudgetToday === null ||
+			averageSpentPerDay === null ||
+			!periodDate
+		) {
+			throw new Error("HomePage: update data is empty!");
 		}
 
 		this.balanceBlock.update({ budgetPerDay, periodDate, budget });

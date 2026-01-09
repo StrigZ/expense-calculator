@@ -47,9 +47,7 @@ export class TopupBlock extends Component {
 
 	update({ budgetPerDay, periodDate, budget }: BalanceData) {
 		if (budgetPerDay === null || budget === null || !periodDate) {
-			throw new Error(
-				"BalanceBlock: budgetPerDay or budget or periodDate is null",
-			);
+			throw new Error("BalanceBlock: update data is empty!");
 		}
 
 		this.balancePerDayEl.textContent = budgetPerDay.toString();

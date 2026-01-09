@@ -1,4 +1,4 @@
-import type { BalanceViewRender } from "../../../types";
+import type { BalanceBlockUpdate } from "../../../types";
 import {
 	cloneTemplate,
 	getElementByQuery,
@@ -45,7 +45,7 @@ export class BalanceBlock extends Component {
 		return this.element;
 	}
 
-	update(balanceViewData: BalanceViewRender) {
+	update(balanceViewData: BalanceBlockUpdate) {
 		this.balanceView.update(balanceViewData);
 	}
 }

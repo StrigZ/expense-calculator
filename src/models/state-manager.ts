@@ -11,7 +11,7 @@ export class StateManager implements TStateManager {
 	private transactions: Transaction[] = [];
 	private budgetPerDay: number | null = null;
 	private availableBudgetToday: number | null = null;
-	private averageSpentPerDay: number | null = null;
+	private averageSpentPerDay: number = 0;
 
 	setPeriodDate(periodDate: Date) {
 		this.periodDate = periodDate;

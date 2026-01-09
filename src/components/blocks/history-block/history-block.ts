@@ -1,4 +1,4 @@
-import type { HistoryBlockRender } from "../../../types";
+import type { HistoryBlockUpdate } from "../../../types";
 import {
 	cloneTemplate,
 	getElementByQuery,
@@ -48,7 +48,11 @@ export class HistoryBlock extends Component {
 		return this.element;
 	}
 
-	update({ transactions, averageSpentPerDay }: HistoryBlockRender) {
+	update({ transactions, averageSpentPerDay }: HistoryBlockUpdate) {
+		if (averageSpentPerDay === null) {
+			throw new Error("HistoryBlock: update data is empty!");
+		}
+
 		const visibleTransactions = this.shouldShowFullHistory
 			? transactions
 			: transactions.slice(0, 3);
@@ -60,7 +64,7 @@ export class HistoryBlock extends Component {
 		});
 		this.historyList.replaceChildren(fragment);
 
-		this.averageSpentPerDay.textContent = averageSpentPerDay?.toString() ?? "0";
+		this.averageSpentPerDay.textContent = averageSpentPerDay.toString();
 
 		this.navButton.classList.toggle("hidden", transactions.length <= 3);
 	}

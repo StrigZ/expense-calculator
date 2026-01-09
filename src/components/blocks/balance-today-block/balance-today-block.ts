@@ -1,4 +1,4 @@
-import type { BalanceTodayBlockRender, Transaction } from "../../../types";
+import type { BalanceTodayBlockUpdate, Transaction } from "../../../types";
 import {
 	cloneTemplate,
 	getElementByQuery,
@@ -58,9 +58,9 @@ export class BalanceTodayBlock extends Component {
 		return this.element;
 	}
 
-	update({ availableBudgetToday, budgetPerDay }: BalanceTodayBlockRender) {
+	update({ availableBudgetToday, budgetPerDay }: BalanceTodayBlockUpdate) {
 		if (availableBudgetToday === null || budgetPerDay === null) {
-			throw new Error(`${this}: availableBudgetToday or budgetPerDay is null`);
+			throw new Error(`BalanceTodayBlock: update data is empty!`);
 		}
 
 		if (availableBudgetToday >= 0) {
