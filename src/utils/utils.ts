@@ -72,3 +72,17 @@ const paths = Object.values(ROUTER_PATHS);
 export const isRoute = (str: string): str is Route => {
 	return paths.includes(str as Route);
 };
+
+export function convertTimeframeToDate(
+	timeframe: Exclude<Timeframe, "Своя дата">,
+): Date {
+	if (timeframe === "До конца месяца") {
+		return endOfMonth(new Date());
+	}
+
+	return add(new Date(), { days: timeframeToNumberMap[timeframe] });
+}
+
+export function isTimeframe(str: string): str is Timeframe {
+	return TIMEFRAMES.includes(str as Timeframe);
+}

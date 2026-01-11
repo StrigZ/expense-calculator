@@ -12,8 +12,7 @@ export class DatePickerListItem extends Component {
 	constructor({
 		untilDate,
 		period,
-		onClick,
-	}: { period: string; untilDate: Date | null; onClick: () => void }) {
+	}: { period: string; untilDate: Date | null }) {
 		if (!DatePickerListItem.template) {
 			DatePickerListItem.template = getTemplateById("date-picker-list-item");
 		}
@@ -22,11 +21,6 @@ export class DatePickerListItem extends Component {
 
 		const periodEl = getElementByQuery("#period", this.element);
 		const untilDateEl = getElementByQuery("#until-date", this.element);
-
-		this.element.addEventListener("click", (e) => {
-			e.stopPropagation();
-			onClick();
-		});
 
 		if (untilDate) {
 			untilDateEl.textContent = `до ${format(untilDate, "d MMMM")}`;

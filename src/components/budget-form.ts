@@ -55,7 +55,20 @@ export class BudgetForm extends Component<HTMLFormElement> {
 				this.datePicker.updatePopupContent(this.datePickerList.render()),
 		});
 
-		this.datePickerList = new DatePickerList();
+		this.datePickerList = new DatePickerList({
+			onTimeframePick: (date) => {
+				this.datePicker.updateTriggerButtonText(
+					getDatePickerTriggerButtonText(date),
+				);
+				this.periodDate = date;
+				this.validateForm();
+				this.datePicker.hidePopup();
+			},
+			onCalendarOpen: () => {
+				this.datePicker.updatePopupContent(this.datePickerCalendar.render());
+			},
+		});
+
 		this.datePickerCalendar = new DatePickerCalendar({
 			onMonthChange: () =>
 				this.datePicker.updatePopupContent(this.datePickerCalendar.render()),
@@ -116,7 +129,6 @@ export class BudgetForm extends Component<HTMLFormElement> {
 	}
 
 	render() {
-		this.datePickerList.resetList();
 		const fragment = new DocumentFragment();
 
 		getDatePickerListData().forEach(({ timeframe, untilDate }) => {
@@ -124,27 +136,12 @@ export class BudgetForm extends Component<HTMLFormElement> {
 				const datePickerListItem = new DatePickerListItem({
 					period: timeframe,
 					untilDate,
-					onClick: () => {
-						this.datePicker.updatePopupContent(
-							this.datePickerCalendar.render(),
-						);
-					},
 				});
 				fragment.append(datePickerListItem.render());
 			} else if (untilDate) {
 				const datePickerListItem = new DatePickerListItem({
 					period: timeframe,
 					untilDate,
-					onClick: () => {
-						this.datePicker.updateTriggerButtonText(
-							getDatePickerTriggerButtonText(untilDate),
-						);
-						//TODO: use validation to handle disabled state
-
-						this.periodDate = untilDate;
-						this.validateForm();
-						this.datePicker.hidePopup();
-					},
 				});
 				fragment.append(datePickerListItem.render());
 			}
