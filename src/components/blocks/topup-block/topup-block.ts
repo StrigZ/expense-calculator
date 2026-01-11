@@ -1,35 +1,23 @@
-import { differenceInCalendarDays } from "date-fns";
 import type { BalanceData, OnCalculateBudget } from "../../../types";
-import {
-	cloneTemplate,
-	getElementByQuery,
-	getTemplateById,
-} from "../../../utils/utils";
+
+import { BalanceView } from "../../balance-view";
 import { BudgetForm } from "../../budget-form";
 import { Component } from "../../component";
+import { Container } from "../../container";
 
 export class TopupBlock extends Component {
-	private static template: HTMLTemplateElement | null;
-
-	private balancePerDayEl: HTMLElement;
-	private periodEl: HTMLElement;
-	private totalBalanceEl: HTMLElement;
+	private balanceView: BalanceView;
 	private budgetForm: BudgetForm;
 	constructor({
 		onCalculateBudget,
 	}: {
 		onCalculateBudget: OnCalculateBudget;
 	}) {
-		if (!TopupBlock.template) {
-			const template = getTemplateById("topup-block");
-			TopupBlock.template = template;
-		}
+		const container = new Container({ className: "card flex flex-col" });
 
-		super(cloneTemplate(TopupBlock.template));
+		super(container.render());
 
-		this.balancePerDayEl = getElementByQuery("#balance-per-day", this.element);
-		this.periodEl = getElementByQuery("#period", this.element);
-		this.totalBalanceEl = getElementByQuery("#total-balance", this.element);
+		this.balanceView = new BalanceView();
 
 		this.budgetForm = new BudgetForm({
 			inputLabelText: "Пополнить",
@@ -38,7 +26,7 @@ export class TopupBlock extends Component {
 		});
 		this.budgetForm.setBudget(0);
 
-		this.element.append(this.budgetForm.render());
+		this.element.append(this.balanceView.render(), this.budgetForm.render());
 	}
 
 	render() {
@@ -50,13 +38,7 @@ export class TopupBlock extends Component {
 			throw new Error("BalanceBlock: update data is empty!");
 		}
 
-		this.balancePerDayEl.textContent = budgetPerDay.toString();
-		this.periodEl.textContent = differenceInCalendarDays(
-			periodDate,
-			new Date(),
-		).toString();
-		this.totalBalanceEl.textContent = budget.toString();
-
+		this.balanceView.update({ budget, budgetPerDay, periodDate });
 		this.budgetForm.setPeriodDate(periodDate);
 		this.budgetForm.validateForm();
 
