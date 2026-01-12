@@ -14,6 +14,7 @@ export function initApp(): void {
 	const router = new Router(root);
 
 	const topupPage = new TopupPage({
+		balanceData: state.getBalanceData(),
 		onCalculateBudget: ({ budget, periodDate }) => {
 			state.increaseBudget(budget);
 			state.setPeriodDate(periodDate);
@@ -22,6 +23,7 @@ export function initApp(): void {
 		},
 	});
 	const historyPage = new HistoryPage({
+		balanceData: state.getBalanceData(),
 		goToHomePage,
 	});
 	const startPage = new StartPage({
@@ -33,6 +35,7 @@ export function initApp(): void {
 		},
 	});
 	const homePage = new HomePage({
+		balanceData: state.getBalanceData(),
 		handleNewTransaction: (transaction) => {
 			state.addTransaction(transaction);
 			homePage.update(state.getBalanceData());

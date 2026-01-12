@@ -10,55 +10,6 @@
   <body class="mx-auto grid h-screen grid-cols-4 place-content-center content-stretch gap-4 px-4 py-8 md:grid-cols-8 md:content-center md:gap-5 md:px-8 lg:grid-cols-12 lg:content-start lg:gap-6 lg:px-16">
     <main id="app" class="col-span-full"></main>
 
-    <template id="history-page">
-      <div class="card flex flex-col">
-        <div class="space-y-4">
-          <header class="space-y-1">
-            <h2 class="text-text-primary">История расходов</h2>
-            <p class="text-caption text-primary">Средние траты в день: 1050 ₽</p>
-          </header>
-          <ul class="history-list">
-            <template id="history-list-item">
-              <li>
-                <h3 class="text-text-primary">200 <span class="font-inter">₽</span></h3>
-                <p class="text-body text-text-secondary">25 октября</p>
-                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M0.5 0.5L12.4956 12.4956" stroke="#6B7280" stroke-linecap="round" />
-                  <path d="M0.504395 12.4956L12.5 0.499984" stroke="#6B7280" stroke-linecap="round" />
-                </svg>
-              </li>
-            </template>
-
-            <li>
-              <h3 class="text-text-primary flex-1">200 <span class="font-inter">₽</span></h3>
-              <p class="text-body text-text-secondary">25 октября</p>
-              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0.5 0.5L12.4956 12.4956" stroke="#6B7280" stroke-linecap="round" />
-                <path d="M0.504395 12.4956L12.5 0.499984" stroke="#6B7280" stroke-linecap="round" />
-              </svg>
-            </li>
-            <li>
-              <h3 class="text-text-primary flex-1">200 <span class="font-inter">₽</span></h3>
-              <p class="text-body text-text-secondary">25 октября</p>
-              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0.5 0.5L12.4956 12.4956" stroke="#6B7280" stroke-linecap="round" />
-                <path d="M0.504395 12.4956L12.5 0.499984" stroke="#6B7280" stroke-linecap="round" />
-              </svg>
-            </li>
-            <li>
-              <h3 class="text-text-primary flex-1">200 <span class="font-inter">₽</span></h3>
-              <p class="text-body text-text-secondary">25 октября</p>
-              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0.5 0.5L12.4956 12.4956" stroke="#6B7280" stroke-linecap="round" />
-                <path d="M0.504395 12.4956L12.5 0.499984" stroke="#6B7280" stroke-linecap="round" />
-              </svg>
-            </li>
-          </ul>
-        </div>
-        <button class="text-accent btn btn-outline mt-auto">Вернуться</button>
-      </div>
-    </template>
-
     <template id="balance-view">
       <div class="space-y-0.5">
         <header class="text-body flex items-center justify-between gap-2">
@@ -113,23 +64,10 @@
 
     <template id="history-block">
       <div class="card group hidden flex-col only:flex md:flex">
-        <div class="space-y-4">
-          <header class="space-y-1">
-            <p class="text-body text-text-secondary">История расходов</p>
-            <p class="text-caption text-primary">Средние траты в день: <span id="average-spent-per-day">1050</span> ₽</p>
-          </header>
-          <ul id="history-list" class="history-list">
-            <li class="flex items-center justify-between py-1!">
-              <h3 class="text-text-primary">200 <span class="font-inter">₽</span></h3>
-              <p class="text-body text-text-secondary">25 октября</p>
-            </li>
-            <li class="flex items-center justify-between py-1!">
-              <h3 class="text-text-primary">200 <span class="font-inter">₽</span></h3>
-              <p class="text-body text-text-secondary">25 октября</p>
-            </li>
-          </ul>
-        </div>
-        <button id="nav-button" class="text-accent btn btn-outline flex-1">Смотреть всю историю</button>
+        <header class="space-y-1">
+          <p class="text-body text-text-secondary">История расходов</p>
+          <p class="text-caption text-primary">Средние траты в день: <span id="average-spent-per-day">1050</span> ₽</p>
+        </header>
       </div>
     </template>
 

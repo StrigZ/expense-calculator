@@ -31,6 +31,10 @@ export class Button extends Component<HTMLButtonElement> {
 		this.element.disabled = !isEnabled;
 	}
 
+	setIsButtonHidden(isHidden: boolean) {
+		this.element.classList.toggle("hidden", isHidden);
+	}
+
 	render() {
 		return this.element;
 	}

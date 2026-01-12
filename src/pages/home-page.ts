@@ -11,6 +11,7 @@ export class HomePage extends Page {
 	private balanceTodayBlock: BalanceTodayBlock;
 	private historyBlock: HistoryBlock;
 	constructor({
+		balanceData,
 		handleNewTransaction,
 		goToHistoryPage,
 		goToTopupPage,
@@ -23,9 +24,9 @@ export class HomePage extends Page {
 		this.balanceBlock = new BalanceBlock({ goToHistoryPage, goToTopupPage });
 		this.balanceTodayBlock = new BalanceTodayBlock({ handleNewTransaction });
 		this.historyBlock = new HistoryBlock({
+			transactions: balanceData.transactions,
 			onNavButtonClick: goToHistoryPage,
 			navButtonText: "Смотреть всю историю",
-			shouldShowFullHistory: false,
 		});
 
 		this.element.append(
@@ -59,6 +60,11 @@ export class HomePage extends Page {
 
 		this.balanceBlock.update({ budgetPerDay, periodDate, budget });
 		this.balanceTodayBlock.update({ availableBudgetToday, budgetPerDay });
-		this.historyBlock.update({ transactions, averageSpentPerDay });
+
+		const visibleTransactions = transactions.slice(0, 3);
+		this.historyBlock.update({
+			transactions: visibleTransactions,
+			averageSpentPerDay,
+		});
 	}
 }

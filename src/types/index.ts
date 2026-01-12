@@ -90,8 +90,12 @@ export type OnCalculateBudget = ({
 	periodDate,
 }: BudgetFormData) => void;
 
-export type HistoryPageConstructor = { goToHomePage: () => void };
+export type HistoryPageConstructor = {
+	balanceData: BalanceData;
+	goToHomePage: () => void;
+};
 export type HomePageConstructor = {
+	balanceData: BalanceData;
 	handleNewTransaction: (transaction: Transaction) => void;
 	goToHistoryPage: () => void;
 	goToHomePage: () => void;
@@ -112,9 +116,9 @@ export type BalanceTodayBlockConstructor = {
 	handleNewTransaction: (transaction: Transaction) => void;
 };
 export type HistoryBlockConstructor = {
+	transactions: Transaction[];
 	onNavButtonClick: () => void;
 	navButtonText: string;
-	shouldShowFullHistory: boolean;
 };
 export type TopupBlockConstructor = {
 	onCalculateBudget: OnCalculateBudget;

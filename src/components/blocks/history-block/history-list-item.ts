@@ -7,15 +7,15 @@ import {
 } from "../../../utils/utils";
 import { Component } from "../../component";
 
-export class HistoryListItemView extends Component {
+export class HistoryListItem extends Component {
 	private static template: HTMLTemplateElement | null;
 
 	constructor({ amount, date }: Transaction) {
-		if (!HistoryListItemView.template) {
-			HistoryListItemView.template = getTemplateById("history-list-item");
+		if (!HistoryListItem.template) {
+			HistoryListItem.template = getTemplateById("history-list-item");
 		}
 
-		super(cloneTemplate(HistoryListItemView.template));
+		super(cloneTemplate(HistoryListItem.template));
 
 		const spentAmountEl = getElementByQuery("#spent-amount", this.element);
 		const transactionDateEl = getElementByQuery("#spent-date", this.element);

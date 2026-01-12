@@ -5,13 +5,13 @@ import type { HistoryPageConstructor, HistoryPageUpdate } from "../types";
 
 export class HistoryPage extends Page {
 	private historyBlock: HistoryBlock;
-	constructor({ goToHomePage }: HistoryPageConstructor) {
+	constructor({ balanceData, goToHomePage }: HistoryPageConstructor) {
 		super(new Container({}).render());
 
 		this.historyBlock = new HistoryBlock({
+			transactions: balanceData.transactions,
 			onNavButtonClick: goToHomePage,
 			navButtonText: "Вернуться",
-			shouldShowFullHistory: true,
 		});
 		this.element.append(this.historyBlock.render());
 	}
