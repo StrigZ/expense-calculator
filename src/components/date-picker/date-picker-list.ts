@@ -1,12 +1,17 @@
+import type { Timeframe } from "../../types";
 import { convertTimeframeToDate, isTimeframe } from "../../utils/utils";
 import { Component } from "../component";
 import { Container } from "../container";
+import type { DatePickerListItem } from "./date-picker-list-item";
 
 export class DatePickerList extends Component {
+	items: DatePickerListItem[];
 	constructor({
+		items,
 		onTimeframePick,
 		onCalendarOpen,
 	}: {
+		items: DatePickerListItem[];
 		onTimeframePick: (pickedDate: Date) => void;
 		onCalendarOpen: () => void;
 	}) {
@@ -31,10 +36,24 @@ export class DatePickerList extends Component {
 
 			onTimeframePick(convertTimeframeToDate(timeframe));
 		});
+
+		const itemsFragment = new DocumentFragment();
+		items.forEach((item) => {
+			itemsFragment.append(item.render());
+		});
+
+		this.element.replaceChildren(itemsFragment);
+		this.items = items;
 	}
 
-	appendFragmentToList(fragment: DocumentFragment) {
-		this.element.append(fragment);
+	update(timeframeToDateMap: Record<Timeframe, Date | null>) {
+		this.items.forEach((item) => {
+			const timeframe = item.getTimeframe();
+			if (!isTimeframe(timeframe))
+				throw new Error("DatePickerList.update(): string is not a timeframe!");
+
+			item.setUntilDate(timeframeToDateMap[timeframe]);
+		});
 	}
 
 	render() {

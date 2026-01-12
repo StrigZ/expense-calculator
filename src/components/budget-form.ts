@@ -1,7 +1,7 @@
 import type { OnCalculateBudget } from "../types";
 import {
-	getDatePickerListData,
 	getDatePickerTriggerButtonText,
+	getTimeframeToDateMap,
 } from "../utils/utils";
 import { validateBudgetForm } from "../utils/validation";
 import { Button } from "./button";
@@ -56,6 +56,13 @@ export class BudgetForm extends Component<HTMLFormElement> {
 		});
 
 		this.datePickerList = new DatePickerList({
+			items: Object.entries(getTimeframeToDateMap()).map(
+				([timeframe, untilDate]) =>
+					new DatePickerListItem({
+						timeframe,
+						untilDate,
+					}),
+			),
 			onTimeframePick: (date) => {
 				this.datePicker.updateTriggerButtonText(
 					getDatePickerTriggerButtonText(date),
@@ -128,30 +135,12 @@ export class BudgetForm extends Component<HTMLFormElement> {
 		);
 	}
 
-	render() {
-		const fragment = new DocumentFragment();
-
-		getDatePickerListData().forEach(({ timeframe, untilDate }) => {
-			if (timeframe === "Своя дата") {
-				const datePickerListItem = new DatePickerListItem({
-					period: timeframe,
-					untilDate,
-				});
-				fragment.append(datePickerListItem.render());
-			} else if (untilDate) {
-				const datePickerListItem = new DatePickerListItem({
-					period: timeframe,
-					untilDate,
-				});
-				fragment.append(datePickerListItem.render());
-			}
-		});
-
-		this.datePickerList.appendFragmentToList(fragment);
-		this.datePicker.updatePopupContent(this.datePickerList.render());
-
+	update() {
+		this.datePickerList.update(getTimeframeToDateMap());
 		this.validateForm();
+	}
 
+	render() {
 		return this.element;
 	}
 }

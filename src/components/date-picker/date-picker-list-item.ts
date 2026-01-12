@@ -9,25 +9,37 @@ import { Component } from "../component";
 export class DatePickerListItem extends Component {
 	private static template: HTMLTemplateElement | null;
 
+	private timeframeEl: HTMLElement;
+	private untilDateEl: HTMLElement;
 	constructor({
 		untilDate,
-		period,
-	}: { period: string; untilDate: Date | null }) {
+		timeframe,
+	}: { timeframe: string; untilDate: Date | null }) {
 		if (!DatePickerListItem.template) {
 			DatePickerListItem.template = getTemplateById("date-picker-list-item");
 		}
 
 		super(cloneTemplate(DatePickerListItem.template));
 
-		const periodEl = getElementByQuery("#period", this.element);
-		const untilDateEl = getElementByQuery("#until-date", this.element);
+		this.timeframeEl = getElementByQuery("#period", this.element);
+		this.untilDateEl = getElementByQuery("#until-date", this.element);
 
 		if (untilDate) {
-			untilDateEl.textContent = `до ${format(untilDate, "d MMMM")}`;
+			this.untilDateEl.textContent = `до ${format(untilDate, "d MMMM")}`;
 		} else {
-			untilDateEl.classList.add("hidden");
+			this.untilDateEl.classList.add("hidden");
 		}
-		periodEl.textContent = period;
+		this.timeframeEl.textContent = timeframe;
+	}
+
+	getTimeframe() {
+		return this.timeframeEl.textContent;
+	}
+
+	setUntilDate(untilDate: Date | null) {
+		if (!untilDate) return;
+
+		this.untilDateEl.textContent = `до ${format(untilDate, "d MMMM")}`;
 	}
 
 	render() {

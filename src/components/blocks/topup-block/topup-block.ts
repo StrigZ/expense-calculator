@@ -39,8 +39,9 @@ export class TopupBlock extends Component {
 		}
 
 		this.balanceView.update({ budget, budgetPerDay, periodDate });
+
 		this.budgetForm.setPeriodDate(periodDate);
-		this.budgetForm.validateForm();
+		this.budgetForm.update();
 
 		return this.element;
 	}

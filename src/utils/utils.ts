@@ -46,26 +46,29 @@ export function getDatePickerTriggerButtonText(periodDate: Date) {
 	return `${diffInCalendarDays} дней (до ${format(periodDate, "d MMMM")})`;
 }
 
-export function getDatePickerListData(): {
-	timeframe: Timeframe;
-	untilDate: Date | null;
-}[] {
-	const timeframeList: ReturnType<typeof getDatePickerListData> = [];
+export function getTimeframeToDateMap() {
+	const timeframeToDateMap: Record<Timeframe, Date | null> = {
+		День: null,
+		Неделя: null,
+		"2 недели": null,
+		Месяц: null,
+		"До конца месяца": null,
+		"Своя дата": null,
+	};
 
 	TIMEFRAMES.forEach((timeframe) => {
 		if (timeframe === "Своя дата") {
-			timeframeList.push({ timeframe, untilDate: null });
+			timeframeToDateMap[timeframe] = null;
 		} else if (timeframe === "До конца месяца") {
-			timeframeList.push({ timeframe, untilDate: endOfMonth(new Date()) });
+			timeframeToDateMap[timeframe] = endOfMonth(new Date());
 		} else {
-			timeframeList.push({
-				timeframe,
-				untilDate: add(new Date(), { days: timeframeToNumberMap[timeframe] }),
+			timeframeToDateMap[timeframe] = add(new Date(), {
+				days: timeframeToNumberMap[timeframe],
 			});
 		}
 	});
 
-	return timeframeList;
+	return timeframeToDateMap;
 }
 
 const paths = Object.values(ROUTER_PATHS);
