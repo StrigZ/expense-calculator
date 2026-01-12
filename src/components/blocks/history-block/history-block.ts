@@ -62,6 +62,6 @@ export class HistoryBlock extends Component {
 
 		this.averageSpentPerDay.textContent = averageSpentPerDay.toString();
 
-		this.navButton.classList.toggle("hidden", transactions.length <= 3);
+		this.navButton.classList.toggle("hidden", transactions.length < 1);
 	}
 }
