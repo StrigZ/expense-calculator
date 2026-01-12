@@ -72,12 +72,18 @@
     </template>
 
     <template id="history-list-item">
-      <li class="flex items-center justify-between">
-        <h3 class="text-text-primary">
+      <li class="flex items-center justify-between gap-3">
+        <h3 class="text-text-primary flex-1">
           <span id="spent-amount">200</span>
           <span class="font-inter">₽</span>
         </h3>
         <p id="spent-date" class="text-body text-text-secondary">25 октября</p>
+        <button id="delete-transaction-btn" class="btn" type="button">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0.5 0.5L12.4956 12.4956" stroke="#6B7280" stroke-linecap="round" />
+            <path d="M0.504395 12.4956L12.5 0.499984" stroke="#6B7280" stroke-linecap="round" />
+          </svg>
+        </button>
       </li>
     </template>
 

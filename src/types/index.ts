@@ -93,6 +93,7 @@ export type OnCalculateBudget = ({
 export type HistoryPageConstructor = {
 	balanceData: BalanceData;
 	goToHomePage: () => void;
+	handleTransactionDelete: (transactionId: string) => void;
 };
 export type HomePageConstructor = {
 	balanceData: BalanceData;
@@ -117,8 +118,10 @@ export type BalanceTodayBlockConstructor = {
 };
 export type HistoryBlockConstructor = {
 	transactions: Transaction[];
-	onNavButtonClick: () => void;
 	navButtonText: string;
+	canDeleteTransactions: boolean;
+	onNavButtonClick: () => void;
+	handleTransactionDelete?: (transactionId: string) => void;
 };
 export type TopupBlockConstructor = {
 	onCalculateBudget: OnCalculateBudget;

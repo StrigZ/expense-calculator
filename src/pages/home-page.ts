@@ -25,8 +25,9 @@ export class HomePage extends Page {
 		this.balanceTodayBlock = new BalanceTodayBlock({ handleNewTransaction });
 		this.historyBlock = new HistoryBlock({
 			transactions: balanceData.transactions,
-			onNavButtonClick: goToHistoryPage,
 			navButtonText: "Смотреть всю историю",
+			canDeleteTransactions: false,
+			onNavButtonClick: goToHistoryPage,
 		});
 
 		this.element.append(

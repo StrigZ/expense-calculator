@@ -18,10 +18,13 @@ export class HistoryBlock extends Component {
 	private historyList: HistoryList;
 	private averageSpentPerDay: HTMLElement;
 	private navButton: Button;
+	private canDeleteTransactions: boolean;
 	constructor({
 		transactions,
-		onNavButtonClick,
 		navButtonText,
+		canDeleteTransactions,
+		onNavButtonClick,
+		handleTransactionDelete,
 	}: HistoryBlockConstructor) {
 		if (!HistoryBlock.template) {
 			HistoryBlock.template = getTemplateById("history-block");
@@ -31,8 +34,13 @@ export class HistoryBlock extends Component {
 
 		this.historyList = new HistoryList({
 			items: transactions.map(
-				(transaction) => new HistoryListItem(transaction),
+				(transaction) =>
+					new HistoryListItem({
+						isDeleteButtonVisible: canDeleteTransactions,
+						...transaction,
+					}),
 			),
+			onTransactionDelete: handleTransactionDelete,
 		});
 
 		this.averageSpentPerDay = getElementByQuery(
@@ -47,6 +55,8 @@ export class HistoryBlock extends Component {
 			onClick: onNavButtonClick,
 		});
 
+		this.canDeleteTransactions = canDeleteTransactions;
+
 		this.element.append(this.historyList.render(), this.navButton.render());
 	}
 
@@ -56,10 +66,18 @@ export class HistoryBlock extends Component {
 
 	update({ transactions, averageSpentPerDay }: HistoryBlockUpdate) {
 		this.historyList.update(
-			transactions.map((transaction) => new HistoryListItem(transaction)),
+			transactions.map(
+				(transaction) =>
+					new HistoryListItem({
+						isDeleteButtonVisible: this.canDeleteTransactions,
+						...transaction,
+					}),
+			),
 		);
 
 		this.averageSpentPerDay.textContent = averageSpentPerDay.toString();
-		this.navButton.setIsButtonHidden(transactions.length < 1);
+		this.navButton.setIsButtonHidden(
+			!this.canDeleteTransactions && transactions.length < 1,
+		);
 	}
 }

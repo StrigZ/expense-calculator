@@ -25,6 +25,13 @@ export function initApp(): void {
 	const historyPage = new HistoryPage({
 		balanceData: state.getBalanceData(),
 		goToHomePage,
+		handleTransactionDelete: (transactionId) => {
+			// TODO: remove tr from db
+
+			state.removeTransaction(transactionId);
+
+			historyPage.update(state.getBalanceData());
+		},
 	});
 	const startPage = new StartPage({
 		onCalculateBudget: ({ budget, periodDate }) => {

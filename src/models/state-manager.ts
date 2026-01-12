@@ -1,4 +1,4 @@
-import { differenceInCalendarDays } from "date-fns";
+import { differenceInCalendarDays, isToday } from "date-fns";
 import type {
 	Transaction,
 	StateManager as TStateManager,
@@ -49,11 +49,13 @@ export class StateManager implements TStateManager {
 		);
 		if (transactionIdx === -1) return;
 		const transaction = this.transactions[transactionIdx];
-		this.transactions = this.transactions.splice(transactionIdx, 1);
+		this.transactions = this.transactions.filter(
+			({ id }) => id !== transaction.id,
+		);
 
 		const { amount, date } = transaction;
 		this.budget += amount;
-		if (date === new Date()) {
+		if (isToday(date)) {
 			this.availableBudgetToday += amount;
 		}
 		this._calculateAverageSpentPerDay();

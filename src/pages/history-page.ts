@@ -5,13 +5,19 @@ import type { HistoryPageConstructor, HistoryPageUpdate } from "../types";
 
 export class HistoryPage extends Page {
 	private historyBlock: HistoryBlock;
-	constructor({ balanceData, goToHomePage }: HistoryPageConstructor) {
+	constructor({
+		balanceData,
+		goToHomePage,
+		handleTransactionDelete,
+	}: HistoryPageConstructor) {
 		super(new Container({}).render());
 
 		this.historyBlock = new HistoryBlock({
 			transactions: balanceData.transactions,
-			onNavButtonClick: goToHomePage,
 			navButtonText: "Вернуться",
+			canDeleteTransactions: true,
+			onNavButtonClick: goToHomePage,
+			handleTransactionDelete,
 		});
 		this.element.append(this.historyBlock.render());
 	}
