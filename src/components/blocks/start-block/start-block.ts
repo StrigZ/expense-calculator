@@ -1,14 +1,10 @@
-import type { OnCalculateBudget } from "../../../types";
+import type { StartBlockConstructor } from "../../../types";
 import { BudgetForm } from "../../budget-form";
 import { Component } from "../../component";
 import { Container } from "../../container";
 
 export class StartBlock extends Component {
-	constructor({
-		onCalculateBudget,
-	}: {
-		onCalculateBudget: OnCalculateBudget;
-	}) {
+	constructor({ onCalculateBudget }: StartBlockConstructor) {
 		const container = new Container({ className: "card flex flex-col" });
 
 		super(container.render());

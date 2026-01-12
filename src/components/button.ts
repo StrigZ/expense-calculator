@@ -1,13 +1,5 @@
+import type { ButtonConstructor } from "../types";
 import { Component } from "./component";
-
-type ButtonConstructor = {
-	text: string;
-	variant?: "primary" | "outline";
-	className?: string;
-	type?: "submit" | "button";
-	onClick?: (e: Event) => void;
-	disabled?: boolean;
-};
 
 export class Button extends Component<HTMLButtonElement> {
 	constructor({

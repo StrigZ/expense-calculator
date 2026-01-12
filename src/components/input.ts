@@ -1,3 +1,4 @@
+import type { InputContsructor } from "../types";
 import {
 	cloneTemplate,
 	getElementByQuery,
@@ -16,14 +17,7 @@ export class Input extends Component<HTMLLabelElement> {
 		type = "text",
 		inputMode = "text",
 		onChange,
-	}: {
-		labelText: string;
-		placeholderText: string;
-		isRequired: boolean;
-		type?: "text" | "number";
-		inputMode?: "text" | "numeric";
-		onChange: (value: string) => void;
-	}) {
+	}: InputContsructor) {
 		if (!Input.template) {
 			Input.template = getTemplateById("input");
 		}

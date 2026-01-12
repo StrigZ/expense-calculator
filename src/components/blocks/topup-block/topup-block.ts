@@ -1,4 +1,4 @@
-import type { BalanceData, OnCalculateBudget } from "../../../types";
+import type { BalanceData, TopupBlockConstructor } from "../../../types";
 
 import { BalanceView } from "../../balance-view";
 import { BudgetForm } from "../../budget-form";
@@ -8,11 +8,7 @@ import { Container } from "../../container";
 export class TopupBlock extends Component {
 	private balanceView: BalanceView;
 	private budgetForm: BudgetForm;
-	constructor({
-		onCalculateBudget,
-	}: {
-		onCalculateBudget: OnCalculateBudget;
-	}) {
+	constructor({ onCalculateBudget }: TopupBlockConstructor) {
 		const container = new Container({ className: "card flex flex-col" });
 
 		super(container.render());

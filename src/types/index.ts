@@ -43,6 +43,7 @@ export type StateManager = {
 
 	setPeriodDate: (periodDate: Date) => void;
 	setBudget: (budget: number) => void;
+
 	getPeriodDate: () => BalanceData["periodDate"];
 	getBudget: () => BalanceData["budget"];
 	getBudgetPerDay: () => BalanceData["budgetPerDay"];
@@ -88,3 +89,57 @@ export type OnCalculateBudget = ({
 	budget,
 	periodDate,
 }: BudgetFormData) => void;
+
+export type HistoryPageConstructor = { goToHomePage: () => void };
+export type HomePageConstructor = {
+	handleNewTransaction: (transaction: Transaction) => void;
+	goToHistoryPage: () => void;
+	goToHomePage: () => void;
+	goToTopupPage: () => void;
+};
+export type StartPageConstructor = {
+	onCalculateBudget: OnCalculateBudget;
+};
+export type TopupPageConstructor = {
+	onCalculateBudget: OnCalculateBudget;
+};
+
+export type BalanceBlockConstructor = {
+	goToTopupPage: () => void;
+	goToHistoryPage: () => void;
+};
+export type BalanceTodayBlockConstructor = {
+	handleNewTransaction: (transaction: Transaction) => void;
+};
+export type HistoryBlockConstructor = {
+	onNavButtonClick: () => void;
+	navButtonText: string;
+	shouldShowFullHistory: boolean;
+};
+export type TopupBlockConstructor = {
+	onCalculateBudget: OnCalculateBudget;
+};
+export type StartBlockConstructor = {
+	onCalculateBudget: OnCalculateBudget;
+};
+
+export type InputContsructor = {
+	labelText: string;
+	placeholderText: string;
+	isRequired: boolean;
+	type?: "text" | "number";
+	inputMode?: "text" | "numeric";
+	onChange: (value: string) => void;
+};
+export type ButtonConstructor = {
+	text: string;
+	variant?: "primary" | "outline";
+	className?: string;
+	type?: "submit" | "button";
+	onClick?: (e: Event) => void;
+	disabled?: boolean;
+};
+export type ContainerConstructor = {
+	tag?: keyof HTMLElementTagNameMap;
+	className?: string;
+};

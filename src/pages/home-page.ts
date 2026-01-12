@@ -4,7 +4,7 @@ import { HistoryBlock } from "../components/blocks/history-block/history-block.t
 import { Container } from "../components/container.ts";
 import { Page } from "../components/page.ts";
 
-import type { HomePageUpdate, Transaction } from "../types";
+import type { HomePageConstructor, HomePageUpdate } from "../types";
 
 export class HomePage extends Page {
 	private balanceBlock: BalanceBlock;
@@ -14,12 +14,7 @@ export class HomePage extends Page {
 		handleNewTransaction,
 		goToHistoryPage,
 		goToTopupPage,
-	}: {
-		handleNewTransaction: (transaction: Transaction) => void;
-		goToHistoryPage: () => void;
-		goToHomePage: () => void;
-		goToTopupPage: () => void;
-	}) {
+	}: HomePageConstructor) {
 		const container = new Container({
 			className: "flex w-full flex-col gap-6 md:gap-2",
 		});

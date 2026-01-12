@@ -1,11 +1,11 @@
 import { HistoryBlock } from "../components/blocks/history-block/history-block";
 import { Container } from "../components/container";
 import { Page } from "../components/page";
-import type { HistoryPageUpdate } from "../types";
+import type { HistoryPageConstructor, HistoryPageUpdate } from "../types";
 
 export class HistoryPage extends Page {
 	private historyBlock: HistoryBlock;
-	constructor({ goToHomePage }: { goToHomePage: () => void }) {
+	constructor({ goToHomePage }: HistoryPageConstructor) {
 		super(new Container({}).render());
 
 		this.historyBlock = new HistoryBlock({

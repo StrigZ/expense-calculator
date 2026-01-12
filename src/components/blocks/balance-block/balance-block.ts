@@ -1,4 +1,7 @@
-import type { BalanceBlockUpdate } from "../../../types";
+import type {
+	BalanceBlockConstructor,
+	BalanceBlockUpdate,
+} from "../../../types";
 import {
 	cloneTemplate,
 	getElementByQuery,
@@ -11,13 +14,7 @@ export class BalanceBlock extends Component {
 	private static template: HTMLTemplateElement | null;
 
 	private balanceView: BalanceView;
-	constructor({
-		goToHistoryPage,
-		goToTopupPage,
-	}: {
-		goToTopupPage: () => void;
-		goToHistoryPage: () => void;
-	}) {
+	constructor({ goToHistoryPage, goToTopupPage }: BalanceBlockConstructor) {
 		if (!BalanceBlock.template) {
 			BalanceBlock.template = getTemplateById("balance-block");
 		}

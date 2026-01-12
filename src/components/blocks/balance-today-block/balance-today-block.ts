@@ -1,4 +1,7 @@
-import type { BalanceTodayBlockUpdate, Transaction } from "../../../types";
+import type {
+	BalanceTodayBlockConstructor,
+	BalanceTodayBlockUpdate,
+} from "../../../types";
 import {
 	cloneTemplate,
 	getElementByQuery,
@@ -13,9 +16,7 @@ export class BalanceTodayBlock extends Component {
 	private availableBalanceValueEl: HTMLElement;
 	private balancePerDayEl: HTMLElement;
 	private messageEl: HTMLElement;
-	constructor({
-		handleNewTransaction,
-	}: { handleNewTransaction: (transaction: Transaction) => void }) {
+	constructor({ handleNewTransaction }: BalanceTodayBlockConstructor) {
 		if (!BalanceTodayBlock.template) {
 			BalanceTodayBlock.template = getTemplateById("balance-today-block");
 		}
