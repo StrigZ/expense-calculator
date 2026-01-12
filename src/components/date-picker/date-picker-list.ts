@@ -1,13 +1,8 @@
-import {
-	cloneTemplate,
-	convertTimeframeToDate,
-	getTemplateById,
-	isTimeframe,
-} from "../../utils/utils";
+import { convertTimeframeToDate, isTimeframe } from "../../utils/utils";
 import { Component } from "../component";
+import { Container } from "../container";
 
 export class DatePickerList extends Component {
-	private static template: HTMLTemplateElement | null;
 	constructor({
 		onTimeframePick,
 		onCalendarOpen,
@@ -15,11 +10,12 @@ export class DatePickerList extends Component {
 		onTimeframePick: (pickedDate: Date) => void;
 		onCalendarOpen: () => void;
 	}) {
-		if (!DatePickerList.template) {
-			DatePickerList.template = getTemplateById("date-picker-list");
-		}
+		const container = new Container({
+			tag: "ul",
+			className: "date-picker-list",
+		});
 
-		super(cloneTemplate(DatePickerList.template));
+		super(container.render());
 
 		this.element.addEventListener("click", (e) => {
 			e.stopPropagation();
@@ -40,6 +36,7 @@ export class DatePickerList extends Component {
 	appendFragmentToList(fragment: DocumentFragment) {
 		this.element.append(fragment);
 	}
+
 	render() {
 		return this.element;
 	}
