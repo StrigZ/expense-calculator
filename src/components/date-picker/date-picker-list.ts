@@ -24,10 +24,20 @@ export class DatePickerList extends Component {
 
 		this.element.addEventListener("click", (e) => {
 			e.stopPropagation();
-			if (!(e.target instanceof HTMLElement)) return;
+			const target = e.target;
+			if (!(target instanceof HTMLElement)) return;
 
-			const timeframe = e.target.textContent;
-			if (!isTimeframe(timeframe)) return;
+			const isButton = target instanceof HTMLButtonElement;
+			const isSpan = target instanceof HTMLSpanElement;
+			const isUntilDateSpan = isSpan && target.id === "until-date";
+
+			const timeframe = isButton
+				? target.querySelector("#period")?.textContent
+				: isUntilDateSpan
+					? target.previousElementSibling?.textContent
+					: target.textContent;
+
+			if (!timeframe || !isTimeframe(timeframe)) return;
 
 			if (timeframe === "Своя дата") {
 				onCalendarOpen();
