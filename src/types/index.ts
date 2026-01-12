@@ -30,26 +30,13 @@ export type BalanceData = {
 };
 
 export type Transaction = {
-	// TODO:there probably will be id by indexDB
 	id: string;
 	amount: number;
 	date: Date;
 };
 
 export type StateManager = {
-	increaseBudget: (amount: number) => void;
-	addTransaction: (transaction: Transaction) => void;
-	removeTransaction: (transactionId: Transaction["id"]) => void;
-
-	setPeriodDate: (periodDate: Date) => void;
-	setBudget: (budget: number) => void;
-
-	getPeriodDate: () => BalanceData["periodDate"];
-	getBudget: () => BalanceData["budget"];
-	getBudgetPerDay: () => BalanceData["budgetPerDay"];
-	getAvailableBudgetToday: () => BalanceData["availableBudgetToday"];
-	getTransactionHistory: () => BalanceData["transactions"];
-	getAverageSpentPerDay: () => BalanceData["averageSpentPerDay"];
+	setBalanceData: (data: BalanceData) => void;
 	getBalanceData: () => BalanceData;
 };
 
