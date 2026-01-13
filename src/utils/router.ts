@@ -1,15 +1,15 @@
-import type { Page } from "../components/page";
+import type { Component } from "../components/component";
 import type { Route } from "../types";
 
 export class Router {
-	routes = {} as Record<Route, Page["element"]>;
+	routes = {} as Record<Route, Component["element"]>;
 
 	private root: HTMLElement;
 	constructor(root: HTMLElement) {
 		this.root = root;
 	}
 
-	public registerRoute(route: Route, pageEl: Page["element"]) {
+	public registerRoute(route: Route, pageEl: Component["element"]) {
 		this.routes[route] = pageEl;
 	}
 
@@ -18,7 +18,7 @@ export class Router {
 		this.renderPage(this.routes[route]);
 	}
 
-	private renderPage(template: Page["element"]) {
+	private renderPage(template: Component["element"]) {
 		this.root.innerHTML = "";
 
 		this.root.append(template);
