@@ -4,7 +4,6 @@ import { HistoryPage } from "./pages/history-page";
 import { HomePage } from "./pages/home-page";
 import { StartPage } from "./pages/start-page";
 import { TopupPage } from "./pages/topup-page";
-import { calculateBalanceData } from "./services/budget-calculator";
 import { ROUTER_PATHS } from "./types";
 import { DEFAULT_BALANCE_DATA } from "./utils/constants";
 import { db } from "./utils/db";
@@ -17,18 +16,9 @@ export function initApp(): void {
 	const router = new Router(root);
 
 	const topupPage = new TopupPage({
-		onCalculateBudget: async ({ budget, periodDate }) => {
-			const balanceData = state.getBalanceData();
-			if (balanceData.budget === null || !balanceData.periodDate)
-				throw new Error("onCalculateBudget: balance data is undefined!");
-
-			const newBalanceData = calculateBalanceData({
-				budget: balanceData.budget + budget,
-				periodDate,
-				transactions: balanceData.transactions,
-			});
+		onCalculateBudget: async (newBalanceData) => {
 			try {
-				await state.setBalanceData(newBalanceData);
+				await state.updateBalance(newBalanceData);
 				goToHomePage();
 			} catch (error) {
 				console.error(error);
@@ -39,44 +29,18 @@ export function initApp(): void {
 		balanceData: state.getBalanceData(),
 		goToHomePage,
 		handleTransactionDelete: async (transactionId) => {
-			const balanceData = state.getBalanceData();
-			if (balanceData.budget === null || !balanceData.periodDate)
-				throw new Error("handleTransactionDelete: balance data is undefined!");
-
-			const transactions = balanceData.transactions;
-			const deletedTransactionIdx = transactions.findIndex(
-				({ id }) => id === transactionId,
-			);
-
-			if (deletedTransactionIdx === -1) return;
-			const deletedTransaction = transactions[deletedTransactionIdx];
-
-			const newBalanceData = calculateBalanceData({
-				budget: balanceData.budget + deletedTransaction.amount,
-				periodDate: balanceData.periodDate,
-				transactions: balanceData.transactions.filter(
-					({ id }) => id !== transactionId,
-				),
-			});
-
 			try {
-				await state.setBalanceData(newBalanceData);
-				goToHistoryPage();
+				await state.deleteTransaction(transactionId);
+				goToHomePage();
 			} catch (error) {
 				console.error(error);
 			}
 		},
 	});
 	const startPage = new StartPage({
-		onCalculateBudget: async ({ budget, periodDate }) => {
-			const balanceData = calculateBalanceData({
-				budget,
-				periodDate,
-				transactions: [],
-			});
-
+		onCalculateBudget: async (balanceData) => {
 			try {
-				await state.setBalanceData(balanceData);
+				await state.setInitialBudget(balanceData);
 				goToHomePage();
 			} catch (error) {
 				console.error(error);
@@ -86,17 +50,8 @@ export function initApp(): void {
 	const homePage = new HomePage({
 		balanceData: state.getBalanceData(),
 		handleNewTransaction: async (transaction) => {
-			const balanceData = state.getBalanceData();
-			if (balanceData.budget === null || !balanceData.periodDate) return;
-
-			const newBalanceData = calculateBalanceData({
-				budget: balanceData.budget,
-				periodDate: balanceData.periodDate,
-				transactions: [...balanceData.transactions, transaction],
-			});
-
 			try {
-				await state.setBalanceData(newBalanceData);
+				await state.addTransaction(transaction);
 				goToHomePage();
 			} catch (error) {
 				console.error(error);
