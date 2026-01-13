@@ -20,79 +20,94 @@ export function initApp(): void {
 	const topupPage = new TopupPage({
 		// TODO: implement
 		// balanceData: state.getBalanceData(),
-		onCalculateBudget: ({ budget, periodDate }) => {
-			db.updateBalance((prev) => {
-				if (!prev || !prev.budget || !prev.periodDate)
-					throw new Error("handleNewTransaction: balance data is undefined!");
+		onCalculateBudget: async ({ budget, periodDate }) => {
+			try {
+				const updatedBalance = await db.updateBalance((prev) => {
+					if (!prev || !prev.budget || !prev.periodDate)
+						throw new Error("onCalculateBudget: balance data is undefined!");
 
-				const balanceData = calculateBalanceData({
-					budget: prev.budget + budget,
-					periodDate,
-					transactions: prev.transactions,
+					const balanceData = calculateBalanceData({
+						budget: prev.budget + budget,
+						periodDate,
+						transactions: prev.transactions,
+					});
+
+					return balanceData;
 				});
-
-				return balanceData;
-			}).then((updatedBalance) => {
 				state.setBalanceData(updatedBalance);
-
 				goToHomePage();
-			});
+			} catch (error) {
+				console.error(error);
+			}
 		},
 	});
 	const historyPage = new HistoryPage({
 		balanceData: state.getBalanceData(),
 		goToHomePage,
-		handleTransactionDelete: (transactionId) => {
-			db.updateBalance((prev) => {
-				if (!prev || !prev.budget || !prev.periodDate)
-					throw new Error("handleNewTransaction: balance data is undefined!");
+		handleTransactionDelete: async (transactionId) => {
+			try {
+				const updatedBalance = await db.updateBalance((prev) => {
+					if (!prev || !prev.budget || !prev.periodDate)
+						throw new Error(
+							"handleTransactionDelete: balance data is undefined!",
+						);
 
-				const balanceData = calculateBalanceData({
-					budget: prev.budget,
-					periodDate: prev.periodDate,
-					transactions: prev.transactions.filter(
-						({ id }) => id !== transactionId,
-					),
+					const balanceData = calculateBalanceData({
+						budget: prev.budget,
+						periodDate: prev.periodDate,
+						transactions: prev.transactions.filter(
+							({ id }) => id !== transactionId,
+						),
+					});
+
+					return balanceData;
 				});
-
-				return balanceData;
-			}).then((updatedBalance) => {
 				state.setBalanceData(updatedBalance);
 				goToHistoryPage();
-			});
+			} catch (error) {
+				console.error(error);
+			}
 		},
 	});
 	const startPage = new StartPage({
-		onCalculateBudget: ({ budget, periodDate }) => {
+		onCalculateBudget: async ({ budget, periodDate }) => {
 			const balanceData = calculateBalanceData({
 				budget,
 				periodDate,
 				transactions: [],
 			});
-			db.saveBalance(balanceData).then(() => {
+
+			try {
+				await db.saveBalance(balanceData);
 				state.setBalanceData(balanceData);
 				goToHomePage();
-			});
+			} catch (error) {
+				console.error(error);
+			}
 		},
 	});
 	const homePage = new HomePage({
 		balanceData: state.getBalanceData(),
 		handleNewTransaction: async (transaction) => {
-			db.updateBalance((prev) => {
-				if (!prev || !prev.budget || !prev.periodDate)
-					throw new Error("handleNewTransaction: balance data is undefined!");
+			try {
+				const updatedBalance = await db.updateBalance((prev) => {
+					if (!prev || !prev.budget || !prev.periodDate)
+						throw new Error("handleNewTransaction: balance data is undefined!");
 
-				const balanceData = calculateBalanceData({
-					budget: prev.budget,
-					periodDate: prev.periodDate,
-					transactions: [...prev.transactions, transaction],
+					const balanceData = calculateBalanceData({
+						budget: prev.budget,
+						periodDate: prev.periodDate,
+						transactions: [...prev.transactions, transaction],
+					});
+
+					return balanceData;
 				});
 
-				return balanceData;
-			}).then((updatedBalance) => {
 				state.setBalanceData(updatedBalance);
 				goToHomePage();
-			});
+			} catch (error) {
+				console.error(error);
+			}
 		},
 		goToHistoryPage,
 		goToHomePage,
