@@ -30,7 +30,7 @@ export class StateManager implements TStateManager {
 			periodDate,
 		});
 
-		return this.setBalanceData(balanceData);
+		return this.updateDataInDB(balanceData);
 	}
 
 	updateBalance({ budget, periodDate }: { budget: number; periodDate: Date }) {
@@ -43,7 +43,7 @@ export class StateManager implements TStateManager {
 			newPeriodDate: periodDate,
 		});
 
-		return this.setBalanceData(newBalanceData);
+		return this.updateDataInDB(newBalanceData);
 	}
 
 	addTransaction(transaction: Transaction) {
@@ -55,7 +55,7 @@ export class StateManager implements TStateManager {
 			transaction,
 		});
 
-		return this.setBalanceData(newBalanceData);
+		return this.updateDataInDB(newBalanceData);
 	}
 
 	deleteTransaction(transactionId: string) {
@@ -77,10 +77,14 @@ export class StateManager implements TStateManager {
 			removedTransaction: removedTransaction,
 		});
 
-		return this.setBalanceData(newBalanceData);
+		return this.updateDataInDB(newBalanceData);
 	}
 
-	async setBalanceData(data: BalanceData) {
+	setBalanceData(data: BalanceData) {
+		this.balanceData = data;
+	}
+
+	private async updateDataInDB(data: BalanceData) {
 		// TODO: validate data here with zod
 		try {
 			const updated = await db.updateBalance(() => data);

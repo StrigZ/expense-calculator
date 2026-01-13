@@ -69,7 +69,8 @@ export function initApp(): void {
 
 	db.getBalance().then((balance) => {
 		if (balance) {
-			state.setBalanceData(balance).then(() => goToHomePage());
+			state.setBalanceData(balance);
+			goToHomePage();
 			return;
 		}
 		router.push("/start");
