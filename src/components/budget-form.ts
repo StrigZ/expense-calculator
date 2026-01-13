@@ -24,6 +24,7 @@ export class BudgetForm extends Component<HTMLFormElement> {
 	constructor({
 		inputLabelText = "Укажите баланс",
 		submitButtonText = "Рассчитать",
+		isInputRequired,
 		onSubmit,
 	}: BudgetFormConstructor) {
 		const container = new Container<HTMLFormElement>({
@@ -34,7 +35,7 @@ export class BudgetForm extends Component<HTMLFormElement> {
 		super(container.render());
 
 		this.budgetInput = new Input({
-			isRequired: true,
+			isRequired: isInputRequired,
 			labelText: inputLabelText,
 			placeholderText: "0 ₽",
 			type: "number",

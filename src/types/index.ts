@@ -112,6 +112,7 @@ export type ContainerConstructor = {
 
 export type BudgetFormConstructor = {
 	onSubmit: onBudgetFormSubmit;
+	isInputRequired: boolean;
 	inputLabelText?: string;
 	submitButtonText?: string;
 };

@@ -18,6 +18,7 @@ export class TopupBlock extends Component {
 		this.budgetForm = new BudgetForm({
 			inputLabelText: "Пополнить",
 			submitButtonText: "Сохранить",
+			isInputRequired: false,
 			onSubmit,
 		});
 

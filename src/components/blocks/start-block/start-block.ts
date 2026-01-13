@@ -14,6 +14,7 @@ export class StartBlock extends Component {
 		heading.textContent = "Начнем!";
 
 		const budgetForm = new BudgetForm({
+			isInputRequired: true,
 			onSubmit,
 		});
 
