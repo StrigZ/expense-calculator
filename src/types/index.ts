@@ -14,7 +14,6 @@ export const ROUTER_PATHS = {
 	START: "/start",
 	BALANCE: "/balance",
 	HISTORY: "/history",
-	NOT_FOUND: "/404",
 } as const;
 
 type Routes = typeof ROUTER_PATHS;

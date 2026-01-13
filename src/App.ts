@@ -18,8 +18,6 @@ export function initApp(): void {
 	const db = new DB();
 
 	const topupPage = new TopupPage({
-		// TODO: implement
-		// balanceData: state.getBalanceData(),
 		onCalculateBudget: async ({ budget, periodDate }) => {
 			try {
 				const updatedBalance = await db.updateBalance((prev) => {
@@ -118,7 +116,6 @@ export function initApp(): void {
 	router.registerRoute(ROUTER_PATHS.HOME, homePage.render());
 	router.registerRoute(ROUTER_PATHS.HISTORY, historyPage.render());
 	router.registerRoute(ROUTER_PATHS.BALANCE, topupPage.render());
-	router.init();
 
 	db.getBalance().then((balance) => {
 		if (balance) {
