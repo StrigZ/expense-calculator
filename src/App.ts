@@ -7,7 +7,7 @@ import { TopupPage } from "./pages/topup-page";
 import { calculateBalanceData } from "./services/budget-calculator";
 import { ROUTER_PATHS } from "./types";
 import { DEFAULT_BALANCE_DATA } from "./utils/constants";
-import { DB } from "./utils/db";
+import { db } from "./utils/db";
 import { getElementByQuery } from "./utils/utils";
 
 export function initApp(): void {
@@ -15,24 +15,20 @@ export function initApp(): void {
 
 	const state = new StateManager(DEFAULT_BALANCE_DATA);
 	const router = new Router(root);
-	const db = new DB();
 
 	const topupPage = new TopupPage({
 		onCalculateBudget: async ({ budget, periodDate }) => {
+			const balanceData = state.getBalanceData();
+			if (balanceData.budget === null || !balanceData.periodDate)
+				throw new Error("onCalculateBudget: balance data is undefined!");
+
+			const newBalanceData = calculateBalanceData({
+				budget: balanceData.budget + budget,
+				periodDate,
+				transactions: balanceData.transactions,
+			});
 			try {
-				const updatedBalance = await db.updateBalance((prev) => {
-					if (!prev || !prev.budget || !prev.periodDate)
-						throw new Error("onCalculateBudget: balance data is undefined!");
-
-					const balanceData = calculateBalanceData({
-						budget: prev.budget + budget,
-						periodDate,
-						transactions: prev.transactions,
-					});
-
-					return balanceData;
-				});
-				state.setBalanceData(updatedBalance);
+				await state.setBalanceData(newBalanceData);
 				goToHomePage();
 			} catch (error) {
 				console.error(error);
@@ -43,24 +39,20 @@ export function initApp(): void {
 		balanceData: state.getBalanceData(),
 		goToHomePage,
 		handleTransactionDelete: async (transactionId) => {
+			const balanceData = state.getBalanceData();
+			if (balanceData.budget === null || !balanceData.periodDate)
+				throw new Error("handleTransactionDelete: balance data is undefined!");
+
+			const newBalanceData = calculateBalanceData({
+				budget: balanceData.budget,
+				periodDate: balanceData.periodDate,
+				transactions: balanceData.transactions.filter(
+					({ id }) => id !== transactionId,
+				),
+			});
+
 			try {
-				const updatedBalance = await db.updateBalance((prev) => {
-					if (!prev || !prev.budget || !prev.periodDate)
-						throw new Error(
-							"handleTransactionDelete: balance data is undefined!",
-						);
-
-					const balanceData = calculateBalanceData({
-						budget: prev.budget,
-						periodDate: prev.periodDate,
-						transactions: prev.transactions.filter(
-							({ id }) => id !== transactionId,
-						),
-					});
-
-					return balanceData;
-				});
-				state.setBalanceData(updatedBalance);
+				await state.setBalanceData(newBalanceData);
 				goToHistoryPage();
 			} catch (error) {
 				console.error(error);
@@ -76,8 +68,7 @@ export function initApp(): void {
 			});
 
 			try {
-				await db.saveBalance(balanceData);
-				state.setBalanceData(balanceData);
+				await state.setBalanceData(balanceData);
 				goToHomePage();
 			} catch (error) {
 				console.error(error);
@@ -87,21 +78,17 @@ export function initApp(): void {
 	const homePage = new HomePage({
 		balanceData: state.getBalanceData(),
 		handleNewTransaction: async (transaction) => {
+			const balanceData = state.getBalanceData();
+			if (balanceData.budget === null || !balanceData.periodDate) return;
+
+			const newBalanceData = calculateBalanceData({
+				budget: balanceData.budget,
+				periodDate: balanceData.periodDate,
+				transactions: [...balanceData.transactions, transaction],
+			});
+
 			try {
-				const updatedBalance = await db.updateBalance((prev) => {
-					if (!prev || !prev.budget || !prev.periodDate)
-						throw new Error("handleNewTransaction: balance data is undefined!");
-
-					const balanceData = calculateBalanceData({
-						budget: prev.budget,
-						periodDate: prev.periodDate,
-						transactions: [...prev.transactions, transaction],
-					});
-
-					return balanceData;
-				});
-
-				state.setBalanceData(updatedBalance);
+				await state.setBalanceData(newBalanceData);
 				goToHomePage();
 			} catch (error) {
 				console.error(error);
@@ -119,8 +106,7 @@ export function initApp(): void {
 
 	db.getBalance().then((balance) => {
 		if (balance) {
-			state.setBalanceData(balance);
-			goToHomePage();
+			state.setBalanceData(balance).then(() => goToHomePage());
 			return;
 		}
 		router.push("/start");

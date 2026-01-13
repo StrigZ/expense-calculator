@@ -50,3 +50,5 @@ export class DB {
 		return updated;
 	}
 }
+
+export const db = new DB();
