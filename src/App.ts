@@ -31,7 +31,7 @@ export function initApp(): void {
 		handleTransactionDelete: async (transactionId) => {
 			try {
 				await state.deleteTransaction(transactionId);
-				goToHomePage();
+				goToHistoryPage();
 			} catch (error) {
 				console.error(error);
 			}

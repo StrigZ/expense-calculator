@@ -1,32 +1,107 @@
 import { differenceInCalendarDays, isToday } from "date-fns";
-import type { BalanceData, Transaction } from "../types";
+import type {
+	BalanceData,
+	NonNullableBalanceData,
+	Transaction,
+} from "../types";
 
-export function calculateBalanceData({
+export function calculateRemoveTransaction({
+	balanceData,
+	newTransactions,
+	removedTransaction,
+}: {
+	balanceData: NonNullableBalanceData;
+	newTransactions: Transaction[];
+	removedTransaction: Transaction;
+}): BalanceData {
+	const totalSpent = getTotalSpent(newTransactions);
+	const averageSpentPerDay = getAverageSpentPerDay(
+		totalSpent,
+		newTransactions.length,
+	);
+	const newBudget = balanceData.budget + removedTransaction.amount;
+	const newBudgetPerDay = getBudgetPerDay(newBudget, balanceData.periodDate);
+	const newAvailableBudgetToday =
+		balanceData.availableBudgetToday +
+		removedTransaction.amount +
+		getBudgetPerDay(removedTransaction.amount, balanceData.periodDate);
+
+	return {
+		...balanceData,
+		availableBudgetToday: newAvailableBudgetToday,
+		averageSpentPerDay,
+		budgetPerDay: newBudgetPerDay,
+		budget: newBudget,
+		transactions: newTransactions,
+	};
+}
+
+export function calculateNewTransaction({
+	balanceData,
+	transaction,
+}: {
+	balanceData: NonNullableBalanceData;
+	transaction: Transaction;
+}): BalanceData {
+	const newTransactions = [...balanceData.transactions, transaction];
+	const totalSpent = getTotalSpent(newTransactions);
+	const averageSpentPerDay = getAverageSpentPerDay(
+		totalSpent,
+		newTransactions.length,
+	);
+
+	return {
+		...balanceData,
+		availableBudgetToday: balanceData.availableBudgetToday - transaction.amount,
+		averageSpentPerDay,
+		budget: balanceData.budget - transaction.amount,
+		transactions: newTransactions,
+	};
+}
+
+export function calculateInitialBalance({
 	budget,
 	periodDate,
-	transactions,
 }: {
 	budget: number;
 	periodDate: Date;
-	transactions: Transaction[];
 }): BalanceData {
 	const budgetPerDay = getBudgetPerDay(budget, periodDate);
-	const totalSpent = getTotalSpent(transactions);
-	const averageSpentPerDay = getAverageSpentPerDay(
-		totalSpent,
-		transactions.length,
-	);
-	const availableBudgetToday = getAvailableBudgetToday(
-		budgetPerDay,
-		transactions,
-	);
+
 	return {
-		availableBudgetToday,
-		averageSpentPerDay,
-		budget: transactions.length > 0 ? budget - totalSpent : budget,
+		availableBudgetToday: budgetPerDay,
+		averageSpentPerDay: 0,
+		budget,
 		budgetPerDay,
 		periodDate,
-		transactions,
+		transactions: [],
+	};
+}
+
+export function calculateUpdatedBalance({
+	oldBalanceData,
+	newBudget,
+	newPeriodDate,
+}: {
+	oldBalanceData: NonNullableBalanceData;
+	newBudget: number;
+	newPeriodDate: Date;
+}): BalanceData {
+	const { budget: oldBudget } = oldBalanceData;
+
+	const newBudgetPerDay = getBudgetPerDay(oldBudget + newBudget, newPeriodDate);
+
+	const newAvailableBudgetToday = getAvailableBudgetToday(
+		newBudgetPerDay,
+		oldBalanceData.transactions,
+	);
+
+	return {
+		...oldBalanceData,
+		availableBudgetToday: newAvailableBudgetToday,
+		budget: oldBudget + newBudget,
+		budgetPerDay: newBudgetPerDay,
+		periodDate: newPeriodDate,
 	};
 }
 

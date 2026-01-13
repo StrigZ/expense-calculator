@@ -1,6 +1,12 @@
-import { calculateBalanceData } from "../services/budget-calculator";
+import {
+	calculateInitialBalance,
+	calculateNewTransaction,
+	calculateRemoveTransaction,
+	calculateUpdatedBalance,
+} from "../services/budget-calculator";
 import type {
 	BalanceData,
+	NonNullableBalanceData,
 	Transaction,
 	StateManager as TStateManager,
 } from "../types/index";
@@ -19,10 +25,9 @@ export class StateManager implements TStateManager {
 		budget: number;
 		periodDate: Date;
 	}) {
-		const balanceData = calculateBalanceData({
+		const balanceData = calculateInitialBalance({
 			budget,
 			periodDate,
-			transactions: [],
 		});
 
 		return this.setBalanceData(balanceData);
@@ -32,10 +37,10 @@ export class StateManager implements TStateManager {
 		if (this.balanceData.budget === null || !this.balanceData.periodDate)
 			throw new Error("onCalculateBudget: balance data is undefined!");
 
-		const newBalanceData = calculateBalanceData({
-			budget: this.balanceData.budget + budget,
-			periodDate,
-			transactions: this.balanceData.transactions,
+		const newBalanceData = calculateUpdatedBalance({
+			oldBalanceData: this.balanceData as NonNullableBalanceData,
+			newBudget: budget,
+			newPeriodDate: periodDate,
 		});
 
 		return this.setBalanceData(newBalanceData);
@@ -43,14 +48,11 @@ export class StateManager implements TStateManager {
 
 	addTransaction(transaction: Transaction) {
 		if (this.balanceData.budget === null || !this.balanceData.periodDate)
-			return;
+			throw new Error("onCalculateBudget: balance data is undefined!");
 
-		const { budget, periodDate, transactions } = this.balanceData;
-
-		const newBalanceData = calculateBalanceData({
-			budget: budget,
-			periodDate: periodDate,
-			transactions: [...transactions, transaction],
+		const newBalanceData = calculateNewTransaction({
+			balanceData: this.balanceData as NonNullableBalanceData,
+			transaction,
 		});
 
 		return this.setBalanceData(newBalanceData);
@@ -60,19 +62,19 @@ export class StateManager implements TStateManager {
 		if (this.balanceData.budget === null || !this.balanceData.periodDate)
 			throw new Error("handleTransactionDelete: balance data is undefined!");
 
-		const { budget, periodDate, transactions } = this.balanceData;
+		const { transactions } = this.balanceData;
 
 		const deletedTransactionIdx = transactions.findIndex(
 			({ id }) => id === transactionId,
 		);
 
 		if (deletedTransactionIdx === -1) return;
-		const deletedTransaction = transactions[deletedTransactionIdx];
+		const removedTransaction = transactions[deletedTransactionIdx];
 
-		const newBalanceData = calculateBalanceData({
-			budget: budget + deletedTransaction.amount,
-			periodDate: periodDate,
-			transactions: transactions.filter(({ id }) => id !== transactionId),
+		const newBalanceData = calculateRemoveTransaction({
+			balanceData: this.balanceData as NonNullableBalanceData,
+			newTransactions: transactions.filter(({ id }) => id !== transactionId),
+			removedTransaction: removedTransaction,
 		});
 
 		return this.setBalanceData(newBalanceData);
