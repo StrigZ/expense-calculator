@@ -4,7 +4,7 @@ import { Component } from "./component";
 export class Container<
 	T extends HTMLElement = HTMLDivElement,
 > extends Component<T> {
-	constructor({ className, tag = "div" }: ContainerConstructor) {
+	constructor({ className, tag = "div" }: ContainerConstructor = {}) {
 		const element = document.createElement(tag);
 		if (className) {
 			element.className = className;

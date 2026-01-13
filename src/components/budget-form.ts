@@ -104,6 +104,7 @@ export class BudgetForm extends Component<HTMLFormElement> {
 				budget: this.budget,
 				periodDate: this.periodDate,
 			});
+			this.setBudget(0);
 		});
 
 		this.element.append(

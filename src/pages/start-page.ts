@@ -1,12 +1,12 @@
 import { StartBlock } from "../components/blocks/start-block/start-block";
+import { Component } from "../components/component";
 import { Container } from "../components/container";
-import { Page } from "../components/page";
 import type { StartPageConstructor } from "../types";
 
-export class StartPage extends Page {
+export class StartPage extends Component {
 	private startBlock: StartBlock;
 	constructor({ onCalculateBudget }: StartPageConstructor) {
-		super(new Container({}).render());
+		super(new Container().render());
 
 		this.startBlock = new StartBlock({ onCalculateBudget });
 

@@ -1,12 +1,12 @@
 import { BalanceBlock } from "../components/blocks/balance-block/balance-block.ts";
 import { BalanceTodayBlock } from "../components/blocks/balance-today-block/balance-today-block.ts";
 import { HistoryBlock } from "../components/blocks/history-block/history-block.ts";
+import { Component } from "../components/component.ts";
 import { Container } from "../components/container.ts";
-import { Page } from "../components/page.ts";
 
 import type { HomePageConstructor, HomePageUpdate } from "../types";
 
-export class HomePage extends Page {
+export class HomePage extends Component {
 	private balanceBlock: BalanceBlock;
 	private balanceTodayBlock: BalanceTodayBlock;
 	private historyBlock: HistoryBlock;

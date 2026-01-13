@@ -1,5 +1,3 @@
-import { Router } from "./models/router";
-import { StateManager } from "./models/state-manager";
 import { HistoryPage } from "./pages/history-page";
 import { HomePage } from "./pages/home-page";
 import { StartPage } from "./pages/start-page";
@@ -7,6 +5,8 @@ import { TopupPage } from "./pages/topup-page";
 import { ROUTER_PATHS } from "./types";
 import { DEFAULT_BALANCE_DATA } from "./utils/constants";
 import { db } from "./utils/db";
+import { Router } from "./utils/router";
+import { StateManager } from "./utils/state";
 import { getElementByQuery } from "./utils/utils";
 
 export function initApp(): void {
