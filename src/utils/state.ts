@@ -80,20 +80,6 @@ export class StateManager implements TStateManager {
 		}
 	}
 
-	setData({
-		budget,
-		transactions,
-	}: {
-		budget: Budget;
-		transactions: Transaction[];
-	}) {
-		if (!isBudgetValid(budget)) return;
-
-		this.budgetData = budget;
-		this.transactions = transactions;
-		this.metrics = this._calculateMetrics();
-	}
-
 	setBudget(budget: Budget) {
 		if (!isBudgetValid(budget)) return;
 

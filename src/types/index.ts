@@ -24,14 +24,15 @@ type Routes = typeof ROUTER_PATHS;
 export type Route = Routes[keyof Routes];
 
 export type StateManager = {
-	setData: ({
-		budget,
-		transactions,
-	}: {
-		budget: Budget;
-		transactions: Transaction[];
-	}) => void;
+	updateEndDate: (endDate: Date) => void;
+	addTransaction: (transaction: Transaction) => void;
+	deleteTransaction: (transactionId: Transaction["id"]) => void;
+	setInitialBudget: (data: Budget) => void;
+	setBudget: (budget: Budget) => void;
+	setTransactions: (transactions: Transaction[]) => void;
 	getMetrics: () => Metrics | null;
+	getTransactions: () => void;
+	getBudget: () => void;
 };
 
 export type HistoryPageUpdate = {

@@ -80,7 +80,7 @@ export function initApp(): void {
 	router.registerRoute(ROUTER_PATHS.HISTORY, historyPage.render());
 	router.registerRoute(ROUTER_PATHS.BALANCE, topupPage.render());
 
-	db.getBalance().then((budget) => {
+	db.getBudget().then((budget) => {
 		if (!budget) {
 			router.push("/start");
 			return;
