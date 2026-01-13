@@ -11,7 +11,7 @@ export class HomePage extends Component {
 	private balanceTodayBlock: BalanceTodayBlock;
 	private historyBlock: HistoryBlock;
 	constructor({
-		balanceData,
+		transactions,
 		handleNewTransaction,
 		goToHistoryPage,
 		goToTopupPage,
@@ -24,7 +24,7 @@ export class HomePage extends Component {
 		this.balanceBlock = new BalanceBlock({ goToHistoryPage, goToTopupPage });
 		this.balanceTodayBlock = new BalanceTodayBlock({ handleNewTransaction });
 		this.historyBlock = new HistoryBlock({
-			transactions: balanceData.transactions,
+			transactions: transactions,
 			navButtonText: "Смотреть всю историю",
 			canDeleteTransactions: false,
 			onNavButtonClick: goToHistoryPage,
@@ -41,31 +41,14 @@ export class HomePage extends Component {
 		return this.element;
 	}
 
-	update({
-		budget,
-		periodDate,
-		budgetPerDay,
-		transactions,
-		availableBudgetToday,
-		averageSpentPerDay,
-	}: HomePageUpdate) {
-		if (
-			budgetPerDay === null ||
-			budget === null ||
-			availableBudgetToday === null ||
-			averageSpentPerDay === null ||
-			!periodDate
-		) {
-			throw new Error("HomePage: update data is empty!");
-		}
-
-		this.balanceBlock.update({ budgetPerDay, periodDate, budget });
-		this.balanceTodayBlock.update({ availableBudgetToday, budgetPerDay });
+	update({ transactions, metrics }: HomePageUpdate) {
+		this.balanceBlock.update(metrics);
+		this.balanceTodayBlock.update(metrics);
 
 		const visibleTransactions = transactions.slice(0, 3);
 		this.historyBlock.update({
 			transactions: visibleTransactions,
-			averageSpentPerDay,
+			metrics,
 		});
 	}
 }

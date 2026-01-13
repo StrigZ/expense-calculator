@@ -64,7 +64,7 @@ export class HistoryBlock extends Component {
 		return this.element;
 	}
 
-	update({ transactions, averageSpentPerDay }: HistoryBlockUpdate) {
+	update({ transactions, metrics }: HistoryBlockUpdate) {
 		this.historyList.update(
 			transactions.map(
 				(transaction) =>
@@ -75,7 +75,7 @@ export class HistoryBlock extends Component {
 			),
 		);
 
-		this.averageSpentPerDay.textContent = averageSpentPerDay.toString();
+		this.averageSpentPerDay.textContent = metrics.avgSpentPerDay.toString();
 		this.navButton.setIsButtonHidden(
 			!this.canDeleteTransactions && transactions.length < 1,
 		);

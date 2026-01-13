@@ -1,14 +1,14 @@
 import { TopupBlock } from "../components/blocks/topup-block/topup-block";
 import { Component } from "../components/component";
 import { Container } from "../components/container";
-import type { BalanceData, TopupPageConstructor } from "../types";
+import type { TopupPageConstructor, TopupPageUpdate } from "../types";
 
 export class TopupPage extends Component {
 	private topupBlock: TopupBlock;
-	constructor({ onCalculateBudget }: TopupPageConstructor) {
+	constructor({ onSubmit }: TopupPageConstructor) {
 		super(new Container().render());
 
-		this.topupBlock = new TopupBlock({ onCalculateBudget });
+		this.topupBlock = new TopupBlock({ onSubmit });
 		this.element.append(this.topupBlock.render());
 	}
 
@@ -16,7 +16,7 @@ export class TopupPage extends Component {
 		return this.element;
 	}
 
-	update(balanceData: BalanceData) {
-		this.topupBlock.update(balanceData);
+	update({ endDate, metrics }: TopupPageUpdate) {
+		this.topupBlock.update({ endDate, metrics });
 	}
 }

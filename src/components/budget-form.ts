@@ -1,9 +1,8 @@
-import type { OnCalculateBudget } from "../types";
+import type { BudgetFormConstructor } from "../types";
 import {
 	getDatePickerTriggerButtonText,
 	getTimeframeToDateMap,
 } from "../utils/utils";
-import { validateBudgetForm } from "../utils/validation";
 import { Button } from "./button";
 import { Component } from "./component";
 import { Container } from "./container";
@@ -20,17 +19,13 @@ export class BudgetForm extends Component<HTMLFormElement> {
 	private submitButton: Button;
 	private budgetInput: Input;
 
-	private periodDate: Date | null = null;
-	private budget: number | null = null;
+	private endDate: Date | null = null;
+	private inputValue: number | null = 0;
 	constructor({
 		inputLabelText = "Укажите баланс",
 		submitButtonText = "Рассчитать",
-		onCalculateBudget,
-	}: {
-		onCalculateBudget: OnCalculateBudget;
-		inputLabelText?: string;
-		submitButtonText?: string;
-	}) {
+		onSubmit,
+	}: BudgetFormConstructor) {
 		const container = new Container<HTMLFormElement>({
 			tag: "form",
 			className: "flex flex-col gap-3 h-full",
@@ -45,8 +40,7 @@ export class BudgetForm extends Component<HTMLFormElement> {
 			type: "number",
 			inputMode: "numeric",
 			onChange: (value) => {
-				this.budget = +value;
-				this.validateForm();
+				this.inputValue = +value;
 			},
 		});
 
@@ -67,8 +61,7 @@ export class BudgetForm extends Component<HTMLFormElement> {
 				this.datePicker.updateTriggerButtonText(
 					getDatePickerTriggerButtonText(date),
 				);
-				this.periodDate = date;
-				this.validateForm();
+				this.endDate = date;
 				this.datePicker.hidePopup();
 			},
 			onCalendarOpen: () => {
@@ -83,8 +76,7 @@ export class BudgetForm extends Component<HTMLFormElement> {
 				this.datePicker.updateTriggerButtonText(
 					getDatePickerTriggerButtonText(date),
 				);
-				this.periodDate = date;
-				this.validateForm();
+				this.endDate = date;
 				this.datePicker.hidePopup();
 			},
 		});
@@ -93,18 +85,16 @@ export class BudgetForm extends Component<HTMLFormElement> {
 			text: submitButtonText,
 			className: "mt-auto w-full",
 			type: "submit",
-			disabled: true,
 		});
 
 		this.element.addEventListener("submit", (e) => {
 			e.preventDefault();
-			if (this.budget === null || !this.periodDate) return;
 
-			onCalculateBudget({
-				budget: this.budget,
-				periodDate: this.periodDate,
-			});
-			this.setBudget(0);
+			if (!this.endDate || this.inputValue === null) return;
+
+			onSubmit({ endDate: this.endDate, inputValue: this.inputValue });
+			this.inputValue = 0;
+			this.budgetInput.setValue("0");
 		});
 
 		this.element.append(
@@ -115,30 +105,14 @@ export class BudgetForm extends Component<HTMLFormElement> {
 	}
 
 	setPeriodDate(selectedDate: Date) {
-		this.periodDate = selectedDate;
+		this.endDate = selectedDate;
 		this.datePicker.updateTriggerButtonText(
 			getDatePickerTriggerButtonText(selectedDate),
 		);
 	}
 
-	setBudget(budget: number) {
-		this.budget = budget;
-		this.budgetInput.setValue(budget.toString());
-	}
-
-	// TODO: replace with zod
-	validateForm() {
-		this.submitButton.setIsButtonEnabled(
-			validateBudgetForm({
-				budget: this.budget,
-				periodDate: this.periodDate,
-			}),
-		);
-	}
-
 	update() {
 		this.datePickerList.update(getTimeframeToDateMap());
-		this.validateForm();
 	}
 
 	render() {

@@ -4,7 +4,7 @@ import { Component } from "../../component";
 import { Container } from "../../container";
 
 export class StartBlock extends Component {
-	constructor({ onCalculateBudget }: StartBlockConstructor) {
+	constructor({ onSubmit }: StartBlockConstructor) {
 		const container = new Container({ className: "card flex flex-col" });
 
 		super(container.render());
@@ -14,7 +14,7 @@ export class StartBlock extends Component {
 		heading.textContent = "Начнем!";
 
 		const budgetForm = new BudgetForm({
-			onCalculateBudget,
+			onSubmit,
 		});
 
 		this.element.append(heading, budgetForm.render());

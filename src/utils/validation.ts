@@ -1,15 +1,17 @@
-// TODO: replace with zod
+import { type Budget, BudgetSchema } from "../models/budget";
+import { type Metrics, MetricsSchema } from "../models/metrics";
+import { type Transaction, TransactionSchema } from "../models/transaction";
 
-export function validateBudgetForm({
-	budget,
-	periodDate,
-}: {
-	budget?: number | null;
-	periodDate?: Date | null;
-}) {
-	if (budget === null || budget === undefined) return false;
+export function isBudgetValid(budget: object): budget is Budget {
+	return BudgetSchema.safeParse(budget).success;
+}
 
-	if (!periodDate) return false;
+export function isTransactionValid(
+	transaction: object,
+): transaction is Transaction {
+	return TransactionSchema.safeParse(transaction).success;
+}
 
-	return true;
+export function isMetricsValid(metrics: object): metrics is Metrics {
+	return MetricsSchema.safeParse(metrics).success;
 }

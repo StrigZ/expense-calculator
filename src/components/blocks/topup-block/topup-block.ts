@@ -1,4 +1,4 @@
-import type { BalanceData, TopupBlockConstructor } from "../../../types";
+import type { TopupBlockConstructor, TopupBlockUpdate } from "../../../types";
 
 import { BalanceView } from "../../balance-view";
 import { BudgetForm } from "../../budget-form";
@@ -8,7 +8,7 @@ import { Container } from "../../container";
 export class TopupBlock extends Component {
 	private balanceView: BalanceView;
 	private budgetForm: BudgetForm;
-	constructor({ onCalculateBudget }: TopupBlockConstructor) {
+	constructor({ onSubmit }: TopupBlockConstructor) {
 		const container = new Container({ className: "card flex flex-col" });
 
 		super(container.render());
@@ -18,9 +18,8 @@ export class TopupBlock extends Component {
 		this.budgetForm = new BudgetForm({
 			inputLabelText: "Пополнить",
 			submitButtonText: "Сохранить",
-			onCalculateBudget,
+			onSubmit,
 		});
-		this.budgetForm.setBudget(0);
 
 		this.element.append(this.balanceView.render(), this.budgetForm.render());
 	}
@@ -29,14 +28,10 @@ export class TopupBlock extends Component {
 		return this.element;
 	}
 
-	update({ budgetPerDay, periodDate, budget }: BalanceData) {
-		if (budgetPerDay === null || budget === null || !periodDate) {
-			throw new Error("BalanceBlock: update data is empty!");
-		}
+	update({ endDate, metrics }: TopupBlockUpdate) {
+		this.balanceView.update(metrics);
 
-		this.balanceView.update({ budget, budgetPerDay, periodDate });
-
-		this.budgetForm.setPeriodDate(periodDate);
+		this.budgetForm.setPeriodDate(endDate);
 		this.budgetForm.update();
 
 		return this.element;

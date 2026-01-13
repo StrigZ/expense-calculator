@@ -1,5 +1,4 @@
-import { differenceInCalendarDays } from "date-fns";
-import type { BalanceViewUpdate } from "../types";
+import type { Metrics } from "../models/metrics";
 import {
 	cloneTemplate,
 	getElementByQuery,
@@ -28,16 +27,9 @@ export class BalanceView extends Component {
 		return this.element;
 	}
 
-	update({ budget, budgetPerDay, periodDate }: BalanceViewUpdate) {
-		if (budget === null || budgetPerDay === null || !periodDate) {
-			throw new Error("BalanceView: data is empty!");
-		}
-
-		this.budgetEl.textContent = budget.toString();
+	update({ availableBalance, budgetPerDay, daysLeft }: Metrics) {
+		this.budgetEl.textContent = availableBalance.toString();
 		this.budgetPerDayEl.textContent = budgetPerDay.toString();
-		this.periodDateEl.textContent = differenceInCalendarDays(
-			periodDate,
-			new Date(),
-		).toString();
+		this.periodDateEl.textContent = daysLeft.toString();
 	}
 }

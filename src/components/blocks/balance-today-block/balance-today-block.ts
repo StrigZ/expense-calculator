@@ -1,7 +1,5 @@
-import type {
-	BalanceTodayBlockConstructor,
-	BalanceTodayBlockUpdate,
-} from "../../../types";
+import type { Metrics } from "../../../models/metrics";
+import type { BalanceTodayBlockConstructor } from "../../../types";
 import {
 	cloneTemplate,
 	getElementByQuery,
@@ -49,6 +47,7 @@ export class BalanceTodayBlock extends Component {
 			handleNewTransaction({
 				id: crypto.randomUUID(),
 				amount: +newTransactionInput.value,
+				type: "expense",
 				date: new Date(),
 			});
 			newTransactionForm.reset();
@@ -59,12 +58,8 @@ export class BalanceTodayBlock extends Component {
 		return this.element;
 	}
 
-	update({ availableBudgetToday, budgetPerDay }: BalanceTodayBlockUpdate) {
-		if (availableBudgetToday === null || budgetPerDay === null) {
-			throw new Error(`BalanceTodayBlock: update data is empty!`);
-		}
-
-		if (availableBudgetToday >= 0) {
+	update({ availableToday, budgetPerDay }: Metrics) {
+		if (availableToday >= 0) {
 			this.availableBalanceEl.classList.remove("text-error");
 			this.availableBalanceEl.classList.add("text-success");
 		} else {
@@ -72,8 +67,8 @@ export class BalanceTodayBlock extends Component {
 			this.availableBalanceEl.classList.add("text-error");
 		}
 
-		this.availableBalanceValueEl.textContent = availableBudgetToday.toString();
+		this.availableBalanceValueEl.textContent = availableToday.toString();
 		this.balancePerDayEl.textContent = budgetPerDay.toString();
-		this.messageEl.classList.toggle("hidden", availableBudgetToday < 0);
+		this.messageEl.classList.toggle("hidden", availableToday < 0);
 	}
 }

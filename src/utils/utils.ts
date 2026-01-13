@@ -41,9 +41,9 @@ export function getElementByQuery<T = HTMLElement>(
 	return element;
 }
 
-export function getDatePickerTriggerButtonText(periodDate: Date) {
-	const diffInCalendarDays = differenceInCalendarDays(periodDate, new Date());
-	return `${diffInCalendarDays} дней (до ${format(periodDate, "d MMMM")})`;
+export function getDatePickerTriggerButtonText(endDate: Date) {
+	const diffInCalendarDays = differenceInCalendarDays(endDate, new Date());
+	return `${diffInCalendarDays} дней (до ${format(endDate, "d MMMM")})`;
 }
 
 export function getTimeframeToDateMap() {

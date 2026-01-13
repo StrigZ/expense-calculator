@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import type { Transaction } from "../../../types";
+import type { Transaction } from "../../../models/transaction";
 import {
 	cloneTemplate,
 	getElementByQuery,
@@ -15,12 +15,14 @@ export class HistoryListItem extends Component {
 		date,
 		id,
 		isDeleteButtonVisible,
+		type,
 	}: Transaction & { isDeleteButtonVisible: boolean }) {
 		if (!HistoryListItem.template) {
 			HistoryListItem.template = getTemplateById("history-list-item");
 		}
 
 		super(cloneTemplate(HistoryListItem.template));
+		const isExpense = type === "expense";
 
 		const spentAmountEl = getElementByQuery("#spent-amount", this.element);
 		const transactionDateEl = getElementByQuery("#spent-date", this.element);
@@ -30,6 +32,8 @@ export class HistoryListItem extends Component {
 		);
 
 		spentAmountEl.textContent = amount.toString();
+		spentAmountEl.classList.add(isExpense ? "text-error" : "text-success");
+		spentAmountEl.prepend(isExpense ? "-" : "+");
 		transactionDateEl.textContent = format(date, "d MMMM");
 		deleteButton.classList.toggle("hidden", !isDeleteButtonVisible);
 

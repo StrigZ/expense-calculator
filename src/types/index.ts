@@ -1,3 +1,7 @@
+import type { Budget } from "../models/budget";
+import type { Metrics } from "../models/metrics";
+import type { Transaction } from "../models/transaction";
+
 export const TIMEFRAMES = [
 	"День",
 	"Неделя",
@@ -19,80 +23,49 @@ export const ROUTER_PATHS = {
 type Routes = typeof ROUTER_PATHS;
 export type Route = Routes[keyof Routes];
 
-export type BalanceData = {
-	budget: number | null;
-	periodDate: Date | null;
-	transactions: Transaction[];
-	budgetPerDay: number | null;
-	availableBudgetToday: number | null;
-	averageSpentPerDay: number;
-};
-
-export type Transaction = {
-	id: string;
-	amount: number;
-	date: Date;
-};
-
 export type StateManager = {
-	setBalanceData: (data: BalanceData) => void;
-	getBalanceData: () => BalanceData;
+	setData: ({
+		budget,
+		transactions,
+	}: {
+		budget: Budget;
+		transactions: Transaction[];
+	}) => void;
+	getMetrics: () => Metrics | null;
 };
 
-export type NonNullableBalanceData = {
-	[K in keyof BalanceData]: NonNullable<BalanceData[K]>;
+export type HistoryPageUpdate = {
+	metrics: Metrics;
+	transactions: Transaction[];
 };
 
-export type HistoryPageUpdate = HistoryBlockUpdate;
-export type HomePageUpdate = BalanceBlockUpdate &
-	BalanceTodayBlockUpdate &
-	HistoryBlockUpdate;
-export type BalancePageUpdate = BalanceBlockUpdate;
+export type HomePageUpdate = {
+	metrics: Metrics;
+	transactions: Transaction[];
+};
 
-export type BalanceBlockUpdate = Pick<
-	BalanceData,
-	"budget" | "budgetPerDay" | "periodDate"
->;
-
-export type HistoryBlockUpdate = Pick<
-	BalanceData,
-	"transactions" | "averageSpentPerDay"
->;
-
-export type BalanceTodayBlockUpdate = Pick<
-	BalanceData,
-	"availableBudgetToday" | "budgetPerDay"
->;
-
-export type BalanceViewUpdate = BalanceBlockUpdate;
-
-export type BudgetFormData = Pick<
-	NonNullableBalanceData,
-	"budget" | "periodDate"
->;
-
-export type OnCalculateBudget = ({
-	budget,
-	periodDate,
-}: BudgetFormData) => void;
+export type HistoryBlockUpdate = {
+	metrics: Metrics;
+	transactions: Transaction[];
+};
 
 export type HistoryPageConstructor = {
-	balanceData: BalanceData;
+	transactions: Transaction[];
 	goToHomePage: () => void;
 	handleTransactionDelete: (transactionId: string) => void;
 };
 export type HomePageConstructor = {
-	balanceData: BalanceData;
+	transactions: Transaction[];
 	handleNewTransaction: (transaction: Transaction) => void;
 	goToHistoryPage: () => void;
 	goToHomePage: () => void;
 	goToTopupPage: () => void;
 };
 export type StartPageConstructor = {
-	onCalculateBudget: OnCalculateBudget;
+	onSubmit: onBudgetFormSubmit;
 };
 export type TopupPageConstructor = {
-	onCalculateBudget: OnCalculateBudget;
+	onSubmit: onBudgetFormSubmit;
 };
 
 export type BalanceBlockConstructor = {
@@ -110,10 +83,10 @@ export type HistoryBlockConstructor = {
 	handleTransactionDelete?: (transactionId: string) => void;
 };
 export type TopupBlockConstructor = {
-	onCalculateBudget: OnCalculateBudget;
+	onSubmit: onBudgetFormSubmit;
 };
 export type StartBlockConstructor = {
-	onCalculateBudget: OnCalculateBudget;
+	onSubmit: onBudgetFormSubmit;
 };
 
 export type InputContsructor = {
@@ -135,4 +108,28 @@ export type ButtonConstructor = {
 export type ContainerConstructor = {
 	tag?: keyof HTMLElementTagNameMap;
 	className?: string;
+};
+
+export type BudgetFormConstructor = {
+	onSubmit: onBudgetFormSubmit;
+	inputLabelText?: string;
+	submitButtonText?: string;
+};
+
+export type onBudgetFormSubmit = ({
+	endDate,
+	inputValue,
+}: {
+	endDate: Budget["endDate"];
+	inputValue: Budget["initialBalance"] | Transaction["amount"];
+}) => void;
+
+export type TopupPageUpdate = {
+	endDate: Budget["endDate"];
+	metrics: Metrics;
+};
+
+export type TopupBlockUpdate = {
+	endDate: Budget["endDate"];
+	metrics: Metrics;
 };

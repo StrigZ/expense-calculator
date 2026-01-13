@@ -1,7 +1,5 @@
-import type {
-	BalanceBlockConstructor,
-	BalanceBlockUpdate,
-} from "../../../types";
+import type { Metrics } from "../../../models/metrics";
+import type { BalanceBlockConstructor } from "../../../types";
 import {
 	cloneTemplate,
 	getElementByQuery,
@@ -42,7 +40,7 @@ export class BalanceBlock extends Component {
 		return this.element;
 	}
 
-	update(balanceViewData: BalanceBlockUpdate) {
-		this.balanceView.update(balanceViewData);
+	update(metrics: Metrics) {
+		this.balanceView.update(metrics);
 	}
 }

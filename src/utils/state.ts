@@ -1,100 +1,139 @@
-import {
-	calculateInitialBalance,
-	calculateNewTransaction,
-	calculateRemoveTransaction,
-	calculateUpdatedBalance,
-} from "../services/budget-calculator";
-import type {
-	BalanceData,
-	NonNullableBalanceData,
-	Transaction,
-	StateManager as TStateManager,
-} from "../types/index";
+import type { Budget } from "../models/budget";
+import type { Metrics } from "../models/metrics";
+import type { Transaction } from "../models/transaction";
+import { calculateMetrics } from "../services/budget-calculator";
+import type { StateManager as TStateManager } from "../types/index";
 import { db } from "./db";
+import {
+	isBudgetValid,
+	isMetricsValid,
+	isTransactionValid,
+} from "./validation";
 
 export class StateManager implements TStateManager {
-	private balanceData: BalanceData;
-	constructor(defaultData: BalanceData) {
-		this.balanceData = defaultData;
+	private budgetData: Budget | null = null;
+	private transactions: Transaction[] = [];
+	private metrics: Metrics | null = null;
+
+	async updateEndDate(endDate: Date) {
+		if (!this.budgetData) throw new Error("Budget is null!");
+		if (endDate === this.budgetData.endDate) return;
+
+		const newBudgetData: Budget = { ...this.budgetData, endDate };
+
+		try {
+			await db.saveBudget(newBudgetData);
+			this.budgetData = newBudgetData;
+			this.metrics = this._calculateMetrics();
+		} catch (e) {
+			console.error(e);
+		}
 	}
 
-	setInitialBudget({
-		budget,
-		periodDate,
-	}: {
-		budget: number;
-		periodDate: Date;
-	}) {
-		const balanceData = calculateInitialBalance({
-			budget,
-			periodDate,
-		});
+	async addTransaction(transaction: Transaction) {
+		if (!isTransactionValid(transaction) || !this.budgetData) return;
 
-		return this.updateDataInDB(balanceData);
+		const updatedTransactions = [...this.transactions, transaction];
+
+		try {
+			await db.saveTransactions(updatedTransactions);
+			this.transactions = updatedTransactions;
+			this.metrics = this._calculateMetrics();
+		} catch (e) {
+			console.error(e);
+		}
 	}
 
-	updateBalance({ budget, periodDate }: { budget: number; periodDate: Date }) {
-		if (this.balanceData.budget === null || !this.balanceData.periodDate)
-			throw new Error("onCalculateBudget: balance data is undefined!");
+	async deleteTransaction(transactionId: Transaction["id"]) {
+		if (!this.budgetData) return;
 
-		const newBalanceData = calculateUpdatedBalance({
-			oldBalanceData: this.balanceData as NonNullableBalanceData,
-			newBudget: budget,
-			newPeriodDate: periodDate,
-		});
-
-		return this.updateDataInDB(newBalanceData);
-	}
-
-	addTransaction(transaction: Transaction) {
-		if (this.balanceData.budget === null || !this.balanceData.periodDate)
-			throw new Error("onCalculateBudget: balance data is undefined!");
-
-		const newBalanceData = calculateNewTransaction({
-			balanceData: this.balanceData as NonNullableBalanceData,
-			transaction,
-		});
-
-		return this.updateDataInDB(newBalanceData);
-	}
-
-	deleteTransaction(transactionId: string) {
-		if (this.balanceData.budget === null || !this.balanceData.periodDate)
-			throw new Error("handleTransactionDelete: balance data is undefined!");
-
-		const { transactions } = this.balanceData;
-
-		const deletedTransactionIdx = transactions.findIndex(
+		const deletedTransactionIdx = this.transactions.findIndex(
 			({ id }) => id === transactionId,
 		);
 
 		if (deletedTransactionIdx === -1) return;
-		const removedTransaction = transactions[deletedTransactionIdx];
 
-		const newBalanceData = calculateRemoveTransaction({
-			balanceData: this.balanceData as NonNullableBalanceData,
-			newTransactions: transactions.filter(({ id }) => id !== transactionId),
-			removedTransaction: removedTransaction,
-		});
+		const updatedTransactions = this.transactions.filter(
+			({ id }) => id !== transactionId,
+		);
 
-		return this.updateDataInDB(newBalanceData);
-	}
-
-	setBalanceData(data: BalanceData) {
-		this.balanceData = data;
-	}
-
-	private async updateDataInDB(data: BalanceData) {
-		// TODO: validate data here with zod
 		try {
-			const updated = await db.updateBalance(() => data);
-			this.balanceData = updated;
-			return this.balanceData;
-		} catch (error) {
-			console.error(error);
+			await db.saveTransactions(updatedTransactions);
+			this.transactions = updatedTransactions;
+			this.metrics = this._calculateMetrics();
+		} catch (e) {
+			console.error(e);
 		}
 	}
-	getBalanceData() {
-		return this.balanceData;
+
+	async setInitialBudget(data: Budget) {
+		if (!isBudgetValid(data)) return;
+
+		try {
+			await db.saveBudget(data);
+			await db.saveTransactions([]);
+			this.budgetData = data;
+			this.transactions = [];
+			this.metrics = this._calculateMetrics();
+		} catch (e) {
+			console.error(e);
+		}
+	}
+
+	setData({
+		budget,
+		transactions,
+	}: {
+		budget: Budget;
+		transactions: Transaction[];
+	}) {
+		if (!isBudgetValid(budget)) return;
+
+		this.budgetData = budget;
+		this.transactions = transactions;
+		this.metrics = this._calculateMetrics();
+	}
+
+	setBudget(budget: Budget) {
+		if (!isBudgetValid(budget)) return;
+
+		this.budgetData = budget;
+		this.metrics = this._calculateMetrics();
+	}
+
+	setTransactions(transactions: Transaction[]) {
+		this.transactions = transactions;
+		this.metrics = this._calculateMetrics();
+	}
+
+	getMetrics() {
+		const metrics = this.metrics;
+		if (!metrics) throw new Error("Metrics is null!");
+
+		return metrics;
+	}
+	getTransactions() {
+		return this.transactions;
+	}
+	getBudget() {
+		const budgetData = this.budgetData;
+		if (!budgetData) throw new Error("BudgetData is null!");
+
+		return budgetData;
+	}
+
+	private _calculateMetrics() {
+		const budgetData = this.budgetData;
+		if (!budgetData) throw new Error("BudgetData is null!");
+
+		const newMetrics = calculateMetrics({
+			budget: budgetData,
+			transactions: this.transactions,
+		});
+
+		if (!isMetricsValid(newMetrics))
+			throw new Error("Calculated metrics are not valid!");
+
+		return newMetrics;
 	}
 }

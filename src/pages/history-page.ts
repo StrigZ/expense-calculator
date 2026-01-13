@@ -6,14 +6,14 @@ import type { HistoryPageConstructor, HistoryPageUpdate } from "../types";
 export class HistoryPage extends Component {
 	private historyBlock: HistoryBlock;
 	constructor({
-		balanceData,
+		transactions,
 		goToHomePage,
 		handleTransactionDelete,
 	}: HistoryPageConstructor) {
 		super(new Container().render());
 
 		this.historyBlock = new HistoryBlock({
-			transactions: balanceData.transactions,
+			transactions,
 			navButtonText: "Вернуться",
 			canDeleteTransactions: true,
 			onNavButtonClick: goToHomePage,
@@ -26,7 +26,7 @@ export class HistoryPage extends Component {
 		return this.element;
 	}
 
-	update({ transactions, averageSpentPerDay }: HistoryPageUpdate) {
-		this.historyBlock.update({ transactions, averageSpentPerDay });
+	update({ transactions, metrics }: HistoryPageUpdate) {
+		this.historyBlock.update({ transactions, metrics });
 	}
 }

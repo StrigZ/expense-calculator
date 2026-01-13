@@ -1,9 +1,9 @@
+import type { Transaction } from "./models/transaction";
 import { HistoryPage } from "./pages/history-page";
 import { HomePage } from "./pages/home-page";
 import { StartPage } from "./pages/start-page";
 import { TopupPage } from "./pages/topup-page";
 import { ROUTER_PATHS } from "./types";
-import { DEFAULT_BALANCE_DATA } from "./utils/constants";
 import { db } from "./utils/db";
 import { Router } from "./utils/router";
 import { StateManager } from "./utils/state";
@@ -12,13 +12,22 @@ import { getElementByQuery } from "./utils/utils";
 export function initApp(): void {
 	const root = getElementByQuery("#app");
 
-	const state = new StateManager(DEFAULT_BALANCE_DATA);
+	const state = new StateManager();
 	const router = new Router(root);
 
 	const topupPage = new TopupPage({
-		onCalculateBudget: async (newBalanceData) => {
+		onSubmit: async ({ endDate, inputValue }) => {
 			try {
-				await state.updateBalance(newBalanceData);
+				if (inputValue) {
+					const newTransaction: Transaction = {
+						amount: inputValue,
+						date: new Date(),
+						id: crypto.randomUUID(),
+						type: "income",
+					};
+					await state.addTransaction(newTransaction);
+				}
+				await state.updateEndDate(endDate);
 				goToHomePage();
 			} catch (error) {
 				console.error(error);
@@ -26,7 +35,7 @@ export function initApp(): void {
 		},
 	});
 	const historyPage = new HistoryPage({
-		balanceData: state.getBalanceData(),
+		transactions: state.getTransactions(),
 		goToHomePage,
 		handleTransactionDelete: async (transactionId) => {
 			try {
@@ -38,9 +47,13 @@ export function initApp(): void {
 		},
 	});
 	const startPage = new StartPage({
-		onCalculateBudget: async (balanceData) => {
+		onSubmit: async ({ endDate, inputValue }) => {
 			try {
-				await state.setInitialBudget(balanceData);
+				await state.setInitialBudget({
+					initialBalance: inputValue,
+					endDate: endDate,
+					startDate: new Date(),
+				});
 				goToHomePage();
 			} catch (error) {
 				console.error(error);
@@ -48,7 +61,7 @@ export function initApp(): void {
 		},
 	});
 	const homePage = new HomePage({
-		balanceData: state.getBalanceData(),
+		transactions: state.getTransactions(),
 		handleNewTransaction: async (transaction) => {
 			try {
 				await state.addTransaction(transaction);
@@ -67,25 +80,38 @@ export function initApp(): void {
 	router.registerRoute(ROUTER_PATHS.HISTORY, historyPage.render());
 	router.registerRoute(ROUTER_PATHS.BALANCE, topupPage.render());
 
-	db.getBalance().then((balance) => {
-		if (balance) {
-			state.setBalanceData(balance);
-			goToHomePage();
+	db.getBalance().then((budget) => {
+		if (!budget) {
+			router.push("/start");
 			return;
 		}
-		router.push("/start");
+
+		state.setBudget(budget);
+		db.getTransactions().then((transactions) => {
+			state.setTransactions(transactions ?? []);
+			goToHomePage();
+		});
 	});
 
 	function goToHomePage() {
-		homePage.update(state.getBalanceData());
+		homePage.update({
+			transactions: state.getTransactions(),
+			metrics: state.getMetrics(),
+		});
 		router.push("/");
 	}
 	function goToTopupPage() {
-		topupPage.update(state.getBalanceData());
+		topupPage.update({
+			endDate: state.getBudget()?.endDate,
+			metrics: state.getMetrics(),
+		});
 		router.push("/balance");
 	}
 	function goToHistoryPage() {
-		historyPage.update(state.getBalanceData());
+		historyPage.update({
+			transactions: state.getTransactions(),
+			metrics: state.getMetrics(),
+		});
 		router.push("/history");
 	}
 }
