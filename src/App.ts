@@ -43,8 +43,16 @@ export function initApp(): void {
 			if (balanceData.budget === null || !balanceData.periodDate)
 				throw new Error("handleTransactionDelete: balance data is undefined!");
 
+			const transactions = balanceData.transactions;
+			const deletedTransactionIdx = transactions.findIndex(
+				({ id }) => id === transactionId,
+			);
+
+			if (deletedTransactionIdx === -1) return;
+			const deletedTransaction = transactions[deletedTransactionIdx];
+
 			const newBalanceData = calculateBalanceData({
-				budget: balanceData.budget,
+				budget: balanceData.budget + deletedTransaction.amount,
 				periodDate: balanceData.periodDate,
 				transactions: balanceData.transactions.filter(
 					({ id }) => id !== transactionId,

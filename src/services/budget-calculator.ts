@@ -11,31 +11,35 @@ export function calculateBalanceData({
 	transactions: Transaction[];
 }): BalanceData {
 	const budgetPerDay = getBudgetPerDay(budget, periodDate);
-	const averageSpentPerDay = getAverageSpentPerDay(transactions);
+	const totalSpent = getTotalSpent(transactions);
+	const averageSpentPerDay = getAverageSpentPerDay(
+		totalSpent,
+		transactions.length,
+	);
 	const availableBudgetToday = getAvailableBudgetToday(
 		budgetPerDay,
 		transactions,
 	);
-
 	return {
 		availableBudgetToday,
 		averageSpentPerDay,
-		budget,
+		budget: transactions.length > 0 ? budget - totalSpent : budget,
 		budgetPerDay,
 		periodDate,
 		transactions,
 	};
 }
 
+function getTotalSpent(transactions: Transaction[]) {
+	return transactions.reduce((prev, curr) => prev + curr.amount, 0);
+}
+
 function getBudgetPerDay(budget: number, periodDate: Date) {
 	return Math.floor(budget / differenceInCalendarDays(periodDate, new Date()));
 }
 
-function getAverageSpentPerDay(transactions: Transaction[]) {
-	return transactions.length
-		? transactions.reduce((prev, curr) => prev + curr.amount, 0) /
-				transactions.length
-		: 0;
+function getAverageSpentPerDay(totalSpent: number, transactionsAmount: number) {
+	return transactionsAmount > 0 ? totalSpent / transactionsAmount : 0;
 }
 
 function getAvailableBudgetToday(
