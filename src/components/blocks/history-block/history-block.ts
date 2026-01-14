@@ -1,4 +1,3 @@
-import { compareDesc } from "date-fns";
 import type {
 	HistoryBlockConstructor,
 	HistoryBlockUpdate,
@@ -34,15 +33,13 @@ export class HistoryBlock extends Component {
 		super(cloneTemplate(HistoryBlock.template));
 
 		this.historyList = new HistoryList({
-			items: transactions
-				.sort((a, b) => compareDesc(a.date, b.date))
-				.map(
-					(transaction) =>
-						new HistoryListItem({
-							isDeleteButtonVisible: canDeleteTransactions,
-							...transaction,
-						}),
-				),
+			items: [...transactions].reverse().map(
+				(transaction) =>
+					new HistoryListItem({
+						isDeleteButtonVisible: canDeleteTransactions,
+						...transaction,
+					}),
+			),
 			onTransactionDelete: handleTransactionDelete,
 		});
 
@@ -69,15 +66,13 @@ export class HistoryBlock extends Component {
 
 	update({ transactions, metrics }: HistoryBlockUpdate) {
 		this.historyList.update(
-			transactions
-				.sort((a, b) => compareDesc(a.date, b.date))
-				.map(
-					(transaction) =>
-						new HistoryListItem({
-							isDeleteButtonVisible: this.canDeleteTransactions,
-							...transaction,
-						}),
-				),
+			[...transactions].reverse().map(
+				(transaction) =>
+					new HistoryListItem({
+						isDeleteButtonVisible: this.canDeleteTransactions,
+						...transaction,
+					}),
+			),
 		);
 
 		this.averageSpentPerDay.textContent = metrics.avgSpentPerDay.toString();
