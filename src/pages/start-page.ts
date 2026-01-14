@@ -6,7 +6,12 @@ import type { StartPageConstructor } from "../types";
 export class StartPage extends Component {
 	private startBlock: StartBlock;
 	constructor({ onSubmit }: StartPageConstructor) {
-		super(new Container().render());
+		super(
+			new Container({
+				className:
+					"flex w-full flex-col justify-center items-center gap-6 md:gap-2",
+			}).render(),
+		);
 
 		this.startBlock = new StartBlock({ onSubmit });
 

@@ -78,7 +78,7 @@ h3 {
 }
 
 .card {
-	@apply md:shadow-e1 space-y-3 h-full md:h-auto w-full md:rounded-2xl md:p-6;
+	@apply md:shadow-e1 space-y-3 h-full md:h-auto w-full md:rounded-2xl md:p-6 max-w-139.5;
 }
 
 ul.date-picker-list {

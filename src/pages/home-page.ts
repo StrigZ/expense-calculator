@@ -17,7 +17,8 @@ export class HomePage extends Component {
 		goToTopupPage,
 	}: HomePageConstructor) {
 		const container = new Container({
-			className: "flex w-full flex-col gap-6 md:gap-2",
+			className:
+				"flex w-full flex-col justify-center items-center gap-6 md:gap-2",
 		});
 		super(container.render());
 

@@ -10,7 +10,12 @@ export class HistoryPage extends Component {
 		goToHomePage,
 		handleTransactionDelete,
 	}: HistoryPageConstructor) {
-		super(new Container().render());
+		super(
+			new Container({
+				className:
+					"flex w-full flex-col justify-center items-center gap-6 md:gap-2",
+			}).render(),
+		);
 
 		this.historyBlock = new HistoryBlock({
 			transactions,
