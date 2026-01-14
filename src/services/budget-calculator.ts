@@ -43,17 +43,19 @@ export function calculateMetrics({
 	);
 	const remainingBudget = budget.initialBalance + totalAdded - budgetUsedSoFar;
 
-	const budgetPerDay = getBudgetPerDay({
+	const budgetPerDay = +getBudgetPerDay({
 		remainingBudget,
 		daysLeft,
-	});
+	}).toFixed(2);
 
-	const avgSpentPerDay = getAverageSpentPerDay(transactions, budget);
-	const availableToday = getAvailableBudgetToday(
+	const avgSpentPerDay = +getAverageSpentPerDay(transactions, budget).toFixed(
+		2,
+	);
+	const availableToday = +getAvailableBudgetToday(
 		budgetPerDay,
 		transactions,
 		budget,
-	);
+	).toFixed(2);
 
 	return {
 		availableBalance,
